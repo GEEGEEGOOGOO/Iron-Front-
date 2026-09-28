@@ -251,3 +251,9 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - The project source, Godot UID/import metadata, resource data, tests, and small original audio assets are prepared for an initial local Git commit.
 - Git LFS is unavailable on this host; current binary files are small, so `.gitattributes` treats them as binary instead of requiring a missing LFS filter. Large future models/audio can be moved to LFS when it is installed.
+
+## Sidearm and special switching
+
+- The previously mapped but unused switch action now toggles between the unlimited sidearm and one carried special weapon. Special ammo is preserved while stowed; a matching pickup refills it, a different pickup replaces it, and depletion or respawn clears it.
+- Q and controller left shoulder are mapped; the action can be rebound in Options, and the HUD displays the switch cue when a special is carried.
+- Editor import and input regression pass for controller mapping, switch state, ammo refill, and empty-ammo fallback. Controller feel and HUD layout await manual Godot review.

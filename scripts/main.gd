@@ -83,9 +83,10 @@ func show_menu() -> void:
 %s   Move right
 %s   Jump   •   %s   Fire
 %s   Grenade   •   %s   Interact
+%s   Switch weapon
 %s   Pause
 
-Change keys in Options → Controls." % [InputManager.key_label("move_left"), InputManager.key_label("move_right"), InputManager.key_label("jump"), InputManager.key_label("fire"), InputManager.key_label("fire_secondary"), InputManager.key_label("interact"), InputManager.key_label("pause")], Vector2(720, 380), 17)
+Change keys in Options → Controls." % [InputManager.key_label("move_left"), InputManager.key_label("move_right"), InputManager.key_label("jump"), InputManager.key_label("fire"), InputManager.key_label("fire_secondary"), InputManager.key_label("interact"), InputManager.key_label("switch_weapon"), InputManager.key_label("pause")], Vector2(720, 380), 17)
 	pass_focus()
 func pass_focus() -> void:
 	for child in screen.get_children():
@@ -207,8 +208,9 @@ func _process(_delta: float) -> void:
 		var player := GameManager.player
 		weapon_icon.texture = player.weapon.icon
 		weapon_icon.tooltip_text = player.weapon.title
+		var swap_hint := "    %s / LB SWITCH" % InputManager.key_label("switch_weapon") if player.reserve_weapon else ""
 		hud.text = "HP %d / %d   •   LIVES %d       %s  %s       GRENADES %d
-SCORE %07d     POW %d / 4     MISSION %02d" % [ceili(player.health.current_health), int(player.health.max_health), GameManager.lives, player.weapon.title.to_upper(), "∞" if player.ammo < 0 else str(player.ammo), player.grenades, GameManager.score, GameManager.rescued, GameManager.mission + 1]
+SCORE %07d     POW %d / 4     MISSION %02d%s" % [ceili(player.health.current_health), int(player.health.max_health), GameManager.lives, player.weapon.title.to_upper(), "∞" if player.ammo < 0 else str(player.ammo), player.grenades, GameManager.score, GameManager.rescued, GameManager.mission + 1, swap_hint]
 		objective.text = level.banner if level.banner_time > 0 else ""
 		boss_bar.visible = is_instance_valid(level.boss) and level.boss.active
 		if boss_bar.visible:
@@ -241,11 +243,11 @@ func show_controls() -> void:
 	label_at("Select an action, then press a key. Escape cancels capture. Controller bindings stay available.", Vector2(90, 194), 17)
 	for i in InputManager.REBINDABLE.size():
 		var action: String = InputManager.REBINDABLE[i]
-		var item := button(action.replace("_", " ").to_upper() + "   /   " + InputManager.key_label(action), 240 + (i % 5) * 57, func():
+		var item := button(action.replace("_", " ").to_upper() + "   /   " + InputManager.key_label(action), 240 + (i % 6) * 50, func():
 			pending_binding = action
 			binding_message = "Press a key for " + action.replace("_", " ")
 			refresh_binding_message())
-		item.position.x = 90 + (i / 5) * 520
+		item.position.x = 90 + (i / 6) * 520
 	label_at(binding_message, Vector2(90, 540), 18, Color(1, 0.7, 0.3)).name = "BindingMessage"
 	button("RESTORE DEFAULTS", 590, func():
 		InputManager.reset_bindings()

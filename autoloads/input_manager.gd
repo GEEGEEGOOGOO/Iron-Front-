@@ -1,6 +1,6 @@
 extends Node
 const DEFAULT_KEYS := {"move_left": [KEY_A, KEY_LEFT], "move_right": [KEY_D, KEY_RIGHT], "aim_up": [KEY_W, KEY_UP], "crouch": [KEY_S, KEY_DOWN], "jump": [KEY_SPACE], "fire": [KEY_J], "fire_secondary": [KEY_K], "melee": [KEY_L], "interact": [KEY_E], "switch_weapon": [KEY_Q], "pause": [KEY_ESCAPE], "debug": [KEY_F3]}
-const REBINDABLE := ["move_left", "move_right", "aim_up", "crouch", "jump", "fire", "fire_secondary", "melee", "interact", "pause"]
+const REBINDABLE := ["move_left", "move_right", "aim_up", "crouch", "jump", "fire", "fire_secondary", "melee", "interact", "switch_weapon", "pause"]
 func _ready() -> void:
 
 	for action in DEFAULT_KEYS:
@@ -10,7 +10,7 @@ func _ready() -> void:
 			var event := InputEventKey.new()
 			event.physical_keycode = key
 			InputMap.action_add_event(action, event)
-	var buttons := {"jump": JOY_BUTTON_A, "fire": JOY_BUTTON_X, "fire_secondary": JOY_BUTTON_B, "interact": JOY_BUTTON_Y, "melee": JOY_BUTTON_RIGHT_SHOULDER, "pause": JOY_BUTTON_START}
+	var buttons := {"jump": JOY_BUTTON_A, "fire": JOY_BUTTON_X, "fire_secondary": JOY_BUTTON_B, "interact": JOY_BUTTON_Y, "melee": JOY_BUTTON_RIGHT_SHOULDER, "switch_weapon": JOY_BUTTON_LEFT_SHOULDER, "pause": JOY_BUTTON_START}
 	for action in buttons:
 		var event := InputEventJoypadButton.new()
 		event.button_index = buttons[action]

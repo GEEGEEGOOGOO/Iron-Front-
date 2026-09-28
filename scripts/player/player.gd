@@ -12,6 +12,8 @@ var hurt_shape: CollisionShape3D
 var ground: RayCast3D
 var weapon: WeaponData = preload("res://data/weapons/pistol.tres")
 var ammo := -1
+var reserve_weapon: WeaponData
+var reserve_ammo := 0
 var grenades := 8
 var cooldown := 0.0
 var grenade_cooldown := 0.0
@@ -132,6 +134,7 @@ func _physics_process(delta: float) -> void:
 		cooldown = 1.0 / weapon.fire_rate
 		if ammo > 0:
 			ammo -= 1
+			reserve_ammo = ammo
 			if ammo == 0:
 				equip(preload("res://data/weapons/pistol.tres"))
 		EventBus.hud_changed.emit()
@@ -146,13 +149,33 @@ func _physics_process(delta: float) -> void:
 		GameManager.level.interact(self, true)
 	if Input.is_action_just_pressed("interact"):
 		GameManager.level.interact(self, false)
+	if Input.is_action_just_pressed("switch_weapon"):
+		switch_weapon()
 	if position.y < -8:
 		health.invulnerability = 0
 		take_damage(99)
 func equip(data: WeaponData) -> void:
-	ammo = mini(data.max_ammo, ammo + data.starting_ammo) if weapon == data and ammo > 0 else data.starting_ammo
+	if data.max_ammo < 0:
+		reserve_weapon = null
+		reserve_ammo = 0
+		ammo = -1
+	else:
+		reserve_ammo = mini(data.max_ammo, reserve_ammo + data.starting_ammo) if reserve_weapon == data and reserve_ammo > 0 else data.starting_ammo
+		reserve_weapon = data
+		ammo = reserve_ammo
 	weapon = data
 	EventBus.weapon_picked_up.emit(data.title)
+	EventBus.hud_changed.emit()
+func switch_weapon() -> void:
+	if not reserve_weapon or reserve_ammo <= 0:
+		return
+	if weapon == reserve_weapon:
+		reserve_ammo = ammo
+		weapon = preload("res://data/weapons/pistol.tres")
+		ammo = -1
+	else:
+		weapon = reserve_weapon
+		ammo = reserve_ammo
 	EventBus.hud_changed.emit()
 func take_damage(amount: float, source: Node = null) -> bool:
 	if GameManager.god_mode or state == State.DEAD or vehicle:

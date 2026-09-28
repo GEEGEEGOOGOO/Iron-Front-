@@ -20,6 +20,7 @@ The project uses Forward+ and Jolt, 60 Hz physics, and a 1280 × 720 canvas. No 
 | Crouch / airborne aim down | S/down | Stick down |
 | Jump (variable height) | Space | A |
 | Fire | J | X |
+| Switch sidearm / special weapon | Q | Left shoulder |
 | Grenade / tank cannon | K | B |
 | Knife / free POW | L | Right shoulder |
 | Interact / enter or exit tank | E | Y |
@@ -34,7 +35,7 @@ At ladders, use aim up/down to climb; release to hold, and jump or move sideways
 ## Current implementation
 
 - Side-view 3D lane movement, variable jump, coyote time, buffering, crouch, eight-way firing.
-- Six weapon resources, grenades, melee, health, mercy frames, lives and checkpoints.
+- Six weapon resources, sidearm/special weapon switching, grenades, melee, health, mercy frames, lives and checkpoints.
 - Seven enemy data variants including a three-phase boss prototype.
 - Encounter gates, destructible crates/barrels, weapon/health/grenade pickups, POW rescue.
 - Drivable tank with machine gun, cannon, armor and protected ejection.
