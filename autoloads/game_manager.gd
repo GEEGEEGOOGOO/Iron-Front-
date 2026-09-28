@@ -32,6 +32,7 @@ func _physics_process(delta: float) -> void:
 		elapsed += delta
 func begin(index: int) -> void:
 	score_breakdown.clear()
+	god_mode = false
 	mission = index
 	score = 0
 	lives = 3

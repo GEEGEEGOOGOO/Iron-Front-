@@ -274,3 +274,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 - Desert waves now favor rushers and grenadiers, with two authored flank spawns. Foundry waves emphasize turrets and armor, culminating in two tanks and a rear turret. Mission two and three have longer par times appropriate to their larger rosters.
 - Added a headless campaign flow check that starts every authored wave, clears it, defeats every boss, and verifies the commander/result transition. All three missions pass, as does the existing smoke test after the roster changes.
 - The check does not measure whether those encounters are fair, legible, or fun. Their balance and spawn timing need the user's manual Godot playtest.
+
+## Mission state consistency
+
+- HUD and result POW totals now read the active level's prisoner count, so adding or removing authored rescues does not leave a stale `/ 4` display.
+- Starting a mission resets debug god mode to prevent an invulnerability toggle from silently carrying into a later mission. Editor import and scoring regression pass these behaviors.

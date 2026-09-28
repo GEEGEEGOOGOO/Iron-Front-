@@ -10,8 +10,14 @@ func run() -> void:
 	var saved: Dictionary = SaveManager.data.duplicate(true)
 	var main = load("res://scenes/main.tscn").instantiate()
 	add_child(main)
+	GameManager.god_mode = true
 	main.start_mission(0)
 	await get_tree().create_timer(0.1).timeout
+	check(not GameManager.god_mode, "New mission must clear debug invulnerability")
+	main.level.pows.append(main.level.pows[0])
+	main._process(0)
+	check("POW 0 / 5" in main.hud.text, "HUD POW total must follow active level content")
+	main.level.pows.pop_back()
 	var original_par: float = main.level.data.par_time
 	main.level.data.par_time = 100
 	GameManager.score = 750

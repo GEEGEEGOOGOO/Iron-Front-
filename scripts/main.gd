@@ -228,7 +228,7 @@ func show_result() -> void:
 RESCUE BONUS         +%d
 TIME BONUS              +%d
 TOTAL SCORE          %07d" % [tally.get("combat_and_pickups", 0), tally.get("rescue_bonus", 0), tally.get("time_bonus", 0), GameManager.score], Vector2(90, 240), 26)
-		label_at("POWs %d / 4  •  TIME %02d:%02d  •  ACCURACY %d%%" % [GameManager.rescued, int(GameManager.elapsed) / 60, int(GameManager.elapsed) % 60, int(GameManager.accuracy() * 100)], Vector2(90, 405), 20)
+		label_at("POWs %d / %d  •  TIME %02d:%02d  •  ACCURACY %d%%" % [GameManager.rescued, level.pows.size(), int(GameManager.elapsed) / 60, int(GameManager.elapsed) % 60, int(GameManager.accuracy() * 100)], Vector2(90, 405), 20)
 		if GameManager.mission < 2:
 			button("NEXT MISSION", 470, func(): start_mission(GameManager.mission + 1)).grab_focus()
 	else:
@@ -253,7 +253,7 @@ func _process(delta: float) -> void:
 		weapon_icon.tooltip_text = player.weapon.title
 		var swap_hint := "    %s / LB SWITCH" % InputManager.key_label("switch_weapon") if player.reserve_weapon else ""
 		hud.text = "HP %d / %d   •   LIVES %d       %s  %s       GRENADES %d
-SCORE %07d     POW %d / 4     MISSION %02d%s" % [ceili(player.health.current_health), int(player.health.max_health), GameManager.lives, player.weapon.title.to_upper(), "∞" if player.ammo < 0 else str(player.ammo), player.grenades, GameManager.score, GameManager.rescued, GameManager.mission + 1, swap_hint]
+SCORE %07d     POW %d / %d     MISSION %02d%s" % [ceili(player.health.current_health), int(player.health.max_health), GameManager.lives, player.weapon.title.to_upper(), "∞" if player.ammo < 0 else str(player.ammo), player.grenades, GameManager.score, GameManager.rescued, level.pows.size(), GameManager.mission + 1, swap_hint]
 		objective.text = level.banner if level.banner_time > 0 and mission_card_time <= 0 else ""
 		boss_bar.visible = is_instance_valid(level.boss) and level.boss.active
 		if boss_bar.visible:
