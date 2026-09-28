@@ -30,7 +30,24 @@ func apply_saved_bindings() -> void:
 	for action in REBINDABLE:
 		var key = saved.get(action, 0)
 		if (key is int or key is float) and int(key) > 0:
+			var previous := keyboard_key(action)
+			for other in REBINDABLE:
+				if other == action:
+					continue
+				var removed := false
+				for event in InputMap.action_get_events(other):
+					if event is InputEventKey and event.physical_keycode == int(key):
+						InputMap.action_erase_event(other, event)
+						removed = true
+				if removed and keyboard_key(other) == 0 and previous > 0 and previous != int(key):
+					set_keyboard_binding(other, previous)
 			set_keyboard_binding(action, int(key))
+
+func keyboard_key(action: String) -> int:
+	for event in InputMap.action_get_events(action):
+		if event is InputEventKey:
+			return event.physical_keycode
+	return 0
 
 func set_keyboard_binding(action: String, key: int) -> void:
 	for event in InputMap.action_get_events(action):

@@ -284,3 +284,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Bosses now announce phases two and three with a banner, bright pooled effect, and camera shake when health crosses each threshold. A two-second attack pause makes the transition visible before the next unlocked pattern begins.
 - The boss regression checks threshold cues and completes all three encounters. Editor import and boss regression pass; visual timing and difficulty need manual playtesting.
+
+## Saved binding compatibility
+
+- Saved keyboard bindings now resolve collisions with newly added default actions. For example, an older Fire=Q save keeps Fire on Q and moves Switch Weapon to Fire's freed J key, while controller mappings remain intact.
+- The input regression covers this legacy case plus saving and reloading a custom Switch Weapon key. Editor import and input regression pass.

@@ -10,6 +10,18 @@ func _ready() -> void:
 func run() -> void:
 	var saved: Dictionary = SaveManager.data.duplicate(true)
 	InputManager.reset_bindings()
+	SaveManager.data.bindings = {"fire": KEY_Q}
+	InputManager.apply_saved_bindings()
+	check(InputManager.key_label("fire") == "Q" and InputManager.key_label("switch_weapon") == "J", "Legacy Q fire binding must move switch to the free key")
+	InputManager.reset_bindings()
+	check(InputManager.rebind("switch_weapon", KEY_U).is_empty(), "Switch action must be rebindable")
+	var switch_key := InputEventKey.new()
+	switch_key.physical_keycode = KEY_U
+	switch_key.pressed = true
+	InputManager.set_keyboard_binding("switch_weapon", KEY_Q)
+	InputManager.apply_saved_bindings()
+	check(InputMap.event_is_action(switch_key, "switch_weapon"), "Saved switch binding must reload")
+	InputManager.reset_bindings()
 	check(InputManager.rebind("fire", KEY_R).is_empty(), "An unused key must bind")
 	var r := InputEventKey.new()
 	r.physical_keycode = KEY_R
