@@ -289,3 +289,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Saved keyboard bindings now resolve collisions with newly added default actions. For example, an older Fire=Q save keeps Fire on Q and moves Switch Weapon to Fire's freed J key, while controller mappings remain intact.
 - The input regression covers this legacy case plus saving and reloading a custom Switch Weapon key. Editor import and input regression pass.
+
+## Mission ground identity
+
+- Coastal scenery now has water and dock markings, the desert has layered dunes and worn road markers, and the foundry has a glowing channel with hazard stripes. These are visual-only meshes behind or beside the fixed gameplay lane.
+- Godot editor import and the three-mission smoke test pass after the additions. The rendered appearance and draw-call effect still need manual Godot review.

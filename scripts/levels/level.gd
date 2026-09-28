@@ -58,6 +58,7 @@ func build_world() -> void:
 	sun.shadow_enabled = true
 	add_child(sun)
 	platform(Vector3(data.length * 0.5, -0.7, 0), Vector3(data.length + 20, 1.4, 7), data.ground_color)
+	build_theme_ground()
 	for i in range(-2, 28):
 		var x := i * 5.0
 		var height := randf_range(3, 12)
@@ -249,6 +250,28 @@ func grant_pow_reward(reward: String, pos: Vector3) -> void:
 			banner = "POW RESCUED • SUPPLIES DROPPED"
 	banner_time = 2
 	EventBus.hud_changed.emit()
+
+func build_theme_ground() -> void:
+	match data.theme:
+		"coast":
+			var water := ModelFactory.box(self, Vector3(data.length + 20, 0.12, 6), Vector3(data.length * 0.5, -0.85, -6.5), Color(0.12, 0.3, 0.38))
+			water.material_override.roughness = 0.28
+			for x in range(0, int(data.length), 9):
+				ModelFactory.box(self, Vector3(3.0, 0.025, 0.1), Vector3(x + 1.5, 0.025, 2.45), Color(0.79, 0.75, 0.55))
+				ModelFactory.box(self, Vector3(2.5, 0.02, 0.09), Vector3(x + 3, -0.78, -4.35), Color(0.72, 0.83, 0.82))
+		"desert":
+			for x in range(-6, int(data.length) + 12, 12):
+				var dune := ModelFactory.sphere(self, 1.0, Vector3(x, -1.35, -6.2), Color(0.65, 0.44, 0.25))
+				dune.scale = Vector3(5.0, 1.0, 2.2)
+			for x in range(2, int(data.length), 11):
+				ModelFactory.box(self, Vector3(2.2, 0.025, 0.08), Vector3(x, 0.025, 2.35), Color(0.79, 0.56, 0.32))
+		"foundry":
+			var furnace_channel := ModelFactory.box(self, Vector3(data.length + 20, 0.12, 6), Vector3(data.length * 0.5, -0.78, -6.5), Color(0.95, 0.16, 0.025))
+			furnace_channel.material_override = ModelFactory.material(Color(0.95, 0.16, 0.025), 1.8)
+			for x in range(1, int(data.length), 7):
+				var warning_stripe := ModelFactory.box(self, Vector3(0.36, 0.025, 1.4), Vector3(x, 0.025, 2.4), Color(0.95, 0.61, 0.07))
+				warning_stripe.rotation.y = 0.38
+				ModelFactory.box(self, Vector3(0.16, 0.5, 0.18), Vector3(x, 0.25, -3.25), Color(0.16, 0.19, 0.21))
 
 func build_theme_props() -> void:
 	for x in [8.0, 39.0, 68.0, 97.0, 121.0]:
