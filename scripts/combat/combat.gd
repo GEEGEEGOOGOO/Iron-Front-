@@ -12,7 +12,7 @@ static func fire(source: Node3D, origin: Vector3, direction: Vector3, weapon: We
 	if weapon.attack_mode == "cone":
 		flame(source, origin, direction, weapon, friendly)
 		return
-	AudioManager.play_at("shot", origin)
+	AudioManager.play_at(weapon.sfx_fire, origin)
 	effect(origin, Vector3(0.5, 0.25, 0.2), Color(1, 0.87, 0.3), 0.07)
 	fragment(origin, Vector3(0.12, 0.06, 0.06), Color(0.8, 0.6, 0.2), Vector3(-direction.x * 2, 3, 1.4), 1.5)
 	for i in weapon.pellets:
@@ -127,7 +127,7 @@ static func flame(source: Node3D, origin: Vector3, direction: Vector3, weapon: W
 		var flame_direction := direction.rotated(Vector3.FORWARD, randf_range(-weapon.cone_half_angle, weapon.cone_half_angle))
 		var distance := randf_range(0.4, weapon.range_meters)
 		effect(origin + flame_direction * distance, Vector3.ONE * (0.16 + distance * 0.14), Color(1, randf_range(0.3, 0.7), 0.05), 0.16, flame_direction * 3)
-	AudioManager.play_at("shot", origin)
+	AudioManager.play_at(weapon.sfx_fire, origin)
 
 static func melee(source: Node3D, origin: Vector3, facing: float) -> int:
 	var count := 0

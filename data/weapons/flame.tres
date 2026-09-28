@@ -21,3 +21,4 @@ cone_half_angle = 0.5
 icon = ExtResource("icon")
 model_kind = "flame"
 muzzle_distance = 1.2
+sfx_fire = "shot_flame"

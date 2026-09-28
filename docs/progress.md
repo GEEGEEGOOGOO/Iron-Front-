@@ -329,3 +329,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - The background building strip now uses a mission-seeded random generator, so each mission keeps its own layout across launches instead of reshuffling every time.
 - The direct scene regression compares the same building after reloading mission one. Editor import and scene regression pass. This stabilizes visual review without changing combat randomness.
+
+## Weapon firing cues
+
+- WeaponData now selects a firing sound. All six weapon resources use distinct synthesized cues, prebuilt at startup and played through the existing positional SFX pool. Invalid authored cue names fall back to the standard shot.
+- Editor import, audio regression, and combat regression pass. The final mix and loudness still need manual listening in Godot.

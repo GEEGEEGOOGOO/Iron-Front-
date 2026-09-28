@@ -18,3 +18,4 @@ lifetime = 2.0
 icon = ExtResource("icon")
 model_kind = "rocket"
 muzzle_distance = 1.25
+sfx_fire = "shot_rocket"

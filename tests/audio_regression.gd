@@ -25,6 +25,12 @@ func run() -> void:
 		AudioManager.play_music(data.background_music)
 		check(AudioManager.music_path == data.background_music.resource_path, "Checkpoint restart must restore mission music")
 	var count := AudioManager.get_child_count()
+	var weapon_cues: Array[String] = []
+	for kind in ["pistol", "machine_gun", "rocket", "shotgun", "flame", "laser"]:
+		var weapon: WeaponData = load("res://data/weapons/" + kind + ".tres")
+		check(AudioManager.sounds.has(weapon.sfx_fire), "Weapon must reference a prebuilt firing cue: " + kind)
+		check(weapon.sfx_fire not in weapon_cues, "Every weapon must have a distinct firing cue")
+		weapon_cues.append(weapon.sfx_fire)
 	for i in 100:
 		AudioManager.play_at("shot", Vector3(i, 1, 0))
 	check(AudioManager.get_child_count() == count, "SFX bursts must reuse the fixed pool")
