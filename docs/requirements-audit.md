@@ -10,7 +10,7 @@ This maps the supplied plan to the current source. “Implemented” is not a cl
 | 3 Enemies/waves | EnemyData, EnemySpawner markers, WaveData trigger modes, BossData/AttackPattern, role-specific soldier gear | Manual encounter balance and visual readability |
 | 4 Vehicles | Tank drive, weapons, armor, ejection and ram tests | Manual handling and collision review; secondary vehicles are stretch goals |
 | 5 World | Three world scenes, themed props and ground detail, cages, weighted rewards, ladders/elevator; mission-specific tank, supply, boss, and flank placements | Automatic geometry limits editor previews; route pacing and scenery need manual review |
-| 6 Score/lives | Checkpoints, lives, game-over, itemized score; scoring/pause/reset tests | End-to-end manual difficulty and checkpoint economy |
+| 6 Score/lives | Visible checkpoint markers, respawn/replay, lives, game-over, itemized score; scoring/pause/reset tests | End-to-end manual difficulty and checkpoint economy |
 | 7 UI | Main/pause/options/controls/results, HUD, boss bar, mission start cards | Visual layout review at target window sizes |
 | 8 Audio | Original music loops, positional SFX pool, buses/settings; audio tests | Listening/mix review; announcer voice is optional |
 | 9 Effects | Hit flash, hitstop, shake, enemy death fade, physical casings/debris, staged boss explosions | Layered flash/smoke now implemented; manual feedback review remains |

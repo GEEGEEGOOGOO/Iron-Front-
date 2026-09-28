@@ -35,6 +35,9 @@ func run() -> void:
 	level._physics_process(1.0 / 60.0)
 	assert(level.checkpoint_wave_index == 1, "Checkpoint must capture the currently pending wave")
 	assert(GameManager.checkpoint.x == 40, "Checkpoint must record its world position")
+	assert(level.checkpoint_labels.size() == level.data.checkpoint_positions.size(), "Every authored checkpoint must have a visible marker")
+	assert(level.checkpoint_labels[1].text == "CHECKPOINT SECURED", "Activated checkpoint marker must change state")
+	assert(level.checkpoint_labels[2].text == "CHECKPOINT", "Future checkpoint must remain inactive")
 	level.checkpoint_wave_index = 2
 	GameManager.elapsed = 20
 	level.reset_encounter()

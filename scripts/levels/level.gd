@@ -17,6 +17,8 @@ var boss_prisoner: CharacterBody3D
 var pows: Array[Node3D] = []
 var checkpoint_index := 0
 var checkpoint_wave_index := 0
+var checkpoint_lamps: Array[MeshInstance3D] = []
+var checkpoint_labels: Array[Label3D] = []
 var tank: CharacterBody3D
 var ladders: Array[ClimbLadder] = []
 var elevators: Array[FreightElevator] = []
@@ -67,6 +69,7 @@ func build_world() -> void:
 		if i % 3 == 0:
 			ModelFactory.box(self, Vector3(0.15, 5, 0.15), Vector3(x, 2.5, -3), Color(0.18, 0.22, 0.24))
 	build_theme_props()
+	build_checkpoint_markers()
 	build_ladders()
 	build_elevators()
 	for i in data.platform_positions.size():
@@ -112,6 +115,30 @@ func add_pickup(pos: Vector3, kind: String) -> void:
 	var pickup = PoolManager.acquire("pickup")
 	if pickup:
 		pickup.setup(pos, kind)
+func build_checkpoint_markers() -> void:
+	for i in data.checkpoint_positions.size():
+		var marker := Node3D.new()
+		marker.name = "Checkpoint%d" % i
+		marker.position = Vector3(data.checkpoint_positions[i], 0, -2.9)
+		add_child(marker)
+		ModelFactory.box(marker, Vector3(0.16, 2.2, 0.16), Vector3(0, 1.1, 0), Color(0.15, 0.2, 0.22))
+		ModelFactory.box(marker, Vector3(0.7, 0.12, 0.35), Vector3(0, 2.25, 0), Color(0.15, 0.2, 0.22))
+		var lamp := ModelFactory.box(marker, Vector3(0.54, 0.28, 0.25), Vector3(0, 2.0, 0.12), Color(0.95, 0.45, 0.08))
+		lamp.material_override = ModelFactory.material(Color(0.95, 0.45, 0.08), 1.5)
+		checkpoint_lamps.append(lamp)
+		var label := Label3D.new()
+		label.text = "CHECKPOINT"
+		label.position = Vector3(0, 2.7, 0)
+		label.font_size = 26
+		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		marker.add_child(label)
+		checkpoint_labels.append(label)
+	activate_checkpoint_marker(0)
+func activate_checkpoint_marker(index: int) -> void:
+	if index < 0 or index >= checkpoint_lamps.size():
+		return
+	checkpoint_lamps[index].material_override = ModelFactory.material(Color(0.18, 0.9, 0.55), 2.0)
+	checkpoint_labels[index].text = "CHECKPOINT SECURED"
 func _physics_process(delta: float) -> void:
 	if GameManager.state != GameManager.State.PLAYING:
 		return
@@ -148,6 +175,7 @@ func _physics_process(delta: float) -> void:
 		if i > checkpoint_index and player.position.x >= data.checkpoint_positions[i] and not encounter:
 			checkpoint_index = i
 			checkpoint_wave_index = wave_index
+			activate_checkpoint_marker(i)
 			GameManager.checkpoint = Vector3(data.checkpoint_positions[i], 1, 0)
 			banner = "CHECKPOINT SECURED"
 			banner_time = 2

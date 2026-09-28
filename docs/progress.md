@@ -309,3 +309,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Raised the coastal water and foundry channel meshes above the floor surface in the background Z strip. Their previous Y positions put them below the opaque corridor floor.
 - The direct mission scene regression confirms each strip exists above the floor and behind the gameplay lane. Editor import and scene regression pass; actual visibility still needs rendered Godot review.
+
+## Visible checkpoints
+
+- Each authored checkpoint now has a non-colliding post, lamp, and label behind the gameplay lane. The starting marker is secured; later markers switch from amber to green when the player activates them.
+- Checkpoint locations still come from LevelData and preserve the existing wave replay behavior. Editor import and wave regression pass; marker legibility needs manual Godot review.
