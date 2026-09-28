@@ -4,4 +4,4 @@
 script = ExtResource("1")
 trigger_x = 20.0
 arena_center = 27.0
-enemy_types = Array[String](["grunt", "rusher", "heavy", "heavy", "rusher"])
+enemy_types = Array[String](["grunt", "rusher", "grenadier", "rusher", "heavy"])

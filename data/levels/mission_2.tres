@@ -10,6 +10,7 @@
 script = ExtResource("1")
 mission_name = "Dust Battalion"
 subtitle = "CROSS THE OCCUPIED BADLANDS"
+par_time = 260.0
 sky_color = Color(0.73, 0.50, 0.31, 1)
 ground_color = Color(0.55, 0.37, 0.20, 1)
 waves = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4")])

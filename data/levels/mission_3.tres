@@ -10,6 +10,7 @@
 script = ExtResource("1")
 mission_name = "Midnight Foundry"
 subtitle = "SILENCE THE WAR MACHINE"
+par_time = 300.0
 sky_color = Color(0.075, 0.10, 0.19, 1)
 ground_color = Color(0.18, 0.21, 0.28, 1)
 waves = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4")])
