@@ -26,6 +26,14 @@ func run() -> void:
 		recycled = main.level.spawn_enemy(kind, Vector3(21, 0, 0))
 		for variant in recycled.soldier_gear:
 			check(recycled.soldier_gear[variant].visible == (variant == kind), "Pooled soldier equipment must match " + kind)
+	recycled.die()
+	recycled._physics_process(0.4)
+	var uniform_material: StandardMaterial3D = recycled.soldier_model.upper.get_child(0).material_override
+	check(uniform_material.albedo_color.a < 1.0, "Defeated soldier must fade before recycling")
+	PoolManager.release(recycled)
+	recycled = main.level.spawn_enemy("grunt", Vector3(21, 0, 0))
+	uniform_material = recycled.soldier_model.upper.get_child(0).material_override
+	check(is_equal_approx(uniform_material.albedo_color.a, 1.0) and uniform_material.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "Reused soldier must restore opaque materials")
 	var effect = PoolManager.acquire("effect")
 	effect.activate(Vector3.ZERO, Vector3.ONE, Color.WHITE, 1)
 	effect.model.scale = Vector3.ONE * 0.1

@@ -299,3 +299,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - The drivable tank now keeps one configured physics shape query and updates its transform during ram checks, avoiding a new query object on each moving frame.
 - Editor import and the existing ram regression pass for unoccupied, stationary, forward, cooldown, reverse, and finishing hits. This is an allocation reduction, not a measured FPS claim.
+
+## Enemy death fade
+
+- Defeated enemies now fade during the end of their death motion before returning to the pool. Activation restores all soldier and machine materials to full opacity so reused actors cannot remain translucent.
+- Editor import and reset regression pass; the regression checks a fading soldier and opaque reuse. The visual look and transparency rendering cost need manual review.

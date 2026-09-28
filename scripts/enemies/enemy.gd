@@ -89,6 +89,8 @@ func activate(enemy_data: EnemyData, pos: Vector3) -> void:
 	for part in machine_model.get_children():
 		if part is MeshInstance3D and not part.material_override.emission_enabled:
 			part.material_override.albedo_color = data.tint
+	set_model_alpha(soldier_model, 1.0)
+	set_model_alpha(machine_model, 1.0)
 	model.position = Vector3.ZERO
 	model.rotation = Vector3.ZERO
 	model.scale = Vector3.ONE * base_scale
@@ -113,6 +115,9 @@ func _physics_process(delta: float) -> void:
 				death_burst = 0.45
 				Combat.explode(self, position + Vector3(randf_range(-2, 1), randf_range(0.7, 3.5), 0), 1.6, 0, true)
 		model.rotation.z = lerpf(model.rotation.z, -1.5, delta * 8)
+		var fade_window := 0.7 if data.behavior == "boss" else 0.45
+		if death_time < fade_window:
+			set_model_alpha(model, clampf(death_time / fade_window, 0.0, 1.0))
 		if death_time <= 0:
 			PoolManager.release(self)
 		return
@@ -265,6 +270,16 @@ func apply_flash(root: Node) -> void:
 		root.material_overlay = flash_material
 	for child in root.get_children():
 		apply_flash(child)
+
+func set_model_alpha(root: Node, alpha: float) -> void:
+	if root is MeshInstance3D and root.material_override is StandardMaterial3D:
+		var material := root.material_override as StandardMaterial3D
+		material.transparency = BaseMaterial3D.TRANSPARENCY_DISABLED if alpha >= 0.999 else BaseMaterial3D.TRANSPARENCY_ALPHA
+		var color := material.albedo_color
+		color.a = alpha
+		material.albedo_color = color
+	for child in root.get_children():
+		set_model_alpha(child, alpha)
 
 func build_soldier_gear() -> void:
 	var upper: Node3D = soldier_model.upper

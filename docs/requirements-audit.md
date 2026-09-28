@@ -13,7 +13,7 @@ This maps the supplied plan to the current source. “Implemented” is not a cl
 | 6 Score/lives | Checkpoints, lives, game-over, itemized score; scoring/pause/reset tests | End-to-end manual difficulty and checkpoint economy |
 | 7 UI | Main/pause/options/controls/results, HUD, boss bar, mission start cards | Visual layout review at target window sizes |
 | 8 Audio | Original music loops, positional SFX pool, buses/settings; audio tests | Listening/mix review; announcer voice is optional |
-| 9 Effects | Hit flash, hitstop, shake, physical casings/debris, staged boss explosions | Layered flash/smoke now implemented; manual feedback review remains |
+| 9 Effects | Hit flash, hitstop, shake, enemy death fade, physical casings/debris, staged boss explosions | Layered flash/smoke now implemented; manual feedback review remains |
 | 10 Save/progression | JSON high scores/settings/key bindings, open mission select, ranks | Normal save robustness and manual persistence review; missions intentionally open for MVP |
 | 11 Boss content | Three boss configs/attack sequences, intro framing, phase transition cues, commander rescue; boss tests | Distinct visual silhouettes and manual attack-pattern balance |
 | 12 Optimization | Fixed pools, distant-enemy update skip, reused ray queries, stress metrics | Rendered draw-call/GPU profiling and decoration visibility ranges; headless timings are insufficient |
