@@ -56,6 +56,9 @@ func run() -> void:
 	var reused = PoolManager.acquire("pickup")
 	reused.setup(Vector3(6, 1, 0), "rocket")
 	check(reused.visible and reused.kind == "rocket", "Reused pickup must reset state")
+	check(reused.model.material_override.albedo_color == reused.COLORS.rocket and reused.model.scale == reused.SCALES.rocket, "Rocket pickup must show its configured cue")
+	reused.setup(Vector3(6, 1, 0), "health")
+	check(reused.model.material_override.albedo_color == reused.COLORS.health and reused.model.scale == reused.SCALES.health, "Pooled pickup must change color and shape for the new reward")
 	check(PoolManager.get_child_count() == node_count, "Reward drops must not allocate scene nodes")
 	main.quit_to_menu()
 	await get_tree().create_timer(0.1).timeout

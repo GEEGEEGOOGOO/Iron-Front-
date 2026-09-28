@@ -319,3 +319,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - The player now has six prebuilt low-poly gun silhouettes. WeaponData selects the visible model and its muzzle distance; equipping, switching, depletion, and respawn update both together.
 - Editor import, input regression across all six weapon resources, combat regression, and the three-mission smoke test pass. Silhouette readability and weapon alignment still need manual Godot review.
+
+## Pickup cues
+
+- Weapon, health, and grenade pickups now use distinct colors and proportions while retaining their single pooled mesh and letter label. Activation restores both properties when a pooled pickup changes type.
+- Editor import and reward regression pass for visual state changes without adding nodes. Color readability still needs manual Godot review.
