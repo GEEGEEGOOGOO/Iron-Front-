@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AttackPattern" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/enemies/attack_pattern.gd" id="1"]
+[resource]
+script = ExtResource("1")
+title = "Tracking cannon"
+kind = "aimed"
+telegraph = 1.0
+cooldown = 1.4
+projectile_count = 1
+spread = 0.0
+speed = 15.0
+minimum_phase = 1

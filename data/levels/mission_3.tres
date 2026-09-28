@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=8 format=3]
+[ext_resource type="Script" path="res://scripts/levels/level_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/waves/mission_3_1.tres" id="2"]
+[ext_resource type="Resource" path="res://data/waves/mission_3_2.tres" id="3"]
+[ext_resource type="Resource" path="res://data/waves/mission_3_3.tres" id="4"]
+[ext_resource type="Resource" path="res://data/bosses/mission_3.tres" id="boss"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/foundry_pulse.wav" id="music"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/boss_overdrive.wav" id="boss_music"]
+[resource]
+script = ExtResource("1")
+mission_name = "Midnight Foundry"
+subtitle = "SILENCE THE WAR MACHINE"
+sky_color = Color(0.075, 0.10, 0.19, 1)
+ground_color = Color(0.18, 0.21, 0.28, 1)
+waves = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4")])
+boss_data = ExtResource("boss")
+theme = "foundry"
+platform_positions = PackedVector3Array(12.0, 1.8, 0.0, 42.0, 1.8, 0.0, 46.0, 2.5, 0.0, 73.0, 1.8, 0.0, 97.0, 1.7, 0.0)
+platform_sizes = PackedVector3Array(5.0, 0.3, 3.0, 4.0, 0.3, 3.0, 3.0, 0.3, 3.0, 6.0, 0.3, 3.0, 4.0, 0.3, 3.0)
+background_music = ExtResource("music")
+boss_music = ExtResource("boss_music")
+ladder_positions = PackedVector3Array(95, 0, 0)
+ladder_heights = PackedFloat32Array(6)
+elevator_positions = PackedVector3Array(61, 0.2, 0)
+elevator_travel = PackedFloat32Array(4.5)
+level_scene_path = "res://scenes/levels/world_mission_3.tscn"
+pow_positions = PackedVector3Array(34, 0, 0, 66, 0, 0, 101, 0, 0)
+crate_positions = PackedVector3Array(8, 0, 0, 36, 0, 0, 69, 0, 0, 103, 0, 0)
+barrel_positions = PackedVector3Array(27, 0, 0, 56, 0, 0, 86, 0, 0)
+tank_position = Vector3(59, 0.1, 0)
+supply_positions = PackedVector3Array(5, 1, 0, 40, 2, 0, 73, 2, 0, 104, 1, 0)
+supply_kinds = PackedStringArray("machine_gun", "flame", "laser", "health")
+boss_trigger_x = 107.0
+boss_arena_x = 115.0
+boss_spawn_position = Vector3(124, 0, 0)
+boss_room_max_x = 126.0
+commander_position = Vector3(120, 0, 0)

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/combat/weapon_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/textures/icons/shotgun.svg" id="icon"]
+[resource]
+script = ExtResource("1")
+title = "Scattergun"
+damage = 1.8
+fire_rate = 2.4
+speed = 30.0
+max_ammo = 35
+starting_ammo = 35
+pellets = 6
+spread_angle = 0.16
+is_hitscan = false
+is_explosive = false
+explosion_radius = 0.0
+lifetime = 0.32
+icon = ExtResource("icon")

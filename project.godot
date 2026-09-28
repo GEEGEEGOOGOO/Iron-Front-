@@ -1,0 +1,30 @@
+config_version=5
+[application]
+config/name="IRON FRONT — Operation Ashfall"
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.4", "Forward Plus")
+[autoload]
+EventBus="*res://autoloads/event_bus.gd"
+SaveManager="*res://autoloads/save_manager.gd"
+InputManager="*res://autoloads/input_manager.gd"
+PoolManager="*res://autoloads/pool_manager.gd"
+AudioManager="*res://autoloads/audio_manager.gd"
+GameManager="*res://autoloads/game_manager.gd"
+[display]
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+[physics]
+common/physics_ticks_per_second=60
+3d/physics_engine="Jolt Physics"
+[layer_names]
+3d_physics/layer_1="world"
+3d_physics/layer_2="player"
+3d_physics/layer_3="player_hurtbox"
+3d_physics/layer_4="enemy"
+3d_physics/layer_5="enemy_hurtbox"
+3d_physics/layer_6="player_bullet"
+3d_physics/layer_7="enemy_bullet"
+3d_physics/layer_8="interactable"
+3d_physics/layer_9="destructible"
+3d_physics/layer_10="vehicle"

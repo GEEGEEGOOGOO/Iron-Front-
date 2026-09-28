@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/combat/weapon_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/textures/icons/flame.svg" id="icon"]
+[resource]
+script = ExtResource("1")
+title = "Flamethrower"
+damage = 0.45
+fire_rate = 18.0
+speed = 15.0
+max_ammo = 220
+starting_ammo = 220
+pellets = 3
+spread_angle = 0.16
+is_hitscan = false
+is_explosive = false
+explosion_radius = 0.0
+lifetime = 0.22
+attack_mode = "cone"
+range_meters = 4.0
+cone_half_angle = 0.5
+icon = ExtResource("icon")

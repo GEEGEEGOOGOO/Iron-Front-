@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3]
+[ext_resource type="Script" path="res://scripts/levels/level.gd" id="1"]
+[ext_resource type="Resource" path="res://data/levels/mission_1.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/levels/enemy_spawner.gd" id="spawner"]
+[ext_resource type="Resource" path="res://data/waves/mission_1_1.tres" id="wave0"]
+[ext_resource type="Resource" path="res://data/waves/mission_1_2.tres" id="wave1"]
+[ext_resource type="Resource" path="res://data/waves/mission_1_3.tres" id="wave2"]
+[node name="Mission1World" type="Node3D"]
+script = ExtResource("1")
+data = ExtResource("2")
+
+[node name="Encounters" type="Node3D" parent="."]
+
+[node name="Encounter1" type="Node3D" parent="Encounters"]
+position = Vector3(18, 0, 0)
+script = ExtResource("spawner")
+wave = ExtResource("wave0")
+[node name="CameraFocus" type="Marker3D" parent="Encounters/Encounter1"]
+position = Vector3(7, 3, 0)
+[node name="SpawnPoints" type="Node3D" parent="Encounters/Encounter1"]
+[node name="Spawn1" type="Marker3D" parent="Encounters/Encounter1/SpawnPoints"]
+position = Vector3(16.0, 1, 0)
+[node name="Spawn2" type="Marker3D" parent="Encounters/Encounter1/SpawnPoints"]
+position = Vector3(14.2, 1, 0)
+[node name="Spawn3" type="Marker3D" parent="Encounters/Encounter1/SpawnPoints"]
+position = Vector3(12.4, 1, 0)
+[node name="Spawn4" type="Marker3D" parent="Encounters/Encounter1/SpawnPoints"]
+position = Vector3(10.6, 1, 0)
+[node name="Spawn5" type="Marker3D" parent="Encounters/Encounter1/SpawnPoints"]
+position = Vector3(8.8, 1, 0)
+[node name="Spawn6" type="Marker3D" parent="Encounters/Encounter1/SpawnPoints"]
+position = Vector3(7.0, 1, 0)
+
+[node name="Encounter2" type="Node3D" parent="Encounters"]
+position = Vector3(49, 0, 0)
+script = ExtResource("spawner")
+wave = ExtResource("wave1")
+[node name="CameraFocus" type="Marker3D" parent="Encounters/Encounter2"]
+position = Vector3(7, 3, 0)
+[node name="SpawnPoints" type="Node3D" parent="Encounters/Encounter2"]
+[node name="Spawn1" type="Marker3D" parent="Encounters/Encounter2/SpawnPoints"]
+position = Vector3(16.0, 1, 0)
+[node name="Spawn2" type="Marker3D" parent="Encounters/Encounter2/SpawnPoints"]
+position = Vector3(14.2, 1, 0)
+[node name="Spawn3" type="Marker3D" parent="Encounters/Encounter2/SpawnPoints"]
+position = Vector3(12.4, 1, 0)
+[node name="Spawn4" type="Marker3D" parent="Encounters/Encounter2/SpawnPoints"]
+position = Vector3(10.6, 1, 0)
+[node name="Spawn5" type="Marker3D" parent="Encounters/Encounter2/SpawnPoints"]
+position = Vector3(8.8, 1, 0)
+[node name="Spawn6" type="Marker3D" parent="Encounters/Encounter2/SpawnPoints"]
+position = Vector3(7.0, 1, 0)
+
+[node name="Encounter3" type="Node3D" parent="Encounters"]
+position = Vector3(80, 0, 0)
+script = ExtResource("spawner")
+wave = ExtResource("wave2")
+[node name="CameraFocus" type="Marker3D" parent="Encounters/Encounter3"]
+position = Vector3(7, 3, 0)
+[node name="SpawnPoints" type="Node3D" parent="Encounters/Encounter3"]
+[node name="Spawn1" type="Marker3D" parent="Encounters/Encounter3/SpawnPoints"]
+position = Vector3(16.0, 1, 0)
+[node name="Spawn2" type="Marker3D" parent="Encounters/Encounter3/SpawnPoints"]
+position = Vector3(14.2, 1, 0)
+[node name="Spawn3" type="Marker3D" parent="Encounters/Encounter3/SpawnPoints"]
+position = Vector3(12.4, 1, 0)
+[node name="Spawn4" type="Marker3D" parent="Encounters/Encounter3/SpawnPoints"]
+position = Vector3(10.6, 1, 0)
+[node name="Spawn5" type="Marker3D" parent="Encounters/Encounter3/SpawnPoints"]
+position = Vector3(8.8, 1, 0)
+[node name="Spawn6" type="Marker3D" parent="Encounters/Encounter3/SpawnPoints"]
+position = Vector3(7.0, 1, 0)

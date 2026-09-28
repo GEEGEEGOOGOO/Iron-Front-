@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/rewards/enemy_supplies.tres" id="drops"]
+[resource]
+script = ExtResource("1")
+title = "Grunt"
+behavior = "grunt"
+health = 2.0
+move_speed = 2.0
+fire_rate = 0.65
+score_value = 100
+drop_table = ExtResource("drops")
+drop_chance = 0.12
+tint = Color(0.45, 0.52, 0.3, 1)

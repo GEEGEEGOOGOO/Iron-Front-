@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=8 format=3]
+[ext_resource type="Script" path="res://scripts/levels/level_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/waves/mission_2_1.tres" id="2"]
+[ext_resource type="Resource" path="res://data/waves/mission_2_2.tres" id="3"]
+[ext_resource type="Resource" path="res://data/waves/mission_2_3.tres" id="4"]
+[ext_resource type="Resource" path="res://data/bosses/mission_2.tres" id="boss"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/dust_convoy.wav" id="music"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/boss_overdrive.wav" id="boss_music"]
+[resource]
+script = ExtResource("1")
+mission_name = "Dust Battalion"
+subtitle = "CROSS THE OCCUPIED BADLANDS"
+sky_color = Color(0.73, 0.50, 0.31, 1)
+ground_color = Color(0.55, 0.37, 0.20, 1)
+waves = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4")])
+boss_data = ExtResource("boss")
+theme = "desert"
+platform_positions = PackedVector3Array(11.0, 0.45, 0.0, 13.0, 0.95, 0.0, 15.0, 1.45, 0.0, 42.0, 0.75, 0.0, 72.0, 0.65, 0.0, 76.0, 1.35, 0.0)
+platform_sizes = PackedVector3Array(2.0, 0.9, 3.0, 2.0, 1.9, 3.0, 2.0, 2.9, 3.0, 6.0, 1.5, 3.0, 3.0, 1.3, 3.0, 3.0, 2.7, 3.0)
+background_music = ExtResource("music")
+boss_music = ExtResource("boss_music")
+ladder_positions = PackedVector3Array(67, 0, 0)
+ladder_heights = PackedFloat32Array(4.5)
+level_scene_path = "res://scenes/levels/world_mission_2.tscn"
+pow_positions = PackedVector3Array(37, 0, 0, 71, 0, 0, 103, 0, 0)
+crate_positions = PackedVector3Array(9, 0, 0, 40, 0, 0, 75, 0, 0, 99, 0, 0)
+barrel_positions = PackedVector3Array(30, 0, 0, 63, 0, 0)
+tank_position = Vector3(64, 0.1, 0)
+supply_positions = PackedVector3Array(5, 1, 0, 45, 2, 0, 78, 2, 0, 101, 1, 0)
+supply_kinds = PackedStringArray("machine_gun", "rocket", "shotgun", "health")
+boss_trigger_x = 106.0
+boss_arena_x = 113.0
+boss_spawn_position = Vector3(121, 0, 0)
+boss_room_max_x = 124.0
+commander_position = Vector3(117, 0, 0)

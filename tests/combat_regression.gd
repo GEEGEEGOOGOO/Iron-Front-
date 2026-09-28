@@ -1,0 +1,84 @@
+extends Node
+var main: Node
+var failures := 0
+func check(value: bool, message: String) -> void:
+	if not value:
+		failures += 1
+		push_error(message)
+func _ready() -> void:
+	main = load("res://scenes/main.tscn").instantiate()
+	add_child(main)
+	call_deferred("run")
+func settle() -> void:
+	for i in 3:
+		await get_tree().physics_frame
+func run() -> void:
+	main.start_mission(0)
+	GameManager.god_mode = true
+	await settle()
+	var player = GameManager.player
+	player.position = Vector3(5, 0.1, 0)
+	var front = main.level.spawn_enemy("heavy", Vector3(6.4, 0.1, 0))
+	var rear = main.level.spawn_enemy("heavy", Vector3(3.6, 0.1, 0))
+	front.set_physics_process(false)
+	rear.set_physics_process(false)
+	await settle()
+	var before: float = rear.health.current_health
+	var struck := Combat.melee(player, Vector3(5, 1.25, 0), 1)
+	check(struck == 1, "Knife must only strike the forward target")
+	check(rear.health.current_health == before, "Knife must not damage behind the player")
+	check(front.health.current_health == 4, "Knife must apply four damage once")
+	front.health.reset(8)
+	var flame: WeaponData = load("res://data/weapons/flame.tres")
+	Combat.fire(player, Vector3(5, 1.25, 0), Vector3.RIGHT, flame, true)
+	check(front.health.current_health < 8, "Flame cone must deal damage immediately")
+	check(rear.health.current_health == before, "Flame must not damage behind the muzzle")
+	var wall := StaticBody3D.new()
+	main.level.add_child(wall)
+	wall.position = Vector3(5.8, 1.2, 0)
+	ModelFactory.collider(wall, Vector3(0.2, 2.4, 2), Vector3.ZERO)
+	await settle()
+	before = front.health.current_health
+	Combat.fire(player, Vector3(5, 1.25, 0), Vector3.RIGHT, flame, true)
+	check(is_equal_approx(front.health.current_health, before), "World cover must block flame damage")
+	wall.queue_free()
+	await settle()
+	PoolManager.release(front)
+	PoolManager.release(rear)
+	var first = main.level.spawn_enemy("heavy", Vector3(6, 0.1, 0))
+	var second = main.level.spawn_enemy("heavy", Vector3(8, 0.1, 0))
+	first.set_physics_process(false)
+	second.set_physics_process(false)
+	await settle()
+	GameManager.shots = 0
+	GameManager.hits = 0
+	var laser: WeaponData = load("res://data/weapons/laser.tres")
+	Combat.fire(player, Vector3(5, 1.1, 0), Vector3.RIGHT, laser, true)
+	check(first.health.current_health < 8 and second.health.current_health < 8, "Laser must pierce both targets")
+	check(GameManager.hits == 1 and GameManager.shots == 1, "Piercing accuracy must count shots, not victims")
+	first.health.reset(8)
+	second.health.reset(8)
+	GameManager.hits = 0
+	Combat.explode(player, Vector3(7, 1, 0), 3, 4, true, true)
+	check(first.health.current_health < 8 and second.health.current_health < 8, "Blast must damage both targets")
+	check(GameManager.hits == 1, "Explosive accuracy must count one hit for a multi-target blast")
+	GameManager.shots = 0
+	Combat.grenade(player, Vector3(5, 1, 0), 1, true)
+	check(GameManager.shots == 1, "Thrown grenade must count as a shot")
+	var ceiling := StaticBody3D.new()
+	main.level.add_child(ceiling)
+	ceiling.position = player.position + Vector3(0, 1.5, 0)
+	ModelFactory.collider(ceiling, Vector3(2, 0.3, 2), Vector3.ZERO)
+	await settle()
+	check(not player.can_stand(), "Low ceiling must prevent standing")
+	ceiling.queue_free()
+	await settle()
+	check(player.can_stand(), "Standing must be permitted after clearing the ceiling")
+	var component := HealthComponent.new()
+	add_child(component)
+	component.reset(3)
+	check(not component.take_damage(0), "Cosmetic explosions must not register zero damage")
+	main.quit_to_menu()
+	await get_tree().create_timer(0.15).timeout
+	print("COMBAT REGRESSION ", "PASS" if failures == 0 else "FAIL: %d" % failures)
+	get_tree().quit(0 if failures == 0 else 1)

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/combat/weapon_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/textures/icons/pistol.svg" id="icon"]
+[resource]
+script = ExtResource("1")
+title = "Sidearm"
+damage = 1.0
+fire_rate = 5.0
+speed = 32.0
+max_ammo = -1
+starting_ammo = -1
+pellets = 1
+spread_angle = 0.015
+is_hitscan = true
+is_explosive = false
+explosion_radius = 0.0
+lifetime = 1.4
+icon = ExtResource("icon")

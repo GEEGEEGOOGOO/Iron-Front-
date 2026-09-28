@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/combat/weapon_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/textures/icons/rocket.svg" id="icon"]
+[resource]
+script = ExtResource("1")
+title = "Rocket launcher"
+damage = 8.0
+fire_rate = 1.6
+speed = 18.0
+max_ammo = 18
+starting_ammo = 18
+pellets = 1
+spread_angle = 0.015
+is_hitscan = false
+is_explosive = true
+explosion_radius = 3.0
+lifetime = 2.0
+icon = ExtResource("icon")

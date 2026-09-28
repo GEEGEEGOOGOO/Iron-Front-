@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=8 format=3]
+[ext_resource type="Script" path="res://scripts/levels/level_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/waves/mission_1_1.tres" id="2"]
+[ext_resource type="Resource" path="res://data/waves/mission_1_2.tres" id="3"]
+[ext_resource type="Resource" path="res://data/waves/mission_1_3.tres" id="4"]
+[ext_resource type="Resource" path="res://data/bosses/mission_1.tres" id="boss"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/coastal_assault.wav" id="music"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/boss_overdrive.wav" id="boss_music"]
+[resource]
+script = ExtResource("1")
+mission_name = "Operation Ashfall"
+subtitle = "BREACH THE COASTAL DEFENSE"
+sky_color = Color(0.48, 0.62, 0.68, 1)
+ground_color = Color(0.38, 0.40, 0.29, 1)
+waves = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4")])
+boss_data = ExtResource("boss")
+theme = "coast"
+platform_positions = PackedVector3Array(12.0, 1.1, 0.0, 43.0, 1.1, 0.0, 73.0, 1.1, 0.0)
+platform_sizes = PackedVector3Array(4.0, 0.4, 3.0, 4.0, 0.4, 3.0, 4.0, 0.4, 3.0)
+background_music = ExtResource("music")
+boss_music = ExtResource("boss_music")
+ladder_positions = PackedVector3Array(36, 0, 0)
+ladder_heights = PackedFloat32Array(3.5)
+level_scene_path = "res://scenes/levels/world_mission_1.tscn"
+pow_positions = PackedVector3Array(33, 0, 0, 69, 0, 0, 100, 0, 0)
+crate_positions = PackedVector3Array(10, 0, 0, 38, 0, 0, 96, 0, 0)
+barrel_positions = PackedVector3Array(65, 0, 0)

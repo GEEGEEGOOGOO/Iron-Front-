@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/combat/weapon_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/textures/icons/machine_gun.svg" id="icon"]
+[resource]
+script = ExtResource("1")
+title = "Heavy machine gun"
+damage = 1.2
+fire_rate = 12.0
+speed = 38.0
+max_ammo = 180
+starting_ammo = 180
+pellets = 1
+spread_angle = 0.015
+is_hitscan = false
+is_explosive = false
+explosion_radius = 0.0
+lifetime = 1.5
+icon = ExtResource("icon")

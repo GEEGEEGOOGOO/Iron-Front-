@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/rewards/enemy_supplies.tres" id="drops"]
+[resource]
+script = ExtResource("1")
+title = "Heavy"
+behavior = "heavy"
+health = 8.0
+move_speed = 0.9
+fire_rate = 2.0
+score_value = 250
+drop_table = ExtResource("drops")
+drop_chance = 0.12
+tint = Color(0.28, 0.34, 0.43, 1)

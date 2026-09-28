@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/rewards/tank_supplies.tres" id="drops"]
+[resource]
+script = ExtResource("1")
+title = "Tank"
+behavior = "tank"
+health = 20.0
+move_speed = 1.0
+fire_rate = 0.5
+score_value = 500
+drop_table = ExtResource("drops")
+drop_chance = 1.0
+tint = Color(0.28, 0.38, 0.29, 1)

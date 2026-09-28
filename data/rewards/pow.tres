@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="RewardTable" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/levels/reward_table.gd" id="1"]
+[resource]
+script = ExtResource("1")
+items = PackedStringArray("health", "grenades", "rocket", "flame", "score", "life")
+weights = PackedFloat32Array(3, 3, 2, 2, 2, 1)
+score_bonus = 1000
