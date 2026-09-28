@@ -257,3 +257,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 - The previously mapped but unused switch action now toggles between the unlimited sidearm and one carried special weapon. Special ammo is preserved while stowed; a matching pickup refills it, a different pickup replaces it, and depletion or respawn clears it.
 - Q and controller left shoulder are mapped; the action can be rebound in Options, and the HUD displays the switch cue when a special is carried.
 - Editor import and input regression pass for controller mapping, switch state, ammo refill, and empty-ammo fallback. Controller feel and HUD layout await manual Godot review.
+
+## Mission start card
+
+- Each mission now opens with a large in-game title card showing its number, authored name, and objective. It fades out after 2.8 seconds while gameplay proceeds; pausing preserves the remaining display time.
+- The direct scene regression checks the card content and expiry in all three missions. Editor import, scene and pause regressions pass. Visual composition still needs the user's Godot review.

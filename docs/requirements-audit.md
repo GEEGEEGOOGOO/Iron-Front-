@@ -11,7 +11,7 @@ This maps the supplied plan to the current source. “Implemented” is not a cl
 | 4 Vehicles | Tank drive, weapons, armor, ejection and ram tests | Manual handling and collision review; secondary vehicles are stretch goals |
 | 5 World | Three world scenes, themed props, cages, weighted rewards, ladders/elevator; mission-specific tank, supply, and boss placements | More distinct authored encounter/rescue layouts; automatic geometry limits editor previews |
 | 6 Score/lives | Checkpoints, lives, game-over, itemized score; scoring/pause/reset tests | End-to-end manual difficulty and checkpoint economy |
-| 7 UI | Main/pause/options/controls/results, HUD, boss bar | Visual layout review at target window sizes |
+| 7 UI | Main/pause/options/controls/results, HUD, boss bar, mission start cards | Visual layout review at target window sizes |
 | 8 Audio | Original music loops, positional SFX pool, buses/settings; audio tests | Listening/mix review; announcer voice is optional |
 | 9 Effects | Hit flash, hitstop, shake, physical casings/debris, staged boss explosions | Layered flash/smoke now implemented; manual feedback review remains |
 | 10 Save/progression | JSON high scores/settings/key bindings, open mission select, ranks | Normal save robustness and manual persistence review; missions intentionally open for MVP |

@@ -41,6 +41,7 @@ At ladders, use aim up/down to climb; release to hold, and jump or move sideways
 - Drivable tank with machine gun, cannon, armor and protected ejection.
 - Three mission resource sets with distinct platform layouts, themed background props, wave compositions and boss attack sequences.
 - Main menu, pause, options, HUD, boss bar, mission result and JSON high scores.
+- Mission start title cards with each mission's name and objective.
 - Preallocated projectile, effect and enemy pools; positional pooled SFX, three original mission music loops and a boss cue.
 
 ## Automated checks

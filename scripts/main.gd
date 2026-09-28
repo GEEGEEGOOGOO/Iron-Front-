@@ -11,6 +11,8 @@ var last_state := -1
 var pending_binding := ""
 var binding_message := ""
 var debug_label: Label
+var mission_card: ColorRect
+var mission_card_time := 0.0
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	PoolManager.register_pool("burst", func(): return preload("res://scripts/combat/burst_effect.gd").new(), 64)
@@ -27,6 +29,7 @@ func _ready() -> void:
 		show_menu()
 func clear_ui() -> void:
 	pending_binding = ""
+	mission_card = null
 	if is_instance_valid(screen):
 		screen.queue_free()
 	screen = Control.new()
@@ -104,6 +107,7 @@ func start_mission(index: int) -> void:
 	level = load(mission_data.level_scene_path).instantiate()
 	level.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(level)
+	mission_card_time = 2.8
 	show_hud()
 	last_state = GameManager.state
 func show_hud() -> void:
@@ -128,6 +132,40 @@ func show_hud() -> void:
 	screen.add_child(boss_bar)
 	debug_label = label_at("", Vector2(30, 150), 16)
 	debug_label.hide()
+	if mission_card_time > 0:
+		show_mission_card()
+func show_mission_card() -> void:
+	mission_card = ColorRect.new()
+	mission_card.color = Color(0.025, 0.045, 0.06, 0.92)
+	mission_card.position = Vector2(190, 225)
+	mission_card.size = Vector2(900, 245)
+	mission_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	screen.add_child(mission_card)
+	var stripe := ColorRect.new()
+	stripe.color = Color(1, 0.4, 0.13)
+	stripe.position = Vector2(0, 0)
+	stripe.size = Vector2(12, 245)
+	mission_card.add_child(stripe)
+	var mission_number := Label.new()
+	mission_number.name = "MissionNumber"
+	mission_number.text = "MISSION %02d" % (GameManager.mission + 1)
+	mission_number.position = Vector2(50, 25)
+	mission_number.add_theme_font_size_override("font_size", 34)
+	mission_number.add_theme_color_override("font_color", Color(1, 0.52, 0.22))
+	mission_card.add_child(mission_number)
+	var title := Label.new()
+	title.name = "MissionTitle"
+	title.text = level.data.mission_name.to_upper()
+	title.position = Vector2(48, 82)
+	title.add_theme_font_size_override("font_size", 54)
+	mission_card.add_child(title)
+	var subtitle := Label.new()
+	subtitle.name = "MissionObjective"
+	subtitle.text = level.data.subtitle
+	subtitle.position = Vector2(51, 174)
+	subtitle.add_theme_font_size_override("font_size", 22)
+	subtitle.add_theme_color_override("font_color", Color(0.75, 0.82, 0.84))
+	mission_card.add_child(subtitle)
 func show_pause() -> void:
 	clear_ui()
 	background()
@@ -199,7 +237,12 @@ TOTAL SCORE          %07d" % [tally.get("combat_and_pickups", 0), tally.get("res
 		button("RETRY MISSION", 400, func(): start_mission(GameManager.mission)).grab_focus()
 	button("MISSION SELECT", 540, quit_to_menu)
 	pass_focus()
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	if GameManager.state == GameManager.State.PLAYING and mission_card_time > 0:
+		mission_card_time = maxf(0, mission_card_time - delta)
+	if is_instance_valid(mission_card):
+		mission_card.visible = mission_card_time > 0
+		mission_card.modulate.a = minf(1.0, mission_card_time * 1.25)
 	if GameManager.state != last_state:
 		last_state = GameManager.state
 		if GameManager.state in [GameManager.State.GAME_OVER, GameManager.State.COMPLETE]:
@@ -211,7 +254,7 @@ func _process(_delta: float) -> void:
 		var swap_hint := "    %s / LB SWITCH" % InputManager.key_label("switch_weapon") if player.reserve_weapon else ""
 		hud.text = "HP %d / %d   •   LIVES %d       %s  %s       GRENADES %d
 SCORE %07d     POW %d / 4     MISSION %02d%s" % [ceili(player.health.current_health), int(player.health.max_health), GameManager.lives, player.weapon.title.to_upper(), "∞" if player.ammo < 0 else str(player.ammo), player.grenades, GameManager.score, GameManager.rescued, GameManager.mission + 1, swap_hint]
-		objective.text = level.banner if level.banner_time > 0 else ""
+		objective.text = level.banner if level.banner_time > 0 and mission_card_time <= 0 else ""
 		boss_bar.visible = is_instance_valid(level.boss) and level.boss.active
 		if boss_bar.visible:
 			boss_bar.value = 100 * level.boss.health.current_health / level.boss.health.max_health
