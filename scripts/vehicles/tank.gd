@@ -9,10 +9,14 @@ var label: Label3D
 var wrecked := false
 var ram_cooldown := 0.0
 var ram_shape := BoxShape3D.new()
+var ram_query := PhysicsShapeQueryParameters3D.new()
 var machine_gun: WeaponData = preload("res://data/weapons/machine_gun.tres")
 var cannon: WeaponData = preload("res://data/weapons/rocket.tres")
 func _ready() -> void:
 	ram_shape.size = Vector3(0.8, 1.5, 1.3)
+	ram_query.shape = ram_shape
+	ram_query.collision_mask = 16 | 256
+	ram_query.collide_with_areas = true
 	collision_layer = 512
 	collision_mask = 1
 	ModelFactory.collider(self, Vector3(2.9, 1.8, 1.5), Vector3(0, 0.9, 0))
@@ -105,13 +109,9 @@ func destroy() -> void:
 func try_ram() -> int:
 	if not driver or wrecked or absf(velocity.x) < 3 or ram_cooldown > 0:
 		return 0
-	var query := PhysicsShapeQueryParameters3D.new()
-	query.shape = ram_shape
-	query.transform.origin = global_position + Vector3(signf(velocity.x) * 1.7, 0.85, 0)
-	query.collision_mask = 16 | 256
-	query.collide_with_areas = true
+	ram_query.transform.origin = global_position + Vector3(signf(velocity.x) * 1.7, 0.85, 0)
 	var count := 0
-	for hit in get_world_3d().direct_space_state.intersect_shape(query, 16):
+	for hit in get_world_3d().direct_space_state.intersect_shape(ram_query, 16):
 		if Combat.damage(hit.collider, 4, self):
 			count += 1
 	if count > 0:

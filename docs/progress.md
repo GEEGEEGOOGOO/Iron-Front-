@@ -294,3 +294,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Coastal scenery now has water and dock markings, the desert has layered dunes and worn road markers, and the foundry has a glowing channel with hazard stripes. These are visual-only meshes behind or beside the fixed gameplay lane.
 - Godot editor import and the three-mission smoke test pass after the additions. The rendered appearance and draw-call effect still need manual Godot review.
+
+## Tank ram query reuse
+
+- The drivable tank now keeps one configured physics shape query and updates its transform during ram checks, avoiding a new query object on each moving frame.
+- Editor import and the existing ram regression pass for unoccupied, stationary, forward, cooldown, reverse, and finishing hits. This is an allocation reduction, not a measured FPS claim.
