@@ -61,10 +61,13 @@ func build_world() -> void:
 	add_child(sun)
 	platform(Vector3(data.length * 0.5, -0.7, 0), Vector3(data.length + 20, 1.4, 7), data.ground_color)
 	build_theme_ground()
+	var backdrop_random := RandomNumberGenerator.new()
+	backdrop_random.seed = 1009 + GameManager.mission * 10007
 	for i in range(-2, 28):
 		var x := i * 5.0
-		var height := randf_range(3, 12)
-		ModelFactory.box(self, Vector3(randf_range(3, 6), height, 3), Vector3(x, height / 2 - 0.1, -10), data.ground_color.darkened(0.27))
+		var height := backdrop_random.randf_range(3, 12)
+		var backdrop := ModelFactory.box(self, Vector3(backdrop_random.randf_range(3, 6), height, 3), Vector3(x, height / 2 - 0.1, -10), data.ground_color.darkened(0.27))
+		backdrop.name = "BackdropBlock%d" % i
 		ModelFactory.box(self, Vector3(4, 0.2, 1), Vector3(x, 0.08, -2), data.ground_color.lightened(0.12))
 		if i % 3 == 0:
 			ModelFactory.box(self, Vector3(0.15, 5, 0.15), Vector3(x, 2.5, -3), Color(0.18, 0.22, 0.24))

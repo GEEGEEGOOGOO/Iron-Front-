@@ -7,6 +7,7 @@ func check(value: bool, message: String) -> void:
 func _ready() -> void:
 	call_deferred("run")
 func run() -> void:
+	var first_backdrop_size := Vector3.ZERO
 	for mission in 3:
 		var entry = load("res://scenes/levels/mission_%d.tscn" % (mission + 1)).instantiate()
 		add_child(entry)
@@ -23,6 +24,9 @@ func run() -> void:
 		check(is_equal_approx(entry.level.tank.position.x, entry.level.data.tank_position.x), "Tank must use the mission X placement")
 		check(entry.level.boss_prisoner.position == entry.level.data.commander_position, "Commander must use the mission placement")
 		check(entry.level.data.supply_positions.size() == entry.level.data.supply_kinds.size(), "Supply positions and kinds must match")
+		var backdrop := entry.level.get_node("BackdropBlock-2") as MeshInstance3D
+		if mission == 0:
+			first_backdrop_size = (backdrop.mesh as BoxMesh).size
 		if mission != 1:
 			var ground_detail_name := "CoastalWater" if mission == 0 else "FoundryChannel"
 			var ground_detail := entry.level.get_node_or_null(ground_detail_name) as MeshInstance3D
@@ -42,6 +46,14 @@ func run() -> void:
 		remove_child(entry)
 		entry.queue_free()
 		await get_tree().process_frame
+	var replay = load("res://scenes/levels/mission_1.tscn").instantiate()
+	add_child(replay)
+	await get_tree().create_timer(0.15).timeout
+	var replay_backdrop := replay.level.get_node("BackdropBlock-2") as MeshInstance3D
+	check((replay_backdrop.mesh as BoxMesh).size == first_backdrop_size, "Mission background geometry must repeat between launches")
+	replay.quit_to_menu()
+	remove_child(replay)
+	replay.queue_free()
 	print("SCENE REGRESSION ", "PASS" if failures == 0 else "FAIL")
 	await get_tree().create_timer(0.15).timeout
 	get_tree().quit(0 if failures == 0 else 1)

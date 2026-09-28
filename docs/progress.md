@@ -324,3 +324,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Weapon, health, and grenade pickups now use distinct colors and proportions while retaining their single pooled mesh and letter label. Activation restores both properties when a pooled pickup changes type.
 - Editor import and reward regression pass for visual state changes without adding nodes. Color readability still needs manual Godot review.
+
+## Repeatable backdrop layout
+
+- The background building strip now uses a mission-seeded random generator, so each mission keeps its own layout across launches instead of reshuffling every time.
+- The direct scene regression compares the same building after reloading mission one. Editor import and scene regression pass. This stabilizes visual review without changing combat randomness.
