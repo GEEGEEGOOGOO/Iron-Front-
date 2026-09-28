@@ -130,6 +130,7 @@ func _physics_process(delta: float) -> void:
 	gait += delta * absf(velocity.x) * 2
 	model.pose(delta, velocity.x, facing, not is_on_floor(), climbing, atan2(aim.y, absf(aim.x)))
 	model.visible = health.invulnerability <= 0 or fmod(health.invulnerability, 0.14) < 0.07
+	gun.visible = model.visible
 	if Input.is_action_pressed("fire") and cooldown <= 0:
 		Combat.fire(self, muzzle.global_position, aim, weapon, true)
 		cooldown = 1.0 / weapon.fire_rate
