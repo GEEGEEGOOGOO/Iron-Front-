@@ -16,3 +16,5 @@ is_explosive = false
 explosion_radius = 0.0
 lifetime = 1.5
 icon = ExtResource("icon")
+model_kind = "machine_gun"
+muzzle_distance = 1.5

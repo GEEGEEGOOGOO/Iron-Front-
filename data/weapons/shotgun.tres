@@ -16,3 +16,5 @@ is_explosive = false
 explosion_radius = 0.0
 lifetime = 0.32
 icon = ExtResource("icon")
+model_kind = "shotgun"
+muzzle_distance = 1.25

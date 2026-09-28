@@ -35,7 +35,7 @@ At ladders, use aim up/down to climb; release to hold, and jump or move sideways
 ## Current implementation
 
 - Side-view 3D lane movement, variable jump, coyote time, buffering, crouch, eight-way firing.
-- Six weapon resources, sidearm/special weapon switching, grenades, melee, health, mercy frames, lives and checkpoints.
+- Six weapon resources with distinct held models and muzzle positions, sidearm/special weapon switching, grenades, melee, health, mercy frames, lives and checkpoints.
 - Seven enemy data variants including a three-phase boss prototype.
 - Encounter gates, destructible crates/barrels, weapon/health/grenade pickups, POW rescue.
 - Drivable tank with machine gun, cannon, armor and protected ejection.

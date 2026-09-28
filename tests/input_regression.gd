@@ -50,10 +50,13 @@ func run() -> void:
 	var special: WeaponData = load("res://data/weapons/machine_gun.tres")
 	player.equip(special)
 	check(player.weapon == special and player.reserve_ammo == special.starting_ammo, "Pickup must equip and store special ammo")
+	check(player.gun_models.machine_gun.visible and not player.gun_models.pistol.visible, "Equipped special must show its held model")
+	check(is_equal_approx(player.muzzle.position.x, special.muzzle_distance), "Special muzzle must use its weapon data")
 	player.ammo = 37
 	player.reserve_ammo = 37
 	player.switch_weapon()
 	check(player.weapon.title == "Sidearm" and player.ammo == -1, "Switch must select the unlimited sidearm")
+	check(player.gun_models.pistol.visible and not player.gun_models.machine_gun.visible, "Switching to sidearm must swap the held model")
 	player.switch_weapon()
 	check(player.weapon == special and player.ammo == 37, "Switch must restore stored special ammo")
 	player.equip(special)
@@ -66,6 +69,13 @@ func run() -> void:
 		await get_tree().physics_frame
 	Input.action_release("fire")
 	check(player.weapon.title == "Sidearm" and player.reserve_weapon == null, "Empty special must fall back to sidearm")
+	check(player.gun_models.pistol.visible, "Empty special must restore the sidearm model")
+	for kind in ["pistol", "machine_gun", "rocket", "shotgun", "flame", "laser"]:
+		var weapon_data: WeaponData = load("res://data/weapons/" + kind + ".tres")
+		player.equip(weapon_data)
+		for visual_kind in player.gun_models:
+			check(player.gun_models[visual_kind].visible == (visual_kind == kind), "Held model must match " + kind)
+		check(is_equal_approx(player.muzzle.position.x, weapon_data.muzzle_distance), "Muzzle must match " + kind)
 	GameManager.state = GameManager.State.PAUSED
 	get_tree().paused = true
 	main.show_controls()

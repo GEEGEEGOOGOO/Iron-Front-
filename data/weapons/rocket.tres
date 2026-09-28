@@ -16,3 +16,5 @@ is_explosive = true
 explosion_radius = 3.0
 lifetime = 2.0
 icon = ExtResource("icon")
+model_kind = "rocket"
+muzzle_distance = 1.25

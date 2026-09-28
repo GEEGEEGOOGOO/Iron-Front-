@@ -6,6 +6,7 @@ var aim := Vector3.RIGHT
 var health: HealthComponent
 var model: Node3D
 var gun: Node3D
+var gun_models: Dictionary = {}
 var muzzle: Marker3D
 var shape: CollisionShape3D
 var hurt_shape: CollisionShape3D
@@ -35,10 +36,10 @@ func _ready() -> void:
 	gun = Node3D.new()
 	add_child(gun)
 	gun.position.y = 1.25
-	ModelFactory.box(gun, Vector3(0.8, 0.16, 0.18), Vector3(0.5, 0, 0.15), Color(0.12, 0.16, 0.19))
+	build_gun_models()
 	muzzle = Marker3D.new()
 	gun.add_child(muzzle)
-	muzzle.position = Vector3(1, 0, 0)
+	update_gun_model()
 	var hurtbox := Area3D.new()
 	hurtbox.set_script(preload("res://scripts/components/hurtbox.gd"))
 	hurtbox.collision_layer = 4
@@ -164,6 +165,7 @@ func equip(data: WeaponData) -> void:
 		reserve_weapon = data
 		ammo = reserve_ammo
 	weapon = data
+	update_gun_model()
 	EventBus.weapon_picked_up.emit(data.title)
 	EventBus.hud_changed.emit()
 func switch_weapon() -> void:
@@ -176,7 +178,44 @@ func switch_weapon() -> void:
 	else:
 		weapon = reserve_weapon
 		ammo = reserve_ammo
+	update_gun_model()
 	EventBus.hud_changed.emit()
+func build_gun_models() -> void:
+	for kind in ["pistol", "machine_gun", "rocket", "shotgun", "flame", "laser"]:
+		var visual := Node3D.new()
+		visual.name = kind
+		gun.add_child(visual)
+		gun_models[kind] = visual
+		visual.hide()
+	var pistol: Node3D = gun_models.pistol
+	ModelFactory.box(pistol, Vector3(0.75, 0.15, 0.2), Vector3(0.58, 0, 0.15), Color(0.12, 0.16, 0.19))
+	ModelFactory.box(pistol, Vector3(0.18, 0.32, 0.2), Vector3(0.35, -0.16, 0.15), Color(0.2, 0.23, 0.23))
+	var machine: Node3D = gun_models.machine_gun
+	ModelFactory.box(machine, Vector3(1.18, 0.24, 0.3), Vector3(0.62, 0, 0.15), Color(0.18, 0.22, 0.23))
+	ModelFactory.box(machine, Vector3(0.55, 0.11, 0.15), Vector3(1.28, 0, 0.15), Color(0.1, 0.13, 0.14))
+	ModelFactory.box(machine, Vector3(0.23, 0.36, 0.24), Vector3(0.58, -0.28, 0.15), Color(0.31, 0.29, 0.21))
+	var rocket: Node3D = gun_models.rocket
+	ModelFactory.box(rocket, Vector3(1.28, 0.42, 0.42), Vector3(0.57, 0.11, 0.15), Color(0.33, 0.4, 0.27))
+	ModelFactory.box(rocket, Vector3(0.16, 0.49, 0.49), Vector3(1.22, 0.11, 0.15), Color(0.15, 0.19, 0.16))
+	ModelFactory.box(rocket, Vector3(0.32, 0.12, 0.24), Vector3(0.2, 0.36, 0.15), Color(0.16, 0.2, 0.17))
+	var shotgun: Node3D = gun_models.shotgun
+	ModelFactory.box(shotgun, Vector3(0.9, 0.22, 0.28), Vector3(0.48, 0, 0.15), Color(0.4, 0.26, 0.16))
+	for z in [0.05, 0.25]:
+		ModelFactory.box(shotgun, Vector3(0.6, 0.09, 0.09), Vector3(1.0, 0.08, z), Color(0.15, 0.17, 0.18))
+	var flame: Node3D = gun_models.flame
+	ModelFactory.box(flame, Vector3(1.02, 0.32, 0.38), Vector3(0.55, 0, 0.15), Color(0.53, 0.29, 0.14))
+	ModelFactory.box(flame, Vector3(0.3, 0.18, 0.25), Vector3(1.13, 0, 0.15), Color(0.2, 0.22, 0.22))
+	ModelFactory.sphere(flame, 0.18, Vector3(0.26, -0.25, 0.18), Color(0.73, 0.36, 0.1))
+	var laser: Node3D = gun_models.laser
+	ModelFactory.box(laser, Vector3(1.35, 0.2, 0.3), Vector3(0.7, 0, 0.15), Color(0.18, 0.25, 0.33))
+	var emitter := ModelFactory.box(laser, Vector3(0.2, 0.14, 0.21), Vector3(1.43, 0, 0.15), Color(0.25, 0.85, 1))
+	emitter.material_override = ModelFactory.material(Color(0.25, 0.85, 1), 2.0)
+func update_gun_model() -> void:
+	if not gun or not muzzle:
+		return
+	for kind in gun_models:
+		gun_models[kind].visible = kind == weapon.model_kind
+	muzzle.position = Vector3(weapon.muzzle_distance, 0, 0)
 func take_damage(amount: float, source: Node = null) -> bool:
 	if GameManager.god_mode or state == State.DEAD or vehicle:
 		return false

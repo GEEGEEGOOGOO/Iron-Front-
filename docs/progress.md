@@ -314,3 +314,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Each authored checkpoint now has a non-colliding post, lamp, and label behind the gameplay lane. The starting marker is secured; later markers switch from amber to green when the player activates them.
 - Checkpoint locations still come from LevelData and preserve the existing wave replay behavior. Editor import and wave regression pass; marker legibility needs manual Godot review.
+
+## Held weapon models
+
+- The player now has six prebuilt low-poly gun silhouettes. WeaponData selects the visible model and its muzzle distance; equipping, switching, depletion, and respawn update both together.
+- Editor import, input regression across all six weapon resources, combat regression, and the three-mission smoke test pass. Silhouette readability and weapon alignment still need manual Godot review.

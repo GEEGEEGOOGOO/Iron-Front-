@@ -18,3 +18,5 @@ extends Resource
 @export var pierce_count := 1
 @export var cone_half_angle := 0.45
 @export var icon: Texture2D
+@export_enum("pistol", "machine_gun", "rocket", "shotgun", "flame", "laser") var model_kind := "pistol"
+@export var muzzle_distance := 1.0
