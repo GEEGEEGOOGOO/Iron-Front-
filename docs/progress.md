@@ -304,3 +304,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Defeated enemies now fade during the end of their death motion before returning to the pool. Activation restores all soldier and machine materials to full opacity so reused actors cannot remain translucent.
 - Editor import and reset regression pass; the regression checks a fading soldier and opaque reuse. The visual look and transparency rendering cost need manual review.
+
+## Background strip visibility
+
+- Raised the coastal water and foundry channel meshes above the floor surface in the background Z strip. Their previous Y positions put them below the opaque corridor floor.
+- The direct mission scene regression confirms each strip exists above the floor and behind the gameplay lane. Editor import and scene regression pass; actual visibility still needs rendered Godot review.

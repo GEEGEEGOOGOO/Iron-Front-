@@ -23,6 +23,12 @@ func run() -> void:
 		check(is_equal_approx(entry.level.tank.position.x, entry.level.data.tank_position.x), "Tank must use the mission X placement")
 		check(entry.level.boss_prisoner.position == entry.level.data.commander_position, "Commander must use the mission placement")
 		check(entry.level.data.supply_positions.size() == entry.level.data.supply_kinds.size(), "Supply positions and kinds must match")
+		if mission != 1:
+			var ground_detail_name := "CoastalWater" if mission == 0 else "FoundryChannel"
+			var ground_detail := entry.level.get_node_or_null(ground_detail_name) as MeshInstance3D
+			check(ground_detail != null, "Mission must build its visual ground strip")
+			if ground_detail:
+				check(ground_detail.position.y > 0 and ground_detail.position.z < -3.5, "Visual ground strip must sit above and behind the lane floor")
 		entry.level.wave_index = entry.level.data.waves.size()
 		entry.level.player.position.x = entry.level.data.boss_trigger_x + 0.1
 		entry.level._physics_process(1.0 / 60.0)

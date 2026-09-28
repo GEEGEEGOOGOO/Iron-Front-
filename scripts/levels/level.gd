@@ -254,7 +254,8 @@ func grant_pow_reward(reward: String, pos: Vector3) -> void:
 func build_theme_ground() -> void:
 	match data.theme:
 		"coast":
-			var water := ModelFactory.box(self, Vector3(data.length + 20, 0.12, 6), Vector3(data.length * 0.5, -0.85, -6.5), Color(0.12, 0.3, 0.38))
+			var water := ModelFactory.box(self, Vector3(data.length + 20, 0.12, 6), Vector3(data.length * 0.5, 0.02, -6.5), Color(0.12, 0.3, 0.38))
+			water.name = "CoastalWater"
 			water.material_override.roughness = 0.28
 			for x in range(0, int(data.length), 9):
 				ModelFactory.box(self, Vector3(3.0, 0.025, 0.1), Vector3(x + 1.5, 0.025, 2.45), Color(0.79, 0.75, 0.55))
@@ -266,7 +267,8 @@ func build_theme_ground() -> void:
 			for x in range(2, int(data.length), 11):
 				ModelFactory.box(self, Vector3(2.2, 0.025, 0.08), Vector3(x, 0.025, 2.35), Color(0.79, 0.56, 0.32))
 		"foundry":
-			var furnace_channel := ModelFactory.box(self, Vector3(data.length + 20, 0.12, 6), Vector3(data.length * 0.5, -0.78, -6.5), Color(0.95, 0.16, 0.025))
+			var furnace_channel := ModelFactory.box(self, Vector3(data.length + 20, 0.12, 6), Vector3(data.length * 0.5, 0.02, -6.5), Color(0.95, 0.16, 0.025))
+			furnace_channel.name = "FoundryChannel"
 			furnace_channel.material_override = ModelFactory.material(Color(0.95, 0.16, 0.025), 1.8)
 			for x in range(1, int(data.length), 7):
 				var warning_stripe := ModelFactory.box(self, Vector3(0.36, 0.025, 1.4), Vector3(x, 0.025, 2.4), Color(0.95, 0.61, 0.07))
