@@ -107,7 +107,7 @@ func start_mission(index: int) -> void:
 	level = load(mission_data.level_scene_path).instantiate()
 	level.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(level)
-	mission_card_time = 2.8
+	mission_card_time = 2.0
 	show_hud()
 	last_state = GameManager.state
 func show_hud() -> void:

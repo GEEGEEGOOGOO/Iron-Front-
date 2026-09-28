@@ -260,7 +260,7 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 ## Mission start card
 
-- Each mission now opens with a large in-game title card showing its number, authored name, and objective. It fades out after 2.8 seconds while gameplay proceeds; pausing preserves the remaining display time.
+- Each mission now opens with a large in-game title card showing its number, authored name, and objective. It fades out after 2 seconds while gameplay proceeds; pausing preserves the remaining display time. The shorter duration clears before a full-speed run from spawn reaches any first-wave trigger.
 - The direct scene regression checks the card content and expiry in all three missions. Editor import, scene and pause regressions pass. Visual composition still needs the user's Godot review.
 
 ## Enemy role silhouettes
