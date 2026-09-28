@@ -27,6 +27,13 @@ func run() -> void:
 		check(boss.boss_data == level.data.boss_data, "Mission must select its boss resource")
 		check(boss.intro_time > 0, "Boss must have an intro grace period")
 		boss.set_physics_process(false)
+		var full_health: float = boss.health.max_health
+		boss.take_damage(full_health * 0.4, GameManager.player)
+		check(boss.phase == 2 and "PHASE 2" in level.banner and boss.phase_cue_time > 0, "Boss must announce and pause for the second phase")
+		boss.take_damage(full_health * 0.4, GameManager.player)
+		check(boss.phase == 3 and "PHASE 3" in level.banner and boss.phase_cue_time > 0, "Boss must announce and pause for the final phase")
+		boss.health.reset(full_health)
+		boss.phase = 1
 		for phase_index in 3:
 			boss.health.current_health = boss.health.max_health * [1.0, 0.5, 0.2][phase_index]
 			for i in boss.boss_data.patterns.size():

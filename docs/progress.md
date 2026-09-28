@@ -279,3 +279,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - HUD and result POW totals now read the active level's prisoner count, so adding or removing authored rescues does not leave a stale `/ 4` display.
 - Starting a mission resets debug god mode to prevent an invulnerability toggle from silently carrying into a later mission. Editor import and scoring regression pass these behaviors.
+
+## Boss phase transitions
+
+- Bosses now announce phases two and three with a banner, bright pooled effect, and camera shake when health crosses each threshold. A two-second attack pause makes the transition visible before the next unlocked pattern begins.
+- The boss regression checks threshold cues and completes all three encounters. Editor import and boss regression pass; visual timing and difficulty need manual playtesting.

@@ -15,7 +15,7 @@ This maps the supplied plan to the current source. “Implemented” is not a cl
 | 8 Audio | Original music loops, positional SFX pool, buses/settings; audio tests | Listening/mix review; announcer voice is optional |
 | 9 Effects | Hit flash, hitstop, shake, physical casings/debris, staged boss explosions | Layered flash/smoke now implemented; manual feedback review remains |
 | 10 Save/progression | JSON high scores/settings/key bindings, open mission select, ranks | Normal save robustness and manual persistence review; missions intentionally open for MVP |
-| 11 Boss content | Three boss configs/attack sequences, intro framing, commander rescue; boss tests | Distinct visual silhouettes and manual attack-pattern balance |
+| 11 Boss content | Three boss configs/attack sequences, intro framing, phase transition cues, commander rescue; boss tests | Distinct visual silhouettes and manual attack-pattern balance |
 | 12 Optimization | Fixed pools, distant-enemy update skip, reused ray queries, stress metrics | Rendered draw-call/GPU profiling and decoration visibility ranges; headless timings are insufficient |
 | 13 QA | Discovered regression suite, complete headless campaign flow, temporary saves and bounded runner | Manual campaign, controller, visual and audio playtest remains user-owned as requested |
 | 14 Export | Deferred | No export work required now |

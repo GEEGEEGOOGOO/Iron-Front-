@@ -23,6 +23,7 @@ var weapon := WeaponData.new()
 var boss_data: BossData
 var current_pattern: AttackPattern
 var intro_time := 0.0
+var phase_cue_time := 0.0
 func _ready() -> void:
 	collision_layer = 8
 	collision_mask = 1
@@ -54,6 +55,7 @@ func activate(enemy_data: EnemyData, pos: Vector3) -> void:
 	boss_data = null
 	current_pattern = null
 	intro_time = 0
+	phase_cue_time = 0
 	hurt_time = 0
 	death_time = 0
 	death_burst = 0
@@ -136,6 +138,9 @@ func _physics_process(delta: float) -> void:
 	if intro_time > 0:
 		intro_time -= delta
 		return
+	if phase_cue_time > 0:
+		phase_cue_time = maxf(0, phase_cue_time - delta)
+		return
 	cooldown -= delta
 	if telegraph > 0:
 		telegraph -= delta
@@ -179,6 +184,8 @@ func take_damage(amount: float, source: Node = null) -> bool:
 		flash_time = 0.12
 		hurt_time = 0.10 if data.behavior != "boss" else 0
 		Combat.effect(position + Vector3(0, 1, 0), Vector3.ONE * 0.6, Color.WHITE, 0.09)
+		if data.behavior == "boss" and state != State.DEAD:
+			update_boss_phase()
 	return hit
 func die() -> void:
 	if state == State.DEAD:
@@ -219,6 +226,19 @@ func next_pattern() -> AttackPattern:
 		if pattern.minimum_phase <= phase:
 			return pattern
 	return boss_data.patterns[0]
+
+func update_boss_phase() -> void:
+	var next_phase := 1 + int(health.current_health < health.max_health * 0.66) + int(health.current_health < health.max_health * 0.33)
+	if next_phase <= phase:
+		return
+	phase = next_phase
+	phase_cue_time = 2.0
+	telegraph = 0
+	cooldown = 0
+	GameManager.level.banner = boss_data.title.to_upper() + " • PHASE %d" % phase
+	GameManager.level.banner_time = 2.0
+	Combat.effect(position + Vector3(0, 2.5, 0), Vector3(3.0, 3.0, 0.8), boss_data.tint.lightened(0.5), 0.45)
+	EventBus.shake_requested.emit(0.2, 0.35)
 
 func execute_pattern(player: Node3D) -> void:
 	var pattern := current_pattern
