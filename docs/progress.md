@@ -262,3 +262,9 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Each mission now opens with a large in-game title card showing its number, authored name, and objective. It fades out after 2.8 seconds while gameplay proceeds; pausing preserves the remaining display time.
 - The direct scene regression checks the card content and expiry in all three missions. Editor import, scene and pause regressions pass. Visual composition still needs the user's Godot review.
+
+## Enemy role silhouettes
+
+- Heavy gunners now have shoulder and chest armor, grenadiers carry a pack and visible grenades, and rushers carry a forward blade and red headband. These are built once with the pooled soldier model.
+- Activation shows only the equipment for the selected EnemyData behavior. The reset regression checks grunt-to-heavy-to-grenadier-to-rusher reuse; editor import and reset regression pass.
+- Readability, color contrast, and draw-call cost need manual rendered review.

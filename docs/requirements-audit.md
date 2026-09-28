@@ -7,7 +7,7 @@ This maps the supplied plan to the current source. “Implemented” is not a cl
 | 0 Setup | project.godot, six autoloads, Git repository, binary asset attributes, resources | No export target requested; Git LFS is unavailable and unnecessary for the current small assets |
 | 1 Player/physics | player.gd, camera_rig.gd, ladder/elevator scenes; aim/traversal/camera tests | Manual motion and controller hardware review; scene-component structure remains programmatic |
 | 2 Combat | WeaponData, Combat, pooled projectiles, HealthComponent, sidearm/special switching; combat/reset/input tests | Weapon icons are implemented; remaining presentation/resource hooks and visual review |
-| 3 Enemies/waves | EnemyData, EnemySpawner markers, WaveData trigger modes, BossData/AttackPattern | Manual encounter balance; more distinctive enemy presentation |
+| 3 Enemies/waves | EnemyData, EnemySpawner markers, WaveData trigger modes, BossData/AttackPattern, role-specific soldier gear | Manual encounter balance and visual readability |
 | 4 Vehicles | Tank drive, weapons, armor, ejection and ram tests | Manual handling and collision review; secondary vehicles are stretch goals |
 | 5 World | Three world scenes, themed props, cages, weighted rewards, ladders/elevator; mission-specific tank, supply, and boss placements | More distinct authored encounter/rescue layouts; automatic geometry limits editor previews |
 | 6 Score/lives | Checkpoints, lives, game-over, itemized score; scoring/pause/reset tests | End-to-end manual difficulty and checkpoint economy |

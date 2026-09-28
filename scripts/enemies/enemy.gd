@@ -5,6 +5,7 @@ var data: EnemyData
 var health: HealthComponent
 var model: Node3D
 var soldier_model: Node3D
+var soldier_gear: Dictionary = {}
 var machine_model: Node3D
 var base_scale := 1.0
 var hurtbox: Area3D
@@ -29,6 +30,7 @@ func _ready() -> void:
 	model = ModelFactory.soldier(self, Color(0.48, 0.49, 0.29))
 	ModelFactory.box(model, Vector3(0.9, 0.16, 0.2), Vector3(0.45, 1.3, 0.2), Color(0.13, 0.13, 0.15))
 	soldier_model = model
+	build_soldier_gear()
 	machine_model = ModelFactory.armored_machine(self)
 	machine_model.hide()
 	hurtbox = Area3D.new()
@@ -79,6 +81,9 @@ func activate(enemy_data: EnemyData, pos: Vector3) -> void:
 	base_scale = {"boss": 1.65, "heavy": 1.15, "turret": 0.7}.get(data.behavior, 1.0)
 	soldier_model.set_uniform(data.tint)
 	soldier_model.reset_pose()
+	for kind in soldier_gear:
+		var attachment: Node3D = soldier_gear[kind]
+		attachment.visible = data.behavior == kind
 	for part in machine_model.get_children():
 		if part is MeshInstance3D and not part.material_override.emission_enabled:
 			part.material_override.albedo_color = data.tint
@@ -240,3 +245,29 @@ func apply_flash(root: Node) -> void:
 		root.material_overlay = flash_material
 	for child in root.get_children():
 		apply_flash(child)
+
+func build_soldier_gear() -> void:
+	var upper: Node3D = soldier_model.upper
+	var heavy_gear := Node3D.new()
+	upper.add_child(heavy_gear)
+	for side in [-1.0, 1.0]:
+		ModelFactory.box(heavy_gear, Vector3(0.55, 0.3, 0.28), Vector3(0, 0.24, side * 0.46), Color(0.17, 0.24, 0.29))
+	ModelFactory.box(heavy_gear, Vector3(0.72, 0.36, 0.1), Vector3(0, 0.15, 0.3), Color(0.22, 0.3, 0.35))
+	ModelFactory.box(heavy_gear, Vector3(0.48, 0.12, 0.1), Vector3(0, 0.54, 0.28), Color(0.08, 0.12, 0.15))
+	soldier_gear["heavy"] = heavy_gear
+	var grenade_gear := Node3D.new()
+	upper.add_child(grenade_gear)
+	ModelFactory.box(grenade_gear, Vector3(0.38, 0.7, 0.4), Vector3(-0.4, -0.02, -0.18), Color(0.31, 0.27, 0.18))
+	for x in [-0.2, 0.02, 0.24]:
+		ModelFactory.sphere(grenade_gear, 0.11, Vector3(x, 0.07 - x * 0.6, 0.39), Color(0.3, 0.35, 0.18))
+		ModelFactory.box(grenade_gear, Vector3(0.05, 0.06, 0.06), Vector3(x, 0.2 - x * 0.6, 0.39), Color(0.1, 0.12, 0.09))
+	soldier_gear["grenadier"] = grenade_gear
+	var rusher_gear := Node3D.new()
+	upper.add_child(rusher_gear)
+	ModelFactory.box(rusher_gear, Vector3(0.5, 0.12, 0.55), Vector3(0, 0.76, 0), Color(0.34, 0.09, 0.09))
+	ModelFactory.box(rusher_gear, Vector3(0.95, 0.08, 0.16), Vector3(0.85, -0.13, 0.43), Color(0.78, 0.84, 0.82))
+	ModelFactory.box(rusher_gear, Vector3(0.25, 0.18, 0.2), Vector3(0.34, -0.13, 0.43), Color(0.16, 0.16, 0.17))
+	soldier_gear["rusher"] = rusher_gear
+	for kind in soldier_gear:
+		var attachment: Node3D = soldier_gear[kind]
+		attachment.hide()

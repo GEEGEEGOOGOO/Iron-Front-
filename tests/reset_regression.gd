@@ -20,6 +20,12 @@ func run() -> void:
 	check(recycled == enemy, "Test must reuse the same actor")
 	check(recycled.weapon.speed == 11 and recycled.hurt_time == 0, "Enemy reuse must restore combat defaults")
 	check(recycled.model.position == Vector3.ZERO, "Enemy reuse must clear visual hit displacement")
+	check(not recycled.soldier_gear["heavy"].visible and not recycled.soldier_gear["grenadier"].visible and not recycled.soldier_gear["rusher"].visible, "Grunt reuse must hide other soldier equipment")
+	for kind in ["heavy", "grenadier", "rusher"]:
+		PoolManager.release(recycled)
+		recycled = main.level.spawn_enemy(kind, Vector3(21, 0, 0))
+		for variant in recycled.soldier_gear:
+			check(recycled.soldier_gear[variant].visible == (variant == kind), "Pooled soldier equipment must match " + kind)
 	var effect = PoolManager.acquire("effect")
 	effect.activate(Vector3.ZERO, Vector3.ONE, Color.WHITE, 1)
 	effect.model.scale = Vector3.ONE * 0.1
