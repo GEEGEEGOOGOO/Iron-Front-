@@ -74,3 +74,5 @@ godot --headless --path . tests/campaign_flow.tscn
 The smoke test covers ground contact, the Z lock, trigger/spawn/clear encounters, rocket lifetime, tank entry/destruction/ejection, lives, respawn and default weapon restoration across all missions. The campaign flow check clears all nine authored waves and three bosses. The combat regression checks directional damage, cover, laser piercing and accuracy, and standing clearance. These checks do not prove visual quality, controller hardware behavior or campaign balance.
 
 See `docs/progress.md` for unfinished requirements and planned work. Scene geometry and placeholder models are constructed in GDScript at runtime; open the running game to see them.
+
+For a focused manual pass through all missions, use `docs/manual-playtest.md`.
