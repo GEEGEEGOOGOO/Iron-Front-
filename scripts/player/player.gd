@@ -132,7 +132,7 @@ func _physics_process(delta: float) -> void:
 	model.visible = health.invulnerability <= 0 or fmod(health.invulnerability, 0.14) < 0.07
 	gun.visible = model.visible
 	if Input.is_action_pressed("fire") and cooldown <= 0:
-		Combat.fire(self, muzzle.global_position, aim, weapon, true)
+		Combat.fire(self, firing_origin(), aim, weapon, true)
 		cooldown = 1.0 / weapon.fire_rate
 		if ammo > 0:
 			ammo -= 1
@@ -169,6 +169,11 @@ func equip(data: WeaponData) -> void:
 	update_gun_model()
 	EventBus.weapon_picked_up.emit(data.title)
 	EventBus.hud_changed.emit()
+func firing_origin() -> Vector3:
+	var query := PhysicsRayQueryParameters3D.create(gun.global_position, muzzle.global_position, 1 | 16 | 256)
+	query.collide_with_areas = true
+	var obstruction := get_world_3d().direct_space_state.intersect_ray(query)
+	return obstruction.position - aim * 0.025 if not obstruction.is_empty() else muzzle.global_position
 func switch_weapon() -> void:
 	if not reserve_weapon or reserve_ammo <= 0:
 		return

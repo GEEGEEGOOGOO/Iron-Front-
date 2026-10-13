@@ -41,6 +41,13 @@ func run() -> void:
 	before = front.health.current_health
 	Combat.fire(player, Vector3(5, 1.25, 0), Vector3.RIGHT, flame, true)
 	check(is_equal_approx(front.health.current_health, before), "World cover must block flame damage")
+	player.equip(load("res://data/weapons/laser.tres"))
+	player.gun.rotation.z = 0
+	player.aim = Vector3.RIGHT
+	var clipped_origin: Vector3 = player.firing_origin()
+	check(clipped_origin.x < wall.position.x, "Long muzzle must stop before nearby cover")
+	Combat.fire(player, clipped_origin, Vector3.RIGHT, player.weapon, true)
+	check(is_equal_approx(front.health.current_health, before), "Long weapon must not fire through nearby cover")
 	wall.queue_free()
 	await settle()
 	PoolManager.release(front)

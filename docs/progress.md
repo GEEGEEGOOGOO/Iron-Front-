@@ -334,3 +334,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - WeaponData now selects a firing sound. All six weapon resources use distinct synthesized cues, prebuilt at startup and played through the existing positional SFX pool. Invalid authored cue names fall back to the standard shot.
 - Editor import, audio regression, and combat regression pass. The final mix and loudness still need manual listening in Godot.
+
+## Close-cover firing
+
+- Player firing now checks the segment between the held gun and its muzzle. When nearby cover or a target occupies that segment, the shot starts just before the obstruction instead of beyond it.
+- The combat regression places cover inside the long laser barrel's reach and confirms the enemy behind it remains protected. Editor import and combat regression pass with installed Godot 4.7.2.
