@@ -7,7 +7,7 @@ Open `project.godot` in Godot 4.4 or newer and press F5. Choose a mission from t
 1. Move, jump with a short and long press, crouch, and aim in all eight directions. Try a keyboard and a controller if available.
 2. Fire the sidearm, collect a special weapon, and press Q or controller left shoulder to swap. Confirm its ammo is preserved while stowed and that it returns to the sidearm when empty.
 3. Break a POW cage, rescue the prisoner at close range, and check the reward and POW counter. Break a crate and an explosive barrel.
-4. Enter the Iron Mule tank with E or controller Y. Drive, fire both weapons, ram an enemy, exit, and let the tank be destroyed to check ejection.
+4. Enter the Iron Mule tank with E or controller Y. Drive, fire both weapons, ram an enemy, exit, and let the tank be destroyed to check ejection. Shoot the remaining wreck until it breaks, then walk through its former position.
 5. Pause, restart from a checkpoint, and verify that the active encounter replays without losing an already rescued POW.
 
 ## Mission route checks

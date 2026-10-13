@@ -40,7 +40,25 @@ func run() -> void:
 	wall.queue_free()
 	await get_tree().create_timer(0.05).timeout
 	check(is_equal_approx(tank.firing_origin().x, tank.position.x + 2.1), "Unobstructed tank cannon must use its muzzle")
+	tank.destroy()
+	check(tank.driver == null and GameManager.player.visible, "Destroyed tank must eject its driver")
+	check(PoolManager.pools["wreck"].size() == 2, "Destroyed tank must borrow one wreck")
+	tank.destroy()
+	check(PoolManager.pools["wreck"].size() == 2, "Repeated destruction must not create another wreck")
+	var wreck: Node
+	for item in PoolManager.borrowed:
+		if PoolManager.borrowed[item] == "wreck":
+			wreck = item
+	check(wreck != null, "Tank destruction must leave a wreck")
+	if wreck:
+		check(wreck.collision_layer == 256 and wreck.health.current_health == 6, "Wreck must block movement and have six health")
+		wreck.take_damage(6)
+		check(not PoolManager.borrowed.has(wreck) and wreck.collision_layer == 0, "Destroyed wreck must return to pool without collision")
+		var reused = PoolManager.acquire("wreck")
+		reused.activate(Vector3(12, 0, 0))
+		check(reused.health.current_health == 6, "Reused wreck must restore health")
 	main.quit_to_menu()
 	await get_tree().create_timer(0.15).timeout
+	check(PoolManager.pools["wreck"].size() == 3, "Menu must recycle all wrecks")
 	print("RAM REGRESSION ", "PASS" if failures == 0 else "FAIL")
 	get_tree().quit(0 if failures == 0 else 1)

@@ -16,6 +16,7 @@ var mission_card_time := 0.0
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	PoolManager.register_pool("burst", func(): return preload("res://scripts/combat/burst_effect.gd").new(), 64)
+	PoolManager.register_pool("wreck", func(): return preload("res://scripts/vehicles/vehicle_wreck.gd").new(), 3)
 	PoolManager.register_pool("fragment", func(): return preload("res://scripts/combat/physical_fragment.gd").new(), 160)
 	PoolManager.register_pool("pickup", func(): return preload("res://scripts/levels/pickup.gd").new(), 48)
 	PoolManager.register_pool("effect", func(): return preload("res://scripts/combat/effect.gd").new(), 200)

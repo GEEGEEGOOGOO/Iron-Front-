@@ -347,3 +347,9 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 - EnemyData now exposes attack damage, consumed by ranged shots, melee rushers, grenadiers, enemy tanks, and boss mortar patterns. Existing resources retain their one-damage default.
 - Pool activation restores damage from the selected resource. Reset and combat regressions pass, including a custom 2.5-damage resource and reset from modified pooled weapon stats.
 - Combat regression now also verifies actual 2.5-point rusher damage and projectile payloads from grunts, grenadiers, and tanks. All tested attack paths consume the configured value.
+
+## Destructible tank wreck
+
+- A destroyed tank ejects its driver and leaves a pooled six-health wreck. Gunfire clears it into debris, and recycling removes its collision. Repeated tank destruction cannot create duplicate wrecks.
+- The ram regression covers destruction, ejection, wreck damage, health restoration on reuse, and menu cleanup. Manual playtesting remains pending; the user has not tested the game yet.
+- All 22 headless checks pass with Godot 4.7.2, including import, campaign flow, smoke, and stress tests.

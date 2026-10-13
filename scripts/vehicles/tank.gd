@@ -100,14 +100,16 @@ func take_damage(amount: float, source: Node = null) -> bool:
 		return false
 	return health.take_damage(amount, source)
 func destroy() -> void:
+	if wrecked:
+		return
 	exit_vehicle()
 	wrecked = true
 	collision_layer = 0
 	Combat.explode(self, position + Vector3.UP, 4, 0, true)
-	label.text = "DISABLED"
-	for child in get_children():
-		if child is MeshInstance3D:
-			child.material_override.albedo_color = Color(0.12, 0.11, 0.1)
+	var wreck = PoolManager.acquire("wreck")
+	if wreck:
+		wreck.activate(global_position)
+	hide()
 
 func try_ram() -> int:
 	if not driver or wrecked or absf(velocity.x) < 3 or ram_cooldown > 0:
