@@ -61,6 +61,7 @@ func activate(enemy_data: EnemyData, pos: Vector3) -> void:
 	death_burst = 0
 	weapon.speed = 11
 	position = pos
+	weapon.damage = data.damage
 	velocity = Vector3.ZERO
 	health.reset(data.health)
 	state = State.ALERT
@@ -171,14 +172,14 @@ func attack(player: Node3D) -> void:
 	match data.behavior:
 		"rusher":
 			if position.distance_to(player.position) < 2.0:
-				player.take_damage(1, self)
+				player.take_damage(data.damage, self)
 		"grenadier":
-			Combat.grenade(self, origin, signf(direction.x), false)
+			Combat.grenade(self, origin, signf(direction.x), false, data.damage)
 		"boss":
 			if boss_data and current_pattern:
 				execute_pattern(player)
 		"tank":
-			Combat.grenade(self, origin, signf(direction.x), false)
+			Combat.grenade(self, origin, signf(direction.x), false, data.damage)
 		_:
 			Combat.fire(self, origin, direction, weapon, false)
 func take_damage(amount: float, source: Node = null) -> bool:
@@ -252,7 +253,7 @@ func execute_pattern(player: Node3D) -> void:
 	match pattern.kind:
 		"grenades":
 			for i in pattern.projectile_count:
-				Combat.grenade(self, origin + Vector3(-i * 1.4, 0, 0), -1, false)
+				Combat.grenade(self, origin + Vector3(-i * 1.4, 0, 0), -1, false, data.damage)
 		"aimed":
 			var direction := (player.position + Vector3.UP - origin).normalized()
 			Combat.fire(self, origin, direction, weapon, false)

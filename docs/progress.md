@@ -340,3 +340,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 - Player firing now checks the segment between the held gun and its muzzle. When nearby cover or a target occupies that segment, the shot starts just before the obstruction instead of beyond it.
 - The combat regression places cover inside the long laser barrel's reach and confirms the enemy behind it remains protected. Editor import and combat regression pass with installed Godot 4.7.2.
 - The tank now uses the same obstruction-aware muzzle calculation for both guns. Tank regression checks blocked and unobstructed barrel positions; player combat regression still passes after sharing the helper.
+
+## Enemy damage authoring
+
+- EnemyData now exposes attack damage, consumed by ranged shots, melee rushers, grenadiers, enemy tanks, and boss mortar patterns. Existing resources retain their one-damage default.
+- Pool activation restores damage from the selected resource. Reset and combat regressions pass, including a custom 2.5-damage resource and reset from modified pooled weapon stats.

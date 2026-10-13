@@ -53,12 +53,13 @@ static func fire(source: Node3D, origin: Vector3, direction: Vector3, weapon: We
 			var bullet = PoolManager.acquire("projectile")
 			if bullet:
 				bullet.activate(source, origin, aim * weapon.speed, weapon.damage, friendly, weapon.lifetime, weapon.explosion_radius, false)
-static func grenade(source: Node3D, origin: Vector3, direction: float, friendly: bool) -> void:
+static func grenade(source: Node3D, origin: Vector3, direction: float, friendly: bool, damage_value := -1.0) -> void:
 	var bullet = PoolManager.acquire("projectile")
 	if bullet:
 		if friendly:
 			GameManager.shots += 1
-		bullet.activate(source, origin, Vector3(direction * 10, 9, 0), 9.0 if friendly else 1.0, friendly, 2.0, 3.4, true)
+		var power := damage_value if damage_value >= 0 else (9.0 if friendly else 1.0)
+		bullet.activate(source, origin, Vector3(direction * 10, 9, 0), power, friendly, 2.0, 3.4, true)
 static func explode(source: Node3D, pos: Vector3, radius: float, power: float, friendly: bool, track_accuracy := false) -> void:
 	AudioManager.play_at("boom", pos)
 	EventBus.shake_requested.emit(0.3, 0.3)

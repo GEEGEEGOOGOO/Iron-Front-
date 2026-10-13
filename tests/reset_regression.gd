@@ -13,12 +13,18 @@ func run() -> void:
 	await get_tree().create_timer(0.1).timeout
 	var enemy = main.level.spawn_enemy("boss", Vector3(20, 0, 0))
 	enemy.weapon.speed = 50
+	enemy.weapon.damage = 20
 	enemy.hurt_time = 5
 	enemy.model.position.x = 0.4
 	PoolManager.release(enemy)
 	var recycled = main.level.spawn_enemy("grunt", Vector3(21, 0, 0))
 	check(recycled == enemy, "Test must reuse the same actor")
 	check(recycled.weapon.speed == 11 and recycled.hurt_time == 0, "Enemy reuse must restore combat defaults")
+	check(recycled.weapon.damage == recycled.data.damage, "Enemy reuse must restore resource damage")
+	var configured: EnemyData = recycled.data.duplicate()
+	configured.damage = 2.5
+	recycled.activate(configured, Vector3(21, 0, 0))
+	check(recycled.weapon.damage == 2.5, "Enemy resource must drive ranged damage")
 	check(recycled.model.position == Vector3.ZERO, "Enemy reuse must clear visual hit displacement")
 	check(not recycled.soldier_gear["heavy"].visible and not recycled.soldier_gear["grenadier"].visible and not recycled.soldier_gear["rusher"].visible, "Grunt reuse must hide other soldier equipment")
 	for kind in ["heavy", "grenadier", "rusher"]:

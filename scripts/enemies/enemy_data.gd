@@ -2,6 +2,7 @@ class_name EnemyData
 extends Resource
 @export var title := "Grunt"
 @export var health := 2.0
+@export var damage := 1.0
 @export var move_speed := 2.0
 @export var fire_rate := 0.7
 @export var detection_range := 18.0
