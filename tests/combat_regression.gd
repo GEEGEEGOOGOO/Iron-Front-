@@ -78,9 +78,24 @@ func run() -> void:
 	ModelFactory.collider(ceiling, Vector3(2, 0.3, 2), Vector3.ZERO)
 	await settle()
 	check(not player.can_stand(), "Low ceiling must prevent standing")
+	player.equip(laser)
+	player.aim = Vector3.UP
+	player.gun.rotation.z = PI / 2
+	check(player.firing_origin().y < ceiling.position.y - 0.15, "Upward muzzle must stop below a low ceiling")
 	ceiling.queue_free()
 	await settle()
 	check(player.can_stand(), "Standing must be permitted after clearing the ceiling")
+	player.aim = Vector3.LEFT
+	player.gun.rotation.z = PI
+	var left_wall := StaticBody3D.new()
+	main.level.add_child(left_wall)
+	left_wall.position = player.position + Vector3(-0.8, 1.25, 0)
+	ModelFactory.collider(left_wall, Vector3(0.2, 2, 2), Vector3.ZERO)
+	await settle()
+	player.aim = Vector3.LEFT
+	player.gun.rotation.z = PI
+	check(player.firing_origin().x > left_wall.position.x + 0.1, "Leftward muzzle must stop on the player's side of cover")
+	left_wall.queue_free()
 	var component := HealthComponent.new()
 	add_child(component)
 	component.reset(3)
