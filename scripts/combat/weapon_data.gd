@@ -21,3 +21,6 @@ extends Resource
 @export_enum("pistol", "machine_gun", "rocket", "shotgun", "flame", "laser") var model_kind := "pistol"
 @export var muzzle_distance := 1.0
 @export var sfx_fire := "shot"
+@export var muzzle_flash_color := Color(1, 0.87, 0.3)
+@export var muzzle_flash_size := Vector3(0.5, 0.25, 0.2)
+@export_range(0.01, 0.3, 0.01) var muzzle_flash_duration := 0.07

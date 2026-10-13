@@ -21,3 +21,6 @@ icon = ExtResource("icon")
 model_kind = "laser"
 muzzle_distance = 1.5
 sfx_fire = "shot_laser"
+muzzle_flash_color = Color(0.35, 0.95, 1, 1)
+muzzle_flash_size = Vector3(0.4, 0.18, 0.18)
+muzzle_flash_duration = 0.05

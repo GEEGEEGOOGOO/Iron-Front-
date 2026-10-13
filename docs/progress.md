@@ -380,3 +380,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Tanks now collide with the destructible layer, including intact crates and pooled vehicle wrecks. Ram damage is checked before movement so a destroyed obstacle can clear the route; the existing post-movement check remains for targets reached during the step.
 - Ram regression confirms an intact wreck blocks a tank movement sweep and recycling clears the route. Ram and combat regressions pass with Godot 4.7.2.
+
+## Authored muzzle flashes
+
+- Projectile and hitscan weapons now select their pooled muzzle-flash color, size, and duration through WeaponData. Flashes rotate with the firing direction; laser, rocket, and shotgun resources have distinct styles.
+- Combat regression passes with Godot 4.7.2. Visual readability remains pending manual review.

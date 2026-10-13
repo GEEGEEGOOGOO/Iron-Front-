@@ -19,3 +19,6 @@ icon = ExtResource("icon")
 model_kind = "shotgun"
 muzzle_distance = 1.25
 sfx_fire = "shot_shotgun"
+muzzle_flash_color = Color(1, 0.75, 0.25, 1)
+muzzle_flash_size = Vector3(0.7, 0.4, 0.3)
+muzzle_flash_duration = 0.09

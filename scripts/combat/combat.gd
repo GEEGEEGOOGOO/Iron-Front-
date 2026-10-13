@@ -19,7 +19,10 @@ static func fire(source: Node3D, origin: Vector3, direction: Vector3, weapon: We
 		flame(source, origin, direction, weapon, friendly)
 		return
 	AudioManager.play_at(weapon.sfx_fire, origin)
-	effect(origin, Vector3(0.5, 0.25, 0.2), Color(1, 0.87, 0.3), 0.07)
+	var flash = PoolManager.acquire("effect")
+	if flash:
+		flash.activate(origin, weapon.muzzle_flash_size, weapon.muzzle_flash_color, weapon.muzzle_flash_duration)
+		flash.rotation.z = atan2(direction.y, direction.x)
 	fragment(origin, Vector3(0.12, 0.06, 0.06), Color(0.8, 0.6, 0.2), Vector3(-direction.x * 2, 3, 1.4), 1.5)
 	for i in weapon.pellets:
 		var aim := direction.rotated(Vector3.FORWARD, randf_range(-weapon.spread_angle, weapon.spread_angle))
