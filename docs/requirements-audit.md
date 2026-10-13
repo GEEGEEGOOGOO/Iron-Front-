@@ -16,7 +16,7 @@ This maps the supplied plan to the current source. “Implemented” is not a cl
 | 9 Effects | Hit flash, hitstop, shake, enemy death fade, physical casings/debris, staged boss explosions | Layered flash/smoke now implemented; manual feedback review remains |
 | 10 Save/progression | JSON high scores/settings/key bindings, open mission select, ranks | Normal save robustness and manual persistence review; missions intentionally open for MVP |
 | 11 Boss content | Three boss configs/attack sequences, intro framing, phase transition cues, commander rescue; boss tests | Distinct visual silhouettes and manual attack-pattern balance |
-| 12 Optimization | Fixed pools, distant-enemy update skip, reused ray queries, stress metrics | Rendered draw-call/GPU profiling and decoration visibility ranges; headless timings are insufficient |
+| 12 Optimization | Fixed pools, distant-enemy update skip, reused ray queries, stress metrics, authored decoration visibility range | Rendered draw-call/GPU profiling; headless timings are insufficient |
 | 13 QA | Discovered regression suite, complete headless campaign flow, temporary saves and bounded runner | Manual campaign, controller, visual and audio playtest remains user-owned as requested |
 | 14 Export | Deferred | No export work required now |
 

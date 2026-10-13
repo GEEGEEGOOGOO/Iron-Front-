@@ -30,3 +30,5 @@ Run `python3 tools/run_tests.py --godot /path/to/Godot` after gameplay changes. 
 WaveData `trigger_condition` supports position, level start, elapsed mission timer, and previous-wave-cleared. `trigger_delay` is an absolute mission-time threshold for timer waves and a delay after the previous clear for chained waves. These still run in authored scene order; place their arena/spawn markers where the player will be when they activate.
 
 LevelData also exposes `pow_positions`, `crate_positions`, and `barrel_positions`. Keep prisoner cages reachable from the gameplay lane; the final crate grants rockets, and earlier crates grant machine-gun supplies. Barrels explode without dropping a weapon.
+
+`decoration_visibility_distance` sets the camera distance limit for small static scenery meshes (default 80 meters, with 8 meters of hysteresis). Long water/channel strips stay unrestricted because their mesh centers can be far from the visible part. Gameplay bodies and their visuals retain normal frustum culling.

@@ -358,3 +358,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Enemy attacks now place the muzzle toward the target instead of always spawning on the left. Nearby cover clips the muzzle through the same helper used by player and tank weapons.
 - Combat regression verifies targets on both sides and cover inside the muzzle's reach. Combat and pooled reset checks pass with Godot 4.7.2.
+
+## Decoration visibility limits
+
+- LevelData now exposes a distance limit for small static scenery. Background buildings, cranes, dunes, and furnaces use 80 meters with an 8-meter hysteresis margin by default. Long water/channel strips are excluded to avoid hiding visible geometry whose center is far away.
+- Editor import and all three standalone mission scene checks pass with Godot 4.7.2. Actual draw-call savings and visual transitions remain unverified until rendered profiling and manual playtesting.

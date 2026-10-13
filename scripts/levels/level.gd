@@ -107,6 +107,17 @@ func build_world() -> void:
 	tank.position = data.tank_position
 	for i in mini(data.supply_positions.size(), data.supply_kinds.size()):
 		add_pickup(data.supply_positions[i], data.supply_kinds[i])
+	configure_decoration_visibility()
+func configure_decoration_visibility() -> void:
+	# Direct mesh children are scenery; collidable and interactive meshes live under bodies.
+	for child in get_children():
+		if child is MeshInstance3D:
+			var size: Vector3 = child.get_aabb().size
+			# Long ground strips have a remote center even when part of them is on screen.
+			if maxf(size.x, maxf(size.y, size.z)) > 20:
+				continue
+			child.visibility_range_end = data.decoration_visibility_distance
+			child.visibility_range_end_margin = 8.0
 func platform(pos: Vector3, size: Vector3, color: Color) -> void:
 	var body := StaticBody3D.new()
 	add_child(body)
