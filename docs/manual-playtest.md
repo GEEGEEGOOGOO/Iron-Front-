@@ -30,4 +30,6 @@ Each boss should introduce itself, show a health bar, announce phases two and th
 
 For each issue, record the mission, approximate X position from the F3 debug overlay if useful, what you did, what happened, and what you expected. A screenshot or a copied Godot error is useful for visual or crash issues. Report any unreadable attack, unreachable enemy, confusing pickup, camera problem, sudden frame drop, or sound that is too loud or quiet.
 
+For slowdowns, enable F3 and record FPS, physics milliseconds, and draw calls during the affected encounter. These are Godot monitor readings; GPU timing can be inspected separately in the editor's profiler. Include your window size and renderer when reporting performance.
+
 The automated suite verifies headless gameplay logic and a full campaign flow. It does not verify rendered quality, GPU frame time, physical controller feel, or encounter balance.

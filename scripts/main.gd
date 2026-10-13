@@ -260,7 +260,8 @@ SCORE %07d     POW %d / %d     MISSION %02d%s" % [ceili(player.health.current_he
 			boss_bar.value = 100 * level.boss.health.current_health / level.boss.health.max_health
 		if debug_label.visible:
 			debug_label.text = "F4 GOD: %s   F5 WEAPON   F6 SPAWN GRUNT   F7 SKIP
-FPS %d   ACTIVE POOL %d   X %.1f   Z %.3f" % [GameManager.god_mode, Engine.get_frames_per_second(), PoolManager.borrowed.size(), player.position.x, player.position.z]
+FPS %d   PHYSICS %.2f ms   DRAW CALLS %d
+ACTIVE POOL %d   X %.1f   Z %.3f" % [GameManager.god_mode, Engine.get_frames_per_second(), Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000, int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)), PoolManager.borrowed.size(), player.position.x, player.position.z]
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		if GameManager.state == GameManager.State.PLAYING:
