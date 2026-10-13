@@ -363,3 +363,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - LevelData now exposes a distance limit for small static scenery. Background buildings, cranes, dunes, and furnaces use 80 meters with an 8-meter hysteresis margin by default. Long water/channel strips are excluded to avoid hiding visible geometry whose center is far away.
 - Editor import and all three standalone mission scene checks pass with Godot 4.7.2. Actual draw-call savings and visual transitions remain unverified until rendered profiling and manual playtesting.
+
+## Hostile hitscan vehicle collision
+
+- Hostile hitscan now includes the vehicle collision layer, matching hostile projectiles and area attacks. An occupied tank receives armor damage while its hidden driver remains protected.
+- Combat regression passes with Godot 4.7.2, verifying occupied armor damage, driver protection, and the existing unoccupied-tank immunity.

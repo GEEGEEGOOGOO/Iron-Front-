@@ -136,6 +136,23 @@ func run() -> void:
 				found_payload = true
 				check(is_equal_approx(item.power, 2.5), behavior + " projectile must carry authored damage")
 		check(found_payload, behavior + " attack must emit a projectile")
+	var tank = main.level.tank
+	tank.set_physics_process(false)
+	tank.position = Vector3(20, 0.1, 0)
+	player.position = tank.position
+	tank.enter_vehicle(player)
+	await settle()
+	var hostile_ray := WeaponData.new()
+	hostile_ray.is_hitscan = true
+	hostile_ray.damage = 2
+	hostile_ray.range_meters = 6
+	Combat.fire(first, tank.position + Vector3(-4, 1, 0), Vector3.RIGHT, hostile_ray, false)
+	check(is_equal_approx(tank.health.current_health, 16), "Hostile hitscan must damage occupied tank armor")
+	check(is_equal_approx(player.health.current_health, 0.5), "Tank armor must protect the driver from hitscan")
+	tank.exit_vehicle()
+	tank.health.invulnerability = 0
+	Combat.fire(first, tank.position + Vector3(-4, 1, 0), Vector3.RIGHT, hostile_ray, false)
+	check(is_equal_approx(tank.health.current_health, 16), "Unoccupied tank must retain its damage immunity")
 	main.quit_to_menu()
 	await get_tree().create_timer(0.15).timeout
 	print("COMBAT REGRESSION ", "PASS" if failures == 0 else "FAIL: %d" % failures)

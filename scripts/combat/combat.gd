@@ -30,7 +30,7 @@ static func fire(source: Node3D, origin: Vector3, direction: Vector3, weapon: We
 			var hit_any := false
 			var excluded: Array[RID] = []
 			for pierce in weapon.pierce_count:
-				var query := PhysicsRayQueryParameters3D.create(origin, end, 1 | 16 | 256 if friendly else 1 | 4 | 256)
+				var query := PhysicsRayQueryParameters3D.create(origin, end, 1 | 16 | 256 if friendly else 1 | 4 | 256 | 512)
 				query.collide_with_areas = true
 				query.exclude = excluded
 				var hit := source.get_world_3d().direct_space_state.intersect_ray(query)
