@@ -250,11 +250,21 @@ func _process(delta: float) -> void:
 			show_result()
 	if GameManager.state == GameManager.State.PLAYING and is_instance_valid(GameManager.player) and is_instance_valid(hud):
 		var player := GameManager.player
-		weapon_icon.texture = player.weapon.icon
-		weapon_icon.tooltip_text = player.weapon.title
-		var swap_hint := "    %s / LB SWITCH" % InputManager.key_label("switch_weapon") if player.reserve_weapon else ""
-		hud.text = "HP %d / %d   •   LIVES %d       %s  %s       GRENADES %d
-SCORE %07d     POW %d / %d     MISSION %02d%s" % [ceili(player.health.current_health), int(player.health.max_health), GameManager.lives, player.weapon.title.to_upper(), "∞" if player.ammo < 0 else str(player.ammo), player.grenades, GameManager.score, GameManager.rescued, level.pows.size(), GameManager.mission + 1, swap_hint]
+		var status: String
+		var hint := ""
+		if is_instance_valid(player.vehicle):
+			var vehicle = player.vehicle
+			weapon_icon.texture = vehicle.machine_gun.icon
+			weapon_icon.tooltip_text = "Mounted machine gun and cannon"
+			status = "ARMOR %d / %d   •   LIVES %d       MACHINE GUN ∞       CANNON ∞" % [ceili(vehicle.health.current_health), int(vehicle.health.max_health), GameManager.lives]
+			hint = "    %s / Y EXIT" % InputManager.key_label("interact")
+		else:
+			weapon_icon.texture = player.weapon.icon
+			weapon_icon.tooltip_text = player.weapon.title
+			status = "HP %d / %d   •   LIVES %d       %s  %s       GRENADES %d" % [ceili(player.health.current_health), int(player.health.max_health), GameManager.lives, player.weapon.title.to_upper(), "∞" if player.ammo < 0 else str(player.ammo), player.grenades]
+			if player.reserve_weapon:
+				hint = "    %s / LB SWITCH" % InputManager.key_label("switch_weapon")
+		hud.text = "%s\nSCORE %07d     POW %d / %d     MISSION %02d%s" % [status, GameManager.score, GameManager.rescued, level.pows.size(), GameManager.mission + 1, hint]
 		objective.text = level.banner if level.banner_time > 0 and mission_card_time <= 0 else ""
 		boss_bar.visible = is_instance_valid(level.boss) and level.boss.active
 		if boss_bar.visible:

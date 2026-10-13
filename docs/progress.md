@@ -385,3 +385,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Projectile and hitscan weapons now select their pooled muzzle-flash color, size, and duration through WeaponData. Flashes rotate with the firing direction; laser, rocket, and shotgun resources have distinct styles.
 - Combat regression passes with Godot 4.7.2. Visual readability remains pending manual review.
+
+## Vehicle HUD
+
+- While driving, the HUD now shows tank armor, unlimited mounted machine-gun/cannon ammo, the mounted gun icon, and the rebound interaction key for exiting. On foot, it restores player health, carried weapon ammo, grenades, and the switch hint.
+- Ram and scoring regressions pass with Godot 4.7.2. Manual HUD layout review remains pending.
