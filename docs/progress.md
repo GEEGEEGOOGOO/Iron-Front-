@@ -375,3 +375,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 - Rushers use a two-meter range and turrets explicitly retain their 18-meter reach. Boss attack ranges remain controlled by their pattern framework.
 - Combat regression verifies the boundary behavior and passes with Godot 4.7.2.
 - The automated three-mission campaign flow also passes. Encounter balance and attack readability still require manual review.
+
+## Tank collision with destructibles
+
+- Tanks now collide with the destructible layer, including intact crates and pooled vehicle wrecks. Ram damage is checked before movement so a destroyed obstacle can clear the route; the existing post-movement check remains for targets reached during the step.
+- Ram regression confirms an intact wreck blocks a tank movement sweep and recycling clears the route. Ram and combat regressions pass with Godot 4.7.2.

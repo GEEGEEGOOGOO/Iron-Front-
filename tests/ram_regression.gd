@@ -40,6 +40,13 @@ func run() -> void:
 	wall.queue_free()
 	await get_tree().create_timer(0.05).timeout
 	check(is_equal_approx(tank.firing_origin().x, tank.position.x + 2.1), "Unobstructed tank cannon must use its muzzle")
+	var obstacle = PoolManager.acquire("wreck")
+	obstacle.activate(tank.position + Vector3(3.5, 0, 0))
+	await get_tree().physics_frame
+	check(tank.test_move(tank.global_transform, Vector3(2, 0, 0)), "Intact destructible wreck must block tank motion")
+	PoolManager.release(obstacle)
+	await get_tree().physics_frame
+	check(not tank.test_move(tank.global_transform, Vector3(2, 0, 0)), "Recycled wreck must stop blocking tank motion")
 	tank.destroy()
 	check(tank.driver == null and GameManager.player.visible, "Destroyed tank must eject its driver")
 	check(PoolManager.pools["wreck"].size() == 2, "Destroyed tank must borrow one wreck")
