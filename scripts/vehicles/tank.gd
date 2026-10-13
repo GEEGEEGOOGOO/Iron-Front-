@@ -58,7 +58,7 @@ func _physics_process(delta: float) -> void:
 		gun.rotation.y = 0 if facing > 0 else PI
 		if Input.is_action_just_pressed("jump") and is_on_floor():
 			velocity.y = 8
-		var origin := position + Vector3(facing * 2.1, 1.8, 0)
+		var origin := firing_origin()
 		if Input.is_action_pressed("fire") and cooldown <= 0:
 			Combat.fire(self, origin, Vector3(facing, 0, 0), machine_gun, true)
 			cooldown = 0.09
@@ -80,6 +80,9 @@ func enter_vehicle(player: CharacterBody3D) -> void:
 	player.vehicle = self
 	player.state = player.State.VEHICLE
 	player.hide()
+func firing_origin() -> Vector3:
+	var breech := global_position + Vector3(0, 1.8, 0)
+	return Combat.muzzle_origin(self, breech, breech + Vector3(facing * 2.1, 0, 0), Vector3(facing, 0, 0), true)
 func exit_vehicle() -> void:
 	if not driver:
 		return

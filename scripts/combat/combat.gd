@@ -8,6 +8,12 @@ static func damage(target: Object, amount: float, source: Node) -> bool:
 	if target and target.has_method("take_damage"):
 		return target.take_damage(amount, source)
 	return false
+static func muzzle_origin(source: Node3D, breech: Vector3, muzzle: Vector3, direction: Vector3, friendly: bool) -> Vector3:
+	var mask := 1 | 256 | (16 if friendly else 4 | 512)
+	var query := PhysicsRayQueryParameters3D.create(breech, muzzle, mask)
+	query.collide_with_areas = true
+	var obstruction := source.get_world_3d().direct_space_state.intersect_ray(query)
+	return obstruction.position - direction * 0.025 if not obstruction.is_empty() else muzzle
 static func fire(source: Node3D, origin: Vector3, direction: Vector3, weapon: WeaponData, friendly: bool) -> void:
 	if weapon.attack_mode == "cone":
 		flame(source, origin, direction, weapon, friendly)
