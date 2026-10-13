@@ -85,6 +85,29 @@ func run() -> void:
 	add_child(component)
 	component.reset(3)
 	check(not component.take_damage(0), "Cosmetic explosions must not register zero damage")
+	var configured: EnemyData = load("res://data/enemies/rusher.tres").duplicate()
+	configured.damage = 2.5
+	first.activate(configured, player.position + Vector3.RIGHT)
+	first.set_physics_process(false)
+	GameManager.god_mode = false
+	player.health.reset(3)
+	first.attack(player)
+	check(is_equal_approx(player.health.current_health, 0.5), "Rusher must apply authored melee damage")
+	GameManager.god_mode = true
+	for behavior in ["grunt", "grenadier", "tank"]:
+		for item in PoolManager.borrowed.keys():
+			if PoolManager.borrowed[item] == "projectile":
+				PoolManager.release(item)
+		configured.behavior = behavior
+		first.activate(configured, player.position + Vector3.RIGHT * 3)
+		first.set_physics_process(false)
+		first.attack(player)
+		var found_payload := false
+		for item in PoolManager.borrowed.keys():
+			if PoolManager.borrowed[item] == "projectile" and item.source == first:
+				found_payload = true
+				check(is_equal_approx(item.power, 2.5), behavior + " projectile must carry authored damage")
+		check(found_payload, behavior + " attack must emit a projectile")
 	main.quit_to_menu()
 	await get_tree().create_timer(0.15).timeout
 	print("COMBAT REGRESSION ", "PASS" if failures == 0 else "FAIL: %d" % failures)
