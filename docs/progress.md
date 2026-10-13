@@ -390,3 +390,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - While driving, the HUD now shows tank armor, unlimited mounted machine-gun/cannon ammo, the mounted gun icon, and the rebound interaction key for exiting. On foot, it restores player health, carried weapon ammo, grenades, and the switch hint.
 - Ram and scoring regressions pass with Godot 4.7.2. Manual HUD layout review remains pending.
+
+## Combined verification and mission-two clearance
+
+- The full 22-check run passed 21 checks and exposed an authored overlap between mission two's tank and barrel after enabling destructible collisions. The tank now spawns at X=66, clear of the barrel at X=63.
+- The failed standalone scene check passes after that correction. Campaign flow, smoke, stress, combat, vehicle, input, audio, save, and traversal checks passed in the full run. The manual guide now covers authored muzzle flashes, mounted HUD, and wreck collision.
