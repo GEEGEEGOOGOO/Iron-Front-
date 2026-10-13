@@ -353,3 +353,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 - A destroyed tank ejects its driver and leaves a pooled six-health wreck. Gunfire clears it into debris, and recycling removes its collision. Repeated tank destruction cannot create duplicate wrecks.
 - The ram regression covers destruction, ejection, wreck damage, health restoration on reuse, and menu cleanup. Manual playtesting remains pending; the user has not tested the game yet.
 - All 22 headless checks pass with Godot 4.7.2, including import, campaign flow, smoke, and stress tests.
+
+## Enemy muzzle direction and cover
+
+- Enemy attacks now place the muzzle toward the target instead of always spawning on the left. Nearby cover clips the muzzle through the same helper used by player and tank weapons.
+- Combat regression verifies targets on both sides and cover inside the muzzle's reach. Combat and pooled reset checks pass with Godot 4.7.2.

@@ -167,7 +167,7 @@ func _physics_process(delta: float) -> void:
 			Combat.effect(position + Vector3(0, 2.5 if data.behavior != "boss" else 6, 0), Vector3(0.25, 0.5, 0.2), Color(1, 0.15, 0.1), telegraph)
 			cooldown = 1.0 / data.fire_rate + randf_range(0, 0.35)
 func attack(player: Node3D) -> void:
-	var origin := position + Vector3(-0.6, 1.25, 0)
+	var origin := firing_origin(player)
 	var direction := (player.position + Vector3(0, 1, 0) - origin).normalized()
 	match data.behavior:
 		"rusher":
@@ -182,6 +182,10 @@ func attack(player: Node3D) -> void:
 			Combat.grenade(self, origin, signf(direction.x), false, data.damage)
 		_:
 			Combat.fire(self, origin, direction, weapon, false)
+func firing_origin(target: Node3D) -> Vector3:
+	var breech := global_position + Vector3(0, 1.25, 0)
+	var direction := (target.global_position + Vector3(0, 1, 0) - breech).normalized()
+	return Combat.muzzle_origin(self, breech, breech + direction * 0.6, direction, false)
 func take_damage(amount: float, source: Node = null) -> bool:
 	if not active or state == State.DEAD:
 		return false

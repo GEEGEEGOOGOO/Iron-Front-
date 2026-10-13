@@ -85,6 +85,19 @@ func run() -> void:
 	ceiling.queue_free()
 	await settle()
 	check(player.can_stand(), "Standing must be permitted after clearing the ceiling")
+	player.position.x = first.position.x + 3
+	check(first.firing_origin(player).x > first.position.x, "Enemy muzzle must face a target on the right")
+	var enemy_cover := StaticBody3D.new()
+	main.level.add_child(enemy_cover)
+	enemy_cover.position = first.position + Vector3(0.4, 1.25, 0)
+	ModelFactory.collider(enemy_cover, Vector3(0.1, 2, 2), Vector3.ZERO)
+	await settle()
+	check(first.firing_origin(player).x < enemy_cover.position.x - 0.05, "Enemy muzzle must stop before close cover")
+	enemy_cover.queue_free()
+	player.position.x = first.position.x - 3
+	await settle()
+	check(first.firing_origin(player).x < first.position.x, "Enemy muzzle must face a target on the left")
+	player.position.x = 5
 	player.aim = Vector3.LEFT
 	player.gun.rotation.z = PI
 	var left_wall := StaticBody3D.new()
