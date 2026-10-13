@@ -154,7 +154,8 @@ func _physics_process(delta: float) -> void:
 		if telegraph <= 0:
 			attack(player)
 		return
-	if cooldown <= 0 and absf(distance) < data.detection_range and player.state != player.State.DEAD:
+	var firing_range := data.detection_range if data.behavior == "boss" else data.attack_range
+	if cooldown <= 0 and absf(distance) <= minf(data.detection_range, firing_range) and player.state != player.State.DEAD:
 		var query := PhysicsRayQueryParameters3D.create(position + Vector3(0, 1.3, 0), player.position + Vector3(0, 1, 0), 1)
 		if get_world_3d().direct_space_state.intersect_ray(query).is_empty():
 			telegraph = 0.8 if data.behavior in ["turret", "boss"] else 0.35

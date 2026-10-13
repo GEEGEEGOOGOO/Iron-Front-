@@ -8,6 +8,7 @@ behavior = "turret"
 health = 6.0
 move_speed = 0.0
 fire_rate = 0.45
+attack_range = 18.0
 score_value = 250
 drop_table = ExtResource("drops")
 drop_chance = 0.12

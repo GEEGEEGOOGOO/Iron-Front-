@@ -368,3 +368,10 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Hostile hitscan now includes the vehicle collision layer, matching hostile projectiles and area attacks. An occupied tank receives armor damage while its hidden driver remains protected.
 - Combat regression passes with Godot 4.7.2, verifying occupied armor damage, driver protection, and the existing unoccupied-tank immunity.
+
+## Enemy attack-range behavior
+
+- Ordinary enemies now require the target to be inside both detection and attack ranges before starting their telegraph. Previously, attack range only controlled movement and distant targets could trigger shots immediately.
+- Rushers use a two-meter range and turrets explicitly retain their 18-meter reach. Boss attack ranges remain controlled by their pattern framework.
+- Combat regression verifies the boundary behavior and passes with Godot 4.7.2.
+- The automated three-mission campaign flow also passes. Encounter balance and attack readability still require manual review.

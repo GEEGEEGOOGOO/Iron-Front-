@@ -136,6 +136,20 @@ func run() -> void:
 				found_payload = true
 				check(is_equal_approx(item.power, 2.5), behavior + " projectile must carry authored damage")
 		check(found_payload, behavior + " attack must emit a projectile")
+	configured.behavior = "grunt"
+	configured.attack_range = 2
+	configured.detection_range = 18
+	first.activate(configured, player.position + Vector3.RIGHT * 4)
+	first.set_physics_process(false)
+	first.cooldown = 0
+	first._physics_process(1.0 / 60)
+	check(first.telegraph == 0, "Detected target outside attack range must not trigger fire")
+	first.position = player.position + Vector3.RIGHT * 1.5
+	await settle()
+	first._physics_process(1.0 / 60)
+	check(first.telegraph > 0, "Target inside attack range must trigger an attack telegraph")
+	var turret_data: EnemyData = load("res://data/enemies/turret.tres")
+	check(turret_data.attack_range == turret_data.detection_range, "Stationary turret must retain its long firing range")
 	var tank = main.level.tank
 	tank.set_physics_process(false)
 	tank.position = Vector3(20, 0.1, 0)
