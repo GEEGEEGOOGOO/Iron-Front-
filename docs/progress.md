@@ -407,3 +407,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 - The user reported tank jumping and driving through enemy tanks. Metal Slug's documented tank controls include jumping, so jumping remains as permitted by the user.
 - Player tanks now collide with enemy bodies. Enemies collide with vehicles and destructibles, and pooled machine enemies use movement colliders sized to their hulls instead of soldier-sized boxes. Reusing a machine as a soldier restores the smaller collider.
 - Vehicle regression verifies movement sweeps in both directions, collider resizing, and collision removal on recycling. Vehicle, combat, reset, and standalone mission scene checks pass with Godot 4.7.2.
+
+## Mutual tank impact damage
+
+- Ramming an enemy tank or tank boss now applies four damage to player armor as well as the existing four damage to the enemy. Infantry and destructible ram targets retain their existing behavior. Impact cooldown and armor mercy frames prevent damage every physics frame.
+- Vehicle regression passes for mutual tank damage, cooldown, boss recoil, and fatal recoil destroying the vehicle and ejecting its driver.

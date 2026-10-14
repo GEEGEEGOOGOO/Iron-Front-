@@ -54,6 +54,24 @@ func run() -> void:
 	check(tank.test_move(tank.global_transform, Vector3(2, 0, 0)), "Enemy tank hull must block player tank motion")
 	check(hostile_tank.test_move(hostile_tank.global_transform, Vector3(-2, 0, 0)), "Player tank hull must block approaching enemy tanks")
 	check(hostile_tank.body_shape.shape.size.x > 3, "Enemy tank movement collider must fit its hull")
+	hostile_tank.position = tank.position + Vector3(3.2, 0, 0)
+	await get_tree().create_timer(0.05).timeout
+	tank.health.reset(18)
+	tank.ram_cooldown = 0
+	tank.velocity.x = 4.8
+	check(tank.try_ram() == 1, "Tank impact must strike an enemy hull")
+	check(hostile_tank.health.current_health == 16 and tank.health.current_health == 14, "Tank impact must deal four damage to both vehicles")
+	check(tank.try_ram() == 0 and tank.health.current_health == 14, "Impact cooldown must prevent repeated armor damage")
+	var boss_config: EnemyData = load("res://data/enemies/boss.tres")
+	hostile_tank.activate(boss_config, tank.position + Vector3(4.5, 0, 0))
+	hostile_tank.set_physics_process(false)
+	tank.health.reset(18)
+	tank.ram_cooldown = 0
+	await get_tree().create_timer(0.05).timeout
+	check(tank.try_ram() == 1 and tank.health.current_health == 14, "Ramming the tank boss must also damage player armor")
+	tank.health.reset(4)
+	tank.ram_cooldown = 0
+	check(tank.try_ram() == 1 and tank.wrecked and tank.driver == null, "Fatal collision recoil must destroy the tank and eject its driver")
 	PoolManager.release(hostile_tank)
 	var reused_soldier = main.level.spawn_enemy("grunt", Vector3(20, 0, 0))
 	reused_soldier.set_physics_process(false)

@@ -117,11 +117,17 @@ func try_ram() -> int:
 		return 0
 	ram_query.transform.origin = global_position + Vector3(signf(velocity.x) * 1.7, 0.85, 0)
 	var count := 0
+	var armored_target: Node
 	for hit in get_world_3d().direct_space_state.intersect_shape(ram_query, 16):
+		var target: Node = hit.collider.get_parent() if hit.collider is Area3D else hit.collider
 		if Combat.damage(hit.collider, 4, self):
 			count += 1
+			if target is CharacterBody3D and target.get("data") is EnemyData and target.data.behavior in ["tank", "boss"]:
+				armored_target = target
 	if count > 0:
 		ram_cooldown = 0.45
+		if armored_target:
+			take_damage(4, armored_target)
 		EventBus.shake_requested.emit(0.12, 0.12)
 		AudioManager.play_at("hit", global_position)
 	return count
