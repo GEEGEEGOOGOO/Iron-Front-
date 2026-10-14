@@ -395,3 +395,9 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - The full 22-check run passed 21 checks and exposed an authored overlap between mission two's tank and barrel after enabling destructible collisions. The tank now spawns at X=66, clear of the barrel at X=63.
 - The failed standalone scene check passes after that correction. Campaign flow, smoke, stress, combat, vehicle, input, audio, save, and traversal checks passed in the full run. The manual guide now covers authored muzzle flashes, mounted HUD, and wreck collision.
+
+## Manual playtest feedback — 2026-10-14
+
+- Launched the game using Godot 4.7.2 with Forward+ on Apple M5. The user reported: “I tested the game and almost everything works fine.”
+- This confirms a successful manual play session, but the missions, controls, and remaining issues were not specified. It does not establish completion of every QA item.
+- The launched process exited successfully. Its captured output contains a macOS window-movement warning and no Godot script errors. Specific gameplay issues are awaiting clarification.
