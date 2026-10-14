@@ -18,7 +18,7 @@ func _ready() -> void:
 	ram_query.collision_mask = 16 | 256
 	ram_query.collide_with_areas = true
 	collision_layer = 512
-	collision_mask = 1 | 256
+	collision_mask = 1 | 8 | 256
 	ModelFactory.collider(self, Vector3(2.9, 1.8, 1.5), Vector3(0, 0.9, 0))
 	ModelFactory.box(self, Vector3(3.1, 0.6, 1.7), Vector3(0, 0.45, 0), Color(0.12, 0.15, 0.17))
 	ModelFactory.box(self, Vector3(2.7, 0.9, 1.4), Vector3(0, 1.0, 0), Color(0.28, 0.4, 0.32))

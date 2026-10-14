@@ -401,3 +401,9 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 - Launched the game using Godot 4.7.2 with Forward+ on Apple M5. The user reported: “I tested the game and almost everything works fine.”
 - This confirms a successful manual play session, but the missions, controls, and remaining issues were not specified. It does not establish completion of every QA item.
 - The launched process exited successfully. Its captured output contains a macOS window-movement warning and no Godot script errors. Specific gameplay issues are awaiting clarification.
+
+## Manual tank feedback — 2026-10-15
+
+- The user reported tank jumping and driving through enemy tanks. Metal Slug's documented tank controls include jumping, so jumping remains as permitted by the user.
+- Player tanks now collide with enemy bodies. Enemies collide with vehicles and destructibles, and pooled machine enemies use movement colliders sized to their hulls instead of soldier-sized boxes. Reusing a machine as a soldier restores the smaller collider.
+- Vehicle regression verifies movement sweeps in both directions, collider resizing, and collision removal on recycling. Vehicle, combat, reset, and standalone mission scene checks pass with Godot 4.7.2.

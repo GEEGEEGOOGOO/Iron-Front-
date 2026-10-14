@@ -9,6 +9,7 @@ var soldier_gear: Dictionary = {}
 var machine_model: Node3D
 var base_scale := 1.0
 var hurtbox: Area3D
+var body_shape: CollisionShape3D
 var cooldown := 1.0
 var telegraph := 0.0
 var death_time := 0.0
@@ -26,8 +27,8 @@ var intro_time := 0.0
 var phase_cue_time := 0.0
 func _ready() -> void:
 	collision_layer = 8
-	collision_mask = 1
-	ModelFactory.collider(self, Vector3(0.7, 1.8, 0.6), Vector3(0, 0.9, 0))
+	collision_mask = 1 | 256 | 512
+	body_shape = ModelFactory.collider(self, Vector3(0.7, 1.8, 0.6), Vector3(0, 0.9, 0))
 	model = ModelFactory.soldier(self, Color(0.48, 0.49, 0.29))
 	ModelFactory.box(model, Vector3(0.9, 0.16, 0.2), Vector3(0.45, 1.3, 0.2), Color(0.13, 0.13, 0.15))
 	soldier_model = model
@@ -99,6 +100,8 @@ func activate(enemy_data: EnemyData, pos: Vector3) -> void:
 	var hit_shape: CollisionShape3D = hurtbox.get_child(0)
 	hit_shape.shape.size = Vector3(3.4, 2.5, 1.7) * base_scale if model == machine_model else Vector3(0.85, 1.9, 0.8) * base_scale
 	hit_shape.position.y = hit_shape.shape.size.y * 0.5
+	body_shape.shape.size = Vector3(3.4, 2.5, 1.7) * base_scale if model == machine_model else Vector3(0.7, 1.8, 0.6) * base_scale
+	body_shape.position.y = body_shape.shape.size.y * 0.5
 func on_recycle() -> void:
 	active = false
 	collision_layer = 0

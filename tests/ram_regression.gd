@@ -47,6 +47,20 @@ func run() -> void:
 	PoolManager.release(obstacle)
 	await get_tree().physics_frame
 	check(not tank.test_move(tank.global_transform, Vector3(2, 0, 0)), "Recycled wreck must stop blocking tank motion")
+	tank.position = Vector3(22, 0.1, 0)
+	var hostile_tank = main.level.spawn_enemy("tank", tank.position + Vector3(3.8, 0, 0))
+	hostile_tank.set_physics_process(false)
+	await get_tree().create_timer(0.05).timeout
+	check(tank.test_move(tank.global_transform, Vector3(2, 0, 0)), "Enemy tank hull must block player tank motion")
+	check(hostile_tank.test_move(hostile_tank.global_transform, Vector3(-2, 0, 0)), "Player tank hull must block approaching enemy tanks")
+	check(hostile_tank.body_shape.shape.size.x > 3, "Enemy tank movement collider must fit its hull")
+	PoolManager.release(hostile_tank)
+	var reused_soldier = main.level.spawn_enemy("grunt", Vector3(20, 0, 0))
+	reused_soldier.set_physics_process(false)
+	check(reused_soldier == hostile_tank and reused_soldier.body_shape.shape.size.x < 1, "Pooled soldier must restore its smaller movement collider")
+	PoolManager.release(reused_soldier)
+	await get_tree().physics_frame
+	check(not tank.test_move(tank.global_transform, Vector3(2, 0, 0)), "Recycled enemy tank must stop blocking movement")
 	tank.destroy()
 	check(tank.driver == null and GameManager.player.visible, "Destroyed tank must eject its driver")
 	check(PoolManager.pools["wreck"].size() == 2, "Destroyed tank must borrow one wreck")
