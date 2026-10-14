@@ -27,7 +27,7 @@ var intro_time := 0.0
 var phase_cue_time := 0.0
 func _ready() -> void:
 	collision_layer = 8
-	collision_mask = 1 | 256 | 512
+	collision_mask = 1 | 2 | 256 | 512
 	body_shape = ModelFactory.collider(self, Vector3(0.7, 1.8, 0.6), Vector3(0, 0.9, 0))
 	model = ModelFactory.soldier(self, Color(0.48, 0.49, 0.29))
 	ModelFactory.box(model, Vector3(0.9, 0.16, 0.2), Vector3(0.45, 1.3, 0.2), Color(0.13, 0.13, 0.15))

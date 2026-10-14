@@ -54,6 +54,24 @@ func run() -> void:
 	check(tank.test_move(tank.global_transform, Vector3(2, 0, 0)), "Enemy tank hull must block player tank motion")
 	check(hostile_tank.test_move(hostile_tank.global_transform, Vector3(-2, 0, 0)), "Player tank hull must block approaching enemy tanks")
 	check(hostile_tank.body_shape.shape.size.x > 3, "Enemy tank movement collider must fit its hull")
+	var player = GameManager.player
+	tank.exit_vehicle()
+	player.set_physics_process(false)
+	main.level.rig.set_physics_process(false)
+	hostile_tank.position = Vector3(50, 0.1, 0)
+	player.position = hostile_tank.position + Vector3(-4, 0, 0)
+	await get_tree().create_timer(0.05).timeout
+	check(player.test_move(player.global_transform, Vector3(3, 0, 0)), "On-foot character must be blocked by enemy tank from the left")
+	player.position = hostile_tank.position + Vector3(4, 0, 0)
+	await get_tree().create_timer(0.05).timeout
+	check(player.test_move(player.global_transform, Vector3(-3, 0, 0)), "On-foot character must be blocked by enemy tank from the right")
+	player.position = tank.position + Vector3(-3, 0, 0)
+	await get_tree().create_timer(0.05).timeout
+	check(player.test_move(player.global_transform, Vector3(2, 0, 0)), "On-foot character must be blocked by the drivable tank")
+	tank.enter_vehicle(player)
+	check(player.vehicle == tank and not player.visible, "Vehicle entry must still work with solid tank hulls")
+	player.set_physics_process(true)
+	main.level.rig.set_physics_process(true)
 	hostile_tank.position = tank.position + Vector3(3.2, 0, 0)
 	await get_tree().create_timer(0.05).timeout
 	tank.health.reset(18)

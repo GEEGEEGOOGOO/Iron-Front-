@@ -29,7 +29,7 @@ var ladder: ClimbLadder
 var ladder_grace := 0.0
 func _ready() -> void:
 	collision_layer = 2
-	collision_mask = 1 | 256
+	collision_mask = 1 | 8 | 256 | 512
 	shape = ModelFactory.collider(self, Vector3(0.65, 1.9, 0.65), Vector3(0, 0.95, 0))
 	model = ModelFactory.soldier(self, Color(0.19, 0.43, 0.47))
 	ModelFactory.box(model, Vector3(0.58, 0.12, 0.55), Vector3(0, 1.85, 0), Color(0.9, 0.3, 0.12))
@@ -56,7 +56,7 @@ func _ready() -> void:
 	add_child(ground)
 	ground.position.y = 0.2
 	ground.target_position = Vector3(0, -0.35, 0)
-	ground.collision_mask = 1
+	ground.collision_mask = 1 | 8 | 256 | 512
 	GameManager.player = self
 func _physics_process(delta: float) -> void:
 	if GameManager.state != GameManager.State.PLAYING:
@@ -258,6 +258,6 @@ func can_stand() -> bool:
 	var query := PhysicsShapeQueryParameters3D.new()
 	query.shape = standing
 	query.transform.origin = global_position + Vector3(0, 1.46, 0)
-	query.collision_mask = 1 | 256
+	query.collision_mask = 1 | 8 | 256 | 512
 	query.exclude = [get_rid()]
 	return get_world_3d().direct_space_state.intersect_shape(query, 1).is_empty()

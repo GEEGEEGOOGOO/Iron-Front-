@@ -412,3 +412,8 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Ramming an enemy tank or tank boss now applies four damage to player armor as well as the existing four damage to the enemy. Infantry and destructible ram targets retain their existing behavior. Impact cooldown and armor mercy frames prevent damage every physics frame.
 - Vehicle regression passes for mutual tank damage, cooldown, boss recoil, and fatal recoil destroying the vehicle and ejecting its driver.
+
+## On-foot tank collision
+
+- Player movement, ground probes, and standing-clearance queries now include enemy bodies and vehicles. Enemies also collide with the player, preventing them from walking into the character. Vehicle entry still explicitly hides the driver and switches control.
+- Vehicle regression verifies on-foot hull blocking from both sides, blocking by the drivable tank, and successful vehicle entry. Vehicle, combat, input, and traversal checks pass; the input check emitted an exit-time ObjectDB leak warning, without script errors.
