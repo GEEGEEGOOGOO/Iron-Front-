@@ -2,6 +2,24 @@
 
 An original Godot 4 run-and-gun project based on the supplied Metal Slug 3D implementation plan. This is an early playable implementation, with procedural placeholder models and synthesized sound effects. The full plan remains in progress.
 
+## Repository layout
+
+| Folder | Contents |
+|---|---|
+| `assets/` | Runtime models, textures, UI images, and audio used by Godot |
+| `art-source/weapons/` | Blender projects, references, review renders, and retained backups, grouped by weapon |
+| `autoloads/` | Shared game services |
+| `data/` | Weapon, enemy, and mission resources |
+| `scenes/` | Playable scenes, menus, and debug scenes |
+| `scripts/` | Gameplay and UI code |
+| `shaders/` | Rendering shaders |
+| `tests/` | Automated regression scenes and scripts |
+| `tools/` | Export, rendering, and test utilities |
+| `docs/` | Implementation notes, concepts, and manual testing guides |
+
+See [repository organization](docs/repository-organization.md) for asset placement
+rules and [Blender weapons](docs/blender-weapons.md) for the source-to-game workflow.
+
 ## Open and play
 
 The pistol, shotgun, and flamethrower now use the Blender-authored models. For

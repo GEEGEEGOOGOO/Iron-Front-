@@ -12,9 +12,9 @@ from mathutils import Vector, noise
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KIND = sys.argv[sys.argv.index("--") + 1]
 CONFIG = {
-    "pistol": ("Pistol_Animated.blend", (.70, 0, 1.50), 1.0 / (4.46 - .70)),
-    "shotgun": ("Shotgun_Animated.blend", (-1.10, 0, .40), 1.25 / (5.10 + 1.10)),
-    "flame": ("Flamethrower_Animated.blend", (.05, 0, 1.20), 1.20 / (4.18 - .05)),
+    "pistol": ("art-source/weapons/pistol/models/Pistol_Animated.blend", (.70, 0, 1.50), 1.0 / (4.46 - .70)),
+    "shotgun": ("art-source/weapons/shotgun/models/Shotgun_Animated.blend", (-1.10, 0, .40), 1.25 / (5.10 + 1.10)),
+    "flame": ("art-source/weapons/flamethrower/models/Flamethrower_Animated.blend", (.05, 0, 1.20), 1.20 / (4.18 - .05)),
 }
 filename, anchor, scale = CONFIG[KIND]
 bpy.ops.wm.open_mainfile(filepath=os.path.join(ROOT, filename))

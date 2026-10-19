@@ -38,7 +38,9 @@ systems, so Blender preview scripts are never executed by Godot. The plume
 stops emitting on release and lets existing particles grow and fade within a
 finite lifetime. Flame damage still uses the existing obstructed cone query.
 
-Source Blender files remain in the workspace. Direct `.blend` auto-import is
+Source Blender files live under `art-source/weapons/<weapon>/models/`.
+Review renders are in each weapon’s `previews/` folder; older versions are in
+`backups/`. See [repository organization](repository-organization.md). Direct `.blend` auto-import is
 disabled in `project.godot`: the game loads only explicit GLB exports and does
 not require a local Blender install to import them.
 

@@ -3,3 +3,7 @@
 builds/
 .DS_Store
 test-results/
+
+# Blender automatic backup files (existing archived snapshots stay tracked)
+*.blend[0-9]*
+__pycache__/
