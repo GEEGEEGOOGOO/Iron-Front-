@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="WeaponData" load_steps=3 format=3]
 [ext_resource type="Script" path="res://scripts/combat/weapon_data.gd" id="1"]
-[ext_resource type="Texture2D" path="res://assets/textures/icons/flame.svg" id="icon"]
+[ext_resource type="Texture2D" path="res://assets/models/weapons/flame_icon.png" id="icon"]
 [resource]
 script = ExtResource("1")
 title = "Flamethrower"
@@ -22,3 +22,6 @@ icon = ExtResource("icon")
 model_kind = "flame"
 muzzle_distance = 1.2
 sfx_fire = "shot_flame"
+
+magazine_size = 40
+reload_duration = 1.4

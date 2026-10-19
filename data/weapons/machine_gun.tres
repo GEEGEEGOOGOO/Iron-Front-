@@ -19,3 +19,6 @@ icon = ExtResource("icon")
 model_kind = "machine_gun"
 muzzle_distance = 1.5
 sfx_fire = "shot_machine"
+
+magazine_size = 30
+reload_duration = 1.25

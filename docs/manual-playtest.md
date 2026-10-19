@@ -4,7 +4,7 @@ Open `project.godot` in Godot 4.4 or newer and press F5. Choose a mission from t
 
 ## First pass: feel and readability
 
-1. Move, jump with a short and long press, crouch, and aim in all eight directions. Try a keyboard and a controller if available.
+1. Move, jump with a short and long press, crouch, and aim in all eight directions. Check bent knees during crouch, different rising/falling jump poses, and landing compression. Try a keyboard and a controller if available. Reload with R / left-stick click: firing should pause, the hand/cartridge should move, and the reload meter should fill. Dash with Shift / right-stick click; confirm the charge returns after three seconds and walls still block movement.
 2. Fire the sidearm, collect a special weapon, and press Q or controller left shoulder to swap. Confirm its ammo is preserved while stowed and that it returns to the sidearm when empty. Check that flashes point along the firing direction and the laser, rocket, and shotgun effects are distinguishable.
 3. Break a POW cage, rescue the prisoner at close range, and check the reward and POW counter. Break a crate and an explosive barrel.
 4. Enter the Iron Mule tank with E or controller Y. The HUD should show armor and mounted weapons. Drive, fire both weapons, ram an enemy, exit, and let the tank be destroyed to check ejection. Shoot the remaining wreck until it breaks, then walk through its former position. Intact crates and wrecks should block tank movement until destroyed.

@@ -4,6 +4,14 @@ An original Godot 4 run-and-gun project based on the supplied Metal Slug 3D impl
 
 ## Open and play
 
+The pistol, shotgun, and flamethrower now use the Blender-authored models. For
+quick access to all three, open `scenes/debug/blender_armory.tscn` and press F6;
+select a weapon with the on-screen buttons, fire with J, and reload with R.
+In normal missions, use 1 for the Blender pistol, 2 for shotgun, and 3 for
+flamethrower, or click the weapon buttons below the HUD. All three are available
+at mission start; changing slots preserves spent ammunition.
+See [Blender weapons](docs/blender-weapons.md) for export and integration details.
+
 1. Import `project.godot` in Godot 4.4 or newer (validated with 4.7.2).
 2. Press **F5** and select a mission.
 3. Move right, defeat each locked encounter, rescue POWs, and defeat the boss.
@@ -21,6 +29,8 @@ The project uses Forward+ and Jolt, 60 Hz physics, and a 1280 × 720 canvas. No 
 | Jump (variable height) | Space | A |
 | Fire | J | X |
 | Switch sidearm / special weapon | Q | Left shoulder |
+| Reload magazine | R | Left-stick click |
+| Rechargeable dash | Shift | Right-stick click |
 | Grenade / tank cannon | K | B |
 | Knife / free POW | L | Right shoulder |
 | Interact / enter or exit tank | E | Y |
@@ -34,7 +44,7 @@ At ladders, use aim up/down to climb; release to hold, and jump or move sideways
 
 ## Current implementation
 
-- Side-view 3D lane movement, variable jump, coyote time, buffering, crouch, eight-way firing.
+- Side-view 3D lane movement, variable jump, coyote time, buffering, jointed crouch/jump/landing poses, eight-way firing, and a rechargeable dash.
 - Six weapon resources with distinct held models and muzzle positions, sidearm/special weapon switching, grenades, melee, health, mercy frames, lives and checkpoints.
 - Seven enemy data variants including a three-phase boss prototype.
 - Encounter gates, destructible crates/barrels, weapon/health/grenade pickups, POW rescue.
@@ -76,3 +86,9 @@ The smoke test covers ground contact, the Z lock, trigger/spawn/clear encounters
 See `docs/progress.md` for unfinished requirements and planned work. Scene geometry and placeholder models are constructed in GDScript at runtime; open the running game to see them.
 
 For a focused manual pass through all missions, use `docs/manual-playtest.md`.
+
+## Magazines and dash
+
+Weapons now use magazines: reload with R / left-stick click, or keep firing an empty magazine to reload automatically. Reloading does not create ammo; finite special-weapon ammo still comes from pickups. The sidearm has unlimited reserve ammo. Weapon switching cancels a reload and preserves magazine contents.
+
+Shift / right-stick click triggers an original short dash with a three-second recharge. It obeys world and actor collisions and gives no damage immunity. The HUD shows health/armor, life icons, magazine rounds, reserve/reload progress, grenade icons, and dash charge visually. Score, mission and rescue totals remain readable text.

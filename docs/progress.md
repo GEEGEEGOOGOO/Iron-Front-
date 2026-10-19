@@ -417,3 +417,11 @@ Do not treat this checklist or the smoke test as evidence that the entire game s
 
 - Player movement, ground probes, and standing-clearance queries now include enemy bodies and vehicles. Enemies also collide with the player, preventing them from walking into the character. Vehicle entry still explicitly hides the driver and switches control.
 - Vehicle regression verifies on-foot hull blocking from both sides, blocking by the drivable tank, and successful vehicle entry. Vehicle, combat, input, and traversal checks pass; the input check emitted an exit-time ObjectDB leak warning, without script errors.
+
+## Original movement, reload and visual HUD pass
+
+- Replaced whole-body crouch scaling with hip lowering and jointed knee bends. Run, rising jump, falling and landing now use separate limb targets with smooth transitions. Existing detailed meshes and textures were preserved.
+- Added data-driven magazines and timed reloads, automatic reload on an empty magazine, hand/cartridge motion and gun lowering. Reloading preserves total ammunition; weapon switching cancels the animation without refilling the magazine. R / left-stick click reloads.
+- Added an original short dash on Shift / right-stick click, rechargeable over three seconds. It respects collision, provides no invulnerability, and is unavailable while driving. Entry into a vehicle cancels reload and dash motion.
+- Replaced numeric health/ammo/grenade readouts with health/armor bars, life icons, magazine rounds, reserve/reload meters, grenade icons and dash charge. Scores and mission/rescue totals remain text. New actions support rebinding.
+- New movement/combat regression covers magazine accounting, reload fire lock, auto-reload, switch cancellation, pose differences, dash collision and recharge. Input regression was updated because R is now assigned to reload. Visual animation and HUD review remain manual.

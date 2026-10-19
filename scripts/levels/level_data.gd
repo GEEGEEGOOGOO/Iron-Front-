@@ -23,8 +23,8 @@ extends Resource
 @export var camera_bounds := Vector2(10, 115)
 @export var camera_vertical_bounds := Vector2(0, 6)
 @export_enum("perspective", "orthographic") var camera_projection := "perspective"
-@export var camera_fov := 42.0
-@export var camera_ortho_size := 18.0
+@export var camera_fov := 32.0
+@export var camera_ortho_size := 12.5
 @export var camera_player_half_width := 15.0
 @export_range(50, 200, 5) var decoration_visibility_distance := 80.0
 @export var pow_positions := PackedVector3Array([Vector3(33, 0, 0), Vector3(69, 0, 0), Vector3(100, 0, 0)])

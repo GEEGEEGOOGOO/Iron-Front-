@@ -24,15 +24,13 @@ func run() -> void:
 		check(is_equal_approx(entry.level.tank.position.x, entry.level.data.tank_position.x), "Tank must use the mission X placement")
 		check(entry.level.boss_prisoner.position == entry.level.data.commander_position, "Commander must use the mission placement")
 		check(entry.level.data.supply_positions.size() == entry.level.data.supply_kinds.size(), "Supply positions and kinds must match")
-		var backdrop := entry.level.get_node("BackdropBlock-2") as MeshInstance3D
+		var dust = entry.level.battlefield
+		check(dust.get_node_or_null("ForegroundClutter") != null, "Battlefield must expose its foreground depth layer")
+		check(dust.get_node_or_null("MidgroundUtilities") != null, "Battlefield must expose its utility depth layer")
+		var backdrop := dust.get_node("BackgroundCityscape").get_child(0).get_child(0) as MeshInstance3D
 		if mission == 0:
-			first_backdrop_size = (backdrop.mesh as BoxMesh).size
-		if mission != 1:
-			var ground_detail_name := "CoastalWater" if mission == 0 else "FoundryChannel"
-			var ground_detail := entry.level.get_node_or_null(ground_detail_name) as MeshInstance3D
-			check(ground_detail != null, "Mission must build its visual ground strip")
-			if ground_detail:
-				check(ground_detail.position.y > 0 and ground_detail.position.z < -3.5, "Visual ground strip must sit above and behind the lane floor")
+			first_backdrop_size = backdrop.get_aabb().size
+		check(dust.terminals.size() == (3 if dust is MissionBattlefield else entry.level.data.platform_positions.size()), "Each map must expose its authored interaction stations")
 		entry.level.wave_index = entry.level.data.waves.size()
 		entry.level.player.position.x = entry.level.data.boss_trigger_x + 0.1
 		entry.level._physics_process(1.0 / 60.0)
@@ -49,8 +47,8 @@ func run() -> void:
 	var replay = load("res://scenes/levels/mission_1.tscn").instantiate()
 	add_child(replay)
 	await get_tree().create_timer(0.15).timeout
-	var replay_backdrop := replay.level.get_node("BackdropBlock-2") as MeshInstance3D
-	check((replay_backdrop.mesh as BoxMesh).size == first_backdrop_size, "Mission background geometry must repeat between launches")
+	var replay_backdrop := replay.level.battlefield.get_node("BackgroundCityscape").get_child(0).get_child(0) as MeshInstance3D
+	check(replay_backdrop.get_aabb().size.is_equal_approx(first_backdrop_size), "Mission background geometry must repeat between launches")
 	replay.quit_to_menu()
 	remove_child(replay)
 	replay.queue_free()

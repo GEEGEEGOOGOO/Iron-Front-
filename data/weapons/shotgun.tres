@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="WeaponData" load_steps=3 format=3]
 [ext_resource type="Script" path="res://scripts/combat/weapon_data.gd" id="1"]
-[ext_resource type="Texture2D" path="res://assets/textures/icons/shotgun.svg" id="icon"]
+[ext_resource type="Texture2D" path="res://assets/models/weapons/shotgun_icon.png" id="icon"]
 [resource]
 script = ExtResource("1")
 title = "Scattergun"
@@ -22,3 +22,6 @@ sfx_fire = "shot_shotgun"
 muzzle_flash_color = Color(1, 0.75, 0.25, 1)
 muzzle_flash_size = Vector3(0.7, 0.4, 0.3)
 muzzle_flash_duration = 0.09
+
+magazine_size = 6
+reload_duration = 1.35

@@ -20,15 +20,10 @@ func _ready() -> void:
 	collision_layer = 512
 	collision_mask = 1 | 8 | 256
 	ModelFactory.collider(self, Vector3(2.9, 1.8, 1.5), Vector3(0, 0.9, 0))
-	ModelFactory.box(self, Vector3(3.1, 0.6, 1.7), Vector3(0, 0.45, 0), Color(0.12, 0.15, 0.17))
-	ModelFactory.box(self, Vector3(2.7, 0.9, 1.4), Vector3(0, 1.0, 0), Color(0.28, 0.4, 0.32))
-	ModelFactory.box(self, Vector3(1.6, 0.7, 1.1), Vector3(0, 1.7, 0), Color(0.38, 0.51, 0.4))
-	for x in [-1.0, -0.5, 0.0, 0.5, 1.0]:
-		ModelFactory.sphere(self, 0.28, Vector3(x, 0.45, 0.88), Color(0.3, 0.32, 0.3))
-	gun = Node3D.new()
-	add_child(gun)
-	gun.position.y = 1.8
-	ModelFactory.box(gun, Vector3(2, 0.25, 0.3), Vector3(1, 0, 0), Color(0.24, 0.3, 0.26))
+	var visual := ModelFactory.armored_machine(self)
+	visual.configure("scout", Color(0.27, 0.43, 0.37))
+	gun = visual.turret
+	gun.rotation.y = PI
 	health = HealthComponent.new()
 	add_child(health)
 	health.reset(18)
@@ -55,7 +50,7 @@ func _physics_process(delta: float) -> void:
 		if absf(axis) > 0.1:
 			facing = signf(axis)
 		driver.facing = facing
-		gun.rotation.y = 0 if facing > 0 else PI
+		gun.rotation.y = PI if facing > 0 else 0
 		if Input.is_action_just_pressed("jump") and is_on_floor():
 			velocity.y = 8
 		var origin := firing_origin()
@@ -71,13 +66,15 @@ func _physics_process(delta: float) -> void:
 	try_ram()
 	position.z = 0
 	if driver:
-		position.x = clampf(position.x, GameManager.level.rig.position.x - 14, GameManager.level.rig.position.x + 14)
+		position.x = clampf(position.x, GameManager.level.rig.position.x - GameManager.level.rig.half_width + 1.0, GameManager.level.rig.position.x + GameManager.level.rig.half_width - 1.0)
 		if GameManager.level.encounter:
 			position.x = minf(position.x, GameManager.level.data.waves[GameManager.level.wave_index].arena_center + 10)
 func enter_vehicle(player: CharacterBody3D) -> void:
 	if wrecked or driver:
 		return
 	driver = player
+	player.start_reload_cancel()
+	player.dash_remaining = 0
 	player.vehicle = self
 	player.state = player.State.VEHICLE
 	player.hide()

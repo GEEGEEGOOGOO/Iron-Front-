@@ -9,6 +9,7 @@ var objective: Label
 var boss_bar: ProgressBar
 var last_state := -1
 var pending_binding := ""
+var selected_menu_mission := 1
 var binding_message := ""
 var debug_label: Label
 var mission_card: ColorRect
@@ -70,28 +71,15 @@ func show_menu() -> void:
 	GameManager.state = GameManager.State.MENU
 	last_state = GameManager.state
 	clear_ui()
-	background()
-	label_at("TACTICAL RUN & GUN / 01", Vector2(90, 60.0), 16, Color(0.65, 0.74, 0.77))
-	label_at("IRON FRONT", Vector2(84, 125), 76)
-	label_at("OPERATION ASHFALL", Vector2(90, 220), 23, Color(1, 0.54, 0.23))
-	label_at("Three fronts. One soldier. Keep moving.", Vector2(90, 270), 20)
-	for i in 3:
-		var data: LevelData = load("res://data/levels/mission_%d.tres" % (i + 1))
-		var index := i
-		button("%02d  /  %s" % [i + 1, data.mission_name], 330 + i * 59, func(): start_mission(index))
-		label_at("BEST %07d" % int(SaveManager.data.high_scores.get(str(i), 0)), Vector2(520, 343 + i * 59), 17, Color(0.75, 0.82, 0.8))
-	button("OPTIONS", 520, show_options)
-	button("QUIT", 579, func(): get_tree().quit())
-	label_at("FIELD MANUAL", Vector2(720, 340), 20, Color(1, 0.54, 0.23))
-	label_at("%s   Move left
-%s   Move right
-%s   Jump   •   %s   Fire
-%s   Grenade   •   %s   Interact
-%s   Switch weapon
-%s   Pause
-
-Change keys in Options → Controls." % [InputManager.key_label("move_left"), InputManager.key_label("move_right"), InputManager.key_label("jump"), InputManager.key_label("fire"), InputManager.key_label("fire_secondary"), InputManager.key_label("interact"), InputManager.key_label("switch_weapon"), InputManager.key_label("pause")], Vector2(720, 380), 17)
-	pass_focus()
+	var menu := preload("res://scripts/ui/campaign_menu.gd").new()
+	menu.name = "CampaignMenu"
+	menu.selected = selected_menu_mission
+	menu.deployed.connect(start_mission)
+	menu.mission_selected.connect(func(index: int): selected_menu_mission = index)
+	menu.options_requested.connect(show_options)
+	menu.controls_requested.connect(show_controls)
+	menu.quit_requested.connect(func(): get_tree().quit())
+	screen.add_child(menu)
 func pass_focus() -> void:
 	for child in screen.get_children():
 		if child is Button:
@@ -113,22 +101,38 @@ func start_mission(index: int) -> void:
 	last_state = GameManager.state
 func show_hud() -> void:
 	clear_ui()
-	var band := ColorRect.new()
-	band.color = Color(0.03, 0.05, 0.07, 0.88)
-	band.size = Vector2(1280, 83)
-	screen.add_child(band)
 	weapon_icon = TextureRect.new()
 	weapon_icon.position = Vector2(22, 10)
 	weapon_icon.size = Vector2(90, 60)
 	weapon_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	weapon_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	screen.add_child(weapon_icon)
-	hud = label_at("", Vector2(132, 17), 19)
-	objective = label_at("", Vector2(320, 115), 27, Color(1, 0.7, 0.27))
-	label_at("%s JUMP   %s FIRE   %s GRENADE   %s KNIFE   %s INTERACT   %s PAUSE" % [InputManager.key_label("jump"), InputManager.key_label("fire"), InputManager.key_label("fire_secondary"), InputManager.key_label("melee"), InputManager.key_label("interact"), InputManager.key_label("pause")], Vector2(100, 675), 16)
+	weapon_icon.hide()
+	hud = label_at("", Vector2(132, 8), 16)
+	hud.hide()
+	var status_visual = preload("res://scripts/ui/combat_status.gd").new()
+	status_visual.size = Vector2(1280, 720)
+
+	var actions = preload("res://scripts/ui/action_controls.gd").new()
+	actions.position = Vector2.ZERO
+	screen.add_child(actions)
+	screen.add_child(status_visual)
+	objective = label_at("", Vector2(400, 80), 18, Color(1, 0.8, 0.5))
+	objective.anchor_left = 0.5
+	objective.anchor_right = 0.5
+	objective.offset_left = -240
+	objective.offset_right = 240
+	objective.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+
 	boss_bar = ProgressBar.new()
-	boss_bar.position = Vector2(350, 625)
-	boss_bar.size = Vector2(580, 18)
+	boss_bar.anchor_left = 0.5
+	boss_bar.anchor_right = 0.5
+	boss_bar.anchor_top = 1.0
+	boss_bar.anchor_bottom = 1.0
+	boss_bar.offset_left = -220
+	boss_bar.offset_right = 220
+	boss_bar.offset_top = -36
+	boss_bar.offset_bottom = -28
 	boss_bar.show_percentage = false
 	screen.add_child(boss_bar)
 	debug_label = label_at("", Vector2(30, 150), 16)
@@ -256,12 +260,12 @@ func _process(delta: float) -> void:
 			var vehicle = player.vehicle
 			weapon_icon.texture = vehicle.machine_gun.icon
 			weapon_icon.tooltip_text = "Mounted machine gun and cannon"
-			status = "ARMOR %d / %d   •   LIVES %d       MACHINE GUN ∞       CANNON ∞" % [ceili(vehicle.health.current_health), int(vehicle.health.max_health), GameManager.lives]
+			status = "IRON MULE • MOUNTED WEAPONS"
 			hint = "    %s / Y EXIT" % InputManager.key_label("interact")
 		else:
 			weapon_icon.texture = player.weapon.icon
 			weapon_icon.tooltip_text = player.weapon.title
-			status = "HP %d / %d   •   LIVES %d       %s  %s       GRENADES %d" % [ceili(player.health.current_health), int(player.health.max_health), GameManager.lives, player.weapon.title.to_upper(), "∞" if player.ammo < 0 else str(player.ammo), player.grenades]
+			status = player.weapon.title.to_upper()
 			if player.reserve_weapon:
 				hint = "    %s / LB SWITCH" % InputManager.key_label("switch_weapon")
 		hud.text = "%s\nSCORE %07d     POW %d / %d     MISSION %02d%s" % [status, GameManager.score, GameManager.rescued, level.pows.size(), GameManager.mission + 1, hint]
@@ -298,11 +302,11 @@ func show_controls() -> void:
 	label_at("Select an action, then press a key. Escape cancels capture. Controller bindings stay available.", Vector2(90, 194), 17)
 	for i in InputManager.REBINDABLE.size():
 		var action: String = InputManager.REBINDABLE[i]
-		var item := button(action.replace("_", " ").to_upper() + "   /   " + InputManager.key_label(action), 240 + (i % 6) * 50, func():
+		var item := button(action.replace("_", " ").to_upper() + "   /   " + InputManager.key_label(action), 240 + (i % 7) * 43, func():
 			pending_binding = action
 			binding_message = "Press a key for " + action.replace("_", " ")
 			refresh_binding_message())
-		item.position.x = 90 + (i / 6) * 520
+		item.position.x = 90 + (i / 7) * 520
 	label_at(binding_message, Vector2(90, 540), 18, Color(1, 0.7, 0.3)).name = "BindingMessage"
 	button("RESTORE DEFAULTS", 590, func():
 		InputManager.reset_bindings()

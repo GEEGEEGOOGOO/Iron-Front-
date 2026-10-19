@@ -24,3 +24,6 @@ extends Resource
 @export var muzzle_flash_color := Color(1, 0.87, 0.3)
 @export var muzzle_flash_size := Vector3(0.5, 0.25, 0.2)
 @export_range(0.01, 0.3, 0.01) var muzzle_flash_duration := 0.07
+
+@export_range(1, 60, 1) var magazine_size := 12
+@export_range(0.2, 4, 0.1) var reload_duration := 1.0

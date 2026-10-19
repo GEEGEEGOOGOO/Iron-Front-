@@ -1,23 +1,44 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
 config_version=5
+
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
-config/name="IRON FRONT — Operation Ashfall"
+
+config/name="IRON FRONT — Dust Battalion"
 run/main_scene="res://scenes/main.tscn"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.7", "Forward Plus")
+
 [autoload]
+
 EventBus="*res://autoloads/event_bus.gd"
 SaveManager="*res://autoloads/save_manager.gd"
 InputManager="*res://autoloads/input_manager.gd"
 PoolManager="*res://autoloads/pool_manager.gd"
 AudioManager="*res://autoloads/audio_manager.gd"
 GameManager="*res://autoloads/game_manager.gd"
+
 [display]
+
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
-[physics]
-common/physics_ticks_per_second=60
-3d/physics_engine="Jolt Physics"
+
+[filesystem]
+
+import/blender/enabled=false
+
 [layer_names]
+
 3d_physics/layer_1="world"
 3d_physics/layer_2="player"
 3d_physics/layer_3="player_hurtbox"
@@ -28,3 +49,12 @@ common/physics_ticks_per_second=60
 3d_physics/layer_8="interactable"
 3d_physics/layer_9="destructible"
 3d_physics/layer_10="vehicle"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+antialiasing/quality/msaa_3d=2
+antialiasing/quality/screen_space_aa=1

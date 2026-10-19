@@ -13,6 +13,12 @@ func run() -> void:
 	await get_tree().create_timer(0.1).timeout
 	var rig = main.level.rig
 	rig.set_physics_process(false)
+	var viewport_size: Vector2 = rig.camera.get_viewport().get_visible_rect().size
+	var feet: Vector2 = rig.camera.unproject_position(Vector3(rig.position.x, 0, 0))
+	var head: Vector2 = rig.camera.unproject_position(Vector3(rig.position.x, 1.9, 0))
+	check(feet.y / viewport_size.y > 0.73 and feet.y / viewport_size.y < 0.85, "Road must sit near the lower fifth instead of leaving an empty lower third")
+	check((feet.y - head.y) / viewport_size.y > 0.13, "Standing player must occupy a readable fraction of screen height")
+	check(rig.half_width < 12, "Player movement bounds must tighten with the zoom")
 	var config := LevelData.new()
 	config.camera_bounds = Vector2(20, 40)
 	config.camera_projection = "orthographic"
@@ -32,6 +38,11 @@ func run() -> void:
 	config.camera_projection = "perspective"
 	rig.configure(config)
 	check(rig.camera.projection == Camera3D.PROJECTION_PERSPECTIVE, "Perspective mode must apply")
+	var boss = main.level.spawn_enemy("boss", Vector3(42, 0, 0))
+	main.level.boss = boss
+	for i in 90:
+		rig._physics_process(1.0 / 60.0)
+	check(rig.camera.fov > config.camera_fov, "Boss encounters must widen the tighter camera smoothly")
 	main.quit_to_menu()
 	await get_tree().create_timer(0.2).timeout
 	print("CAMERA REGRESSION ", "PASS" if failures == 0 else "FAIL")

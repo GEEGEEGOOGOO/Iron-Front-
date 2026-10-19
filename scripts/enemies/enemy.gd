@@ -88,9 +88,9 @@ func activate(enemy_data: EnemyData, pos: Vector3) -> void:
 	for kind in soldier_gear:
 		var attachment: Node3D = soldier_gear[kind]
 		attachment.visible = data.behavior == kind
-	for part in machine_model.get_children():
-		if part is MeshInstance3D and not part.material_override.emission_enabled:
-			part.material_override.albedo_color = data.tint
+	if model == machine_model:
+		machine_model.configure({"boss": "heavy", "turret": "sentry"}.get(data.behavior, "scout"), data.tint)
+		apply_flash(machine_model)
 	set_model_alpha(soldier_model, 1.0)
 	set_model_alpha(machine_model, 1.0)
 	model.position = Vector3.ZERO
@@ -140,6 +140,8 @@ func _physics_process(delta: float) -> void:
 		velocity.x = signf(distance) * data.move_speed
 	move_and_slide()
 	position.z = 0
+	if model == machine_model:
+		machine_model.rotation.y = 0.0 if distance < 0 else PI
 	if model == soldier_model:
 		model.pose(delta, velocity.x, signf(distance), not is_on_floor())
 	if hurt_time > 0:
@@ -188,6 +190,12 @@ func attack(player: Node3D) -> void:
 			Combat.fire(self, origin, direction, weapon, false)
 func firing_origin(target: Node3D) -> Vector3:
 	var breech := global_position + Vector3(0, 1.25, 0)
+	if model == machine_model:
+		var head: Node3D = machine_model.turret
+		breech = head.global_position
+		var muzzle_pos: Vector3 = head.to_global(Vector3(-2.17, 0.05, 0))
+		var barrel_direction := (muzzle_pos - breech).normalized()
+		return Combat.muzzle_origin(self, breech, muzzle_pos, barrel_direction, false)
 	var direction := (target.global_position + Vector3(0, 1, 0) - breech).normalized()
 	return Combat.muzzle_origin(self, breech, breech + direction * 0.6, direction, false)
 func take_damage(amount: float, source: Node = null) -> bool:
@@ -225,9 +233,7 @@ func die() -> void:
 func configure_boss(config: BossData) -> void:
 	boss_data = config
 	machine_model.get_node(config.equipment).show()
-	for part in machine_model.get_children():
-		if part is MeshInstance3D and not part.material_override.emission_enabled:
-			part.material_override.albedo_color = config.tint
+	machine_model.paint(machine_model, config.tint)
 	health.reset(config.health)
 	intro_time = 2.5
 	cooldown = 0.3
@@ -256,7 +262,7 @@ func update_boss_phase() -> void:
 
 func execute_pattern(player: Node3D) -> void:
 	var pattern := current_pattern
-	var origin := position + Vector3(-1.5, 2.8, 0)
+	var origin := firing_origin(player)
 	weapon.speed = pattern.speed
 	match pattern.kind:
 		"grenades":

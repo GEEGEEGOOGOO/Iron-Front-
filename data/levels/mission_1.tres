@@ -9,7 +9,7 @@
 [resource]
 script = ExtResource("1")
 mission_name = "Operation Ashfall"
-subtitle = "BREACH THE COASTAL DEFENSE"
+subtitle = "BREACH THE RESEARCH FACILITY"
 sky_color = Color(0.48, 0.62, 0.68, 1)
 ground_color = Color(0.38, 0.40, 0.29, 1)
 waves = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4")])

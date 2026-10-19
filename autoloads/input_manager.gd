@@ -1,7 +1,14 @@
 extends Node
-const DEFAULT_KEYS := {"move_left": [KEY_A, KEY_LEFT], "move_right": [KEY_D, KEY_RIGHT], "aim_up": [KEY_W, KEY_UP], "crouch": [KEY_S, KEY_DOWN], "jump": [KEY_SPACE], "fire": [KEY_J], "fire_secondary": [KEY_K], "melee": [KEY_L], "interact": [KEY_E], "switch_weapon": [KEY_Q], "pause": [KEY_ESCAPE], "debug": [KEY_F3]}
-const REBINDABLE := ["move_left", "move_right", "aim_up", "crouch", "jump", "fire", "fire_secondary", "melee", "interact", "switch_weapon", "pause"]
+const DEFAULT_KEYS := {"move_left": [KEY_A, KEY_LEFT], "move_right": [KEY_D, KEY_RIGHT], "aim_up": [KEY_W, KEY_UP], "crouch": [KEY_S, KEY_DOWN], "jump": [KEY_SPACE], "fire": [KEY_J], "fire_secondary": [KEY_K], "melee": [KEY_L], "interact": [KEY_E], "switch_weapon": [KEY_Q], "reload": [KEY_R], "dash": [KEY_SHIFT], "pause": [KEY_ESCAPE], "debug": [KEY_F3]}
+const REBINDABLE := ["move_left", "move_right", "aim_up", "crouch", "jump", "fire", "fire_secondary", "melee", "interact", "switch_weapon", "reload", "dash", "pause"]
+const WEAPON_KEYS := {"select_pistol": KEY_1, "select_shotgun": KEY_2, "select_flame": KEY_3}
 func _ready() -> void:
+	for action in WEAPON_KEYS:
+		if not InputMap.has_action(action):
+			InputMap.add_action(action)
+		var key_event := InputEventKey.new()
+		key_event.physical_keycode = WEAPON_KEYS[action]
+		InputMap.action_add_event(action, key_event)
 
 	for action in DEFAULT_KEYS:
 		if not InputMap.has_action(action):
@@ -10,7 +17,7 @@ func _ready() -> void:
 			var event := InputEventKey.new()
 			event.physical_keycode = key
 			InputMap.action_add_event(action, event)
-	var buttons := {"jump": JOY_BUTTON_A, "fire": JOY_BUTTON_X, "fire_secondary": JOY_BUTTON_B, "interact": JOY_BUTTON_Y, "melee": JOY_BUTTON_RIGHT_SHOULDER, "switch_weapon": JOY_BUTTON_LEFT_SHOULDER, "pause": JOY_BUTTON_START}
+	var buttons := {"jump": JOY_BUTTON_A, "fire": JOY_BUTTON_X, "fire_secondary": JOY_BUTTON_B, "interact": JOY_BUTTON_Y, "melee": JOY_BUTTON_RIGHT_SHOULDER, "switch_weapon": JOY_BUTTON_LEFT_SHOULDER, "reload": JOY_BUTTON_LEFT_STICK, "dash": JOY_BUTTON_RIGHT_STICK, "pause": JOY_BUTTON_START}
 	for action in buttons:
 		var event := InputEventJoypadButton.new()
 		event.button_index = buttons[action]
@@ -62,6 +69,8 @@ func rebind(action: String, key: int) -> String:
 		return "Invalid control."
 	if key in [KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7]:
 		return "F3–F7 are reserved for debug tools."
+	if key in [KEY_1, KEY_2, KEY_3]:
+		return "1–3 are reserved for the Blender weapon loadout."
 	for other in REBINDABLE:
 		if other == action:
 			continue

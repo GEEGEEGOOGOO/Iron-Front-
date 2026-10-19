@@ -7,11 +7,27 @@ var friendly := false
 var ballistic := false
 var source: Node3D
 var mesh: MeshInstance3D
+var artwork: Sprite3D
+var trail_clock := 0.0
+var visual_kind := "bullet"
 var query := PhysicsRayQueryParameters3D.new()
 func _ready() -> void:
 	query.collide_with_areas = true
 	mesh = ModelFactory.sphere(self, 0.11, Vector3.ZERO, Color(1, 0.7, 0.1))
-func activate(owner_node: Node3D, pos: Vector3, motion: Vector3, damage_value: float, player_owned: bool, lifetime: float, splash: float, arc: bool) -> void:
+	mesh.hide()
+	artwork = FxAtlas.sprite(self)
+func activate(owner_node: Node3D, pos: Vector3, motion: Vector3, damage_value: float, player_owned: bool, lifetime: float, splash: float, arc: bool, kind := "bullet") -> void:
+	visual_kind = "shell" if arc else kind
+	trail_clock = 0.0
+	rotation = Vector3.ZERO
+	scale = Vector3.ONE
+	var index: int = {"rocket": 2, "shell": 3, "plasma": 4}.get(visual_kind, 0)
+	FxAtlas.setup(artwork, index)
+	artwork.scale *= Vector3(0.8, 0.25, 1) if index in [2, 3] else Vector3(0.48, 0.10, 1)
+	if kind == "shotgun":
+		artwork.scale *= 0.65
+	artwork.rotation.z = atan2(motion.y, motion.x)
+	artwork.modulate = Color.WHITE if player_owned else Color(1.0, 0.40, 0.24)
 	source = owner_node
 	position = pos
 	velocity = motion
@@ -27,6 +43,12 @@ func _physics_process(delta: float) -> void:
 	remaining -= delta
 	if ballistic:
 		velocity.y -= 19 * delta
+	artwork.rotation.z = atan2(velocity.y, velocity.x)
+	if visual_kind in ["rocket", "shell"]:
+		trail_clock -= delta
+		if trail_clock <= 0:
+			trail_clock = 0.065
+			Combat.effect(position - velocity.normalized() * 0.25, Vector3.ONE * 0.22, Color(0.36, 0.36, 0.33), 0.28, Vector3(0, 0.35, -0.1))
 	var next := position + velocity * delta
 	query.from = position
 	query.to = next
@@ -45,5 +67,5 @@ func impact() -> void:
 	if radius > 0:
 		Combat.explode(self, position, radius, power, friendly, friendly)
 	else:
-		Combat.effect(position, Vector3.ONE * 0.2, Color(1, 0.7, 0.1), 0.12)
+		Combat.art_effect(position, Vector3(0.48, 0.48, 1), 7, 0.12)
 	PoolManager.release(self)

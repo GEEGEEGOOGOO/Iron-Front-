@@ -22,6 +22,7 @@ var checkpoint_labels: Array[Label3D] = []
 var tank: CharacterBody3D
 var ladders: Array[ClimbLadder] = []
 var elevators: Array[FreightElevator] = []
+var battlefield: DustBattlefield
 var banner := ""
 var banner_time := 3.0
 func _ready() -> void:
@@ -46,37 +47,63 @@ func _ready() -> void:
 func build_world() -> void:
 	var world := WorldEnvironment.new()
 	var env := Environment.new()
-	env.background_mode = Environment.BG_COLOR
-	env.background_color = data.sky_color
+	env.background_mode = Environment.BG_SKY
+	var sky := Sky.new()
+	var sky_material := ProceduralSkyMaterial.new()
+	sky_material.sky_top_color = Color(0.19, 0.12, 0.13)
+	sky_material.sky_horizon_color = Color(0.95, 0.51, 0.22)
+	sky_material.ground_bottom_color = Color(0.17, 0.12, 0.10)
+	sky_material.ground_horizon_color = Color(0.79, 0.42, 0.2)
+	sky.sky_material = sky_material
+	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = data.sky_color.lightened(0.3)
-	env.ambient_light_energy = 0.65
-	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	env.ambient_light_color = Color(0.78, 0.64, 0.48)
+	env.ambient_light_energy = 0.55
+	env.tonemap_mode = Environment.TONE_MAPPER_ACES
+	env.ssao_enabled = true
+	env.ssao_radius = 0.8
+	env.ssao_intensity = 1.7
+	env.glow_enabled = true
+	env.glow_intensity = 0.8
+	env.glow_bloom = 0.2
+	env.fog_enabled = true
+	env.fog_mode = Environment.FOG_MODE_DEPTH
+	env.fog_depth_begin = 27.0
+	env.fog_depth_end = 70.0
+	env.fog_light_color = Color("d97b38")
+	env.fog_light_energy = 0.5
+	env.fog_sky_affect = 0.15
 	world.environment = env
 	add_child(world)
 	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-45, -25, 0)
-	sun.light_energy = 2.0
+	sun.rotation_degrees = Vector3(-32, -35, 0)
+	sun.light_color = Color(1.0, 0.87, 0.69)
+	sun.light_energy = 1.2
+	sun.shadow_blur = 1.5
 	sun.shadow_enabled = true
+	sun.light_angular_distance = 1.0
 	add_child(sun)
-	platform(Vector3(data.length * 0.5, -0.7, 0), Vector3(data.length + 20, 1.4, 7), data.ground_color)
-	build_theme_ground()
-	var backdrop_random := RandomNumberGenerator.new()
-	backdrop_random.seed = 1009 + GameManager.mission * 10007
-	for i in range(-2, 28):
-		var x := i * 5.0
-		var height := backdrop_random.randf_range(3, 12)
-		var backdrop := ModelFactory.box(self, Vector3(backdrop_random.randf_range(3, 6), height, 3), Vector3(x, height / 2 - 0.1, -10), data.ground_color.darkened(0.27))
-		backdrop.name = "BackdropBlock%d" % i
-		ModelFactory.box(self, Vector3(4, 0.2, 1), Vector3(x, 0.08, -2), data.ground_color.lightened(0.12))
-		if i % 3 == 0:
-			ModelFactory.box(self, Vector3(0.15, 5, 0.15), Vector3(x, 2.5, -3), Color(0.18, 0.22, 0.24))
-	build_theme_props()
+	platform(Vector3(data.length * 0.5, -0.7, 0), Vector3(data.length + 20, 1.4, 7), Color(0.20, 0.19, 0.17))
+	if data.theme != "desert":
+		var night := data.theme == "foundry"
+		sky_material.sky_top_color = Color("071225") if night else Color("687b87")
+		sky_material.sky_horizon_color = Color("172a40") if night else Color("adb6b8")
+		sky_material.ground_horizon_color = sky_material.sky_horizon_color
+		env.ambient_light_color = Color("6385b0") if night else Color("d3e1e4")
+		env.ambient_light_energy = 0.48 if night else 0.7
+		env.fog_light_color = Color("15273c") if night else Color("a0adb0")
+		sun.light_color = Color("89a9dc") if night else Color("e0e9eb")
+		sun.light_energy = 0.42 if night else 1.0
+		battlefield = MissionBattlefield.new()
+	else:
+		battlefield = DustBattlefield.new()
+	add_child(battlefield)
+	battlefield.build(data)
 	build_checkpoint_markers()
 	build_ladders()
 	build_elevators()
 	for i in data.platform_positions.size():
-		platform(data.platform_positions[i], data.platform_sizes[i], data.ground_color.lightened(0.13))
+		platform(data.platform_positions[i], data.platform_sizes[i], DustBattlefield.CONCRETE)
 	for i in data.crate_positions.size():
 		var prop = preload("res://scripts/levels/prop.gd").new()
 		add_child(prop)
@@ -124,7 +151,7 @@ func platform(pos: Vector3, size: Vector3, color: Color) -> void:
 	body.position = pos
 	body.collision_layer = 1
 	ModelFactory.collider(body, size, Vector3.ZERO)
-	ModelFactory.box(body, size, Vector3.ZERO, color)
+	ModelFactory.world_box(body, size, Vector3.ZERO, color)
 func add_pickup(pos: Vector3, kind: String) -> void:
 	var pickup = PoolManager.acquire("pickup")
 	if pickup:
@@ -263,6 +290,8 @@ func reset_encounter() -> void:
 	rig.frontier = clampf(GameManager.checkpoint.x, rig.min_x, rig.max_x)
 	rig.position.x = rig.frontier
 func interact(actor: Node3D, melee: bool) -> void:
+	if not melee and battlefield.use_terminal(actor):
+		return
 	if not melee and tank.position.distance_to(actor.position) < 3 and not tank.wrecked:
 		tank.enter_vehicle(actor)
 		return
@@ -322,20 +351,20 @@ func build_theme_props() -> void:
 		match data.theme:
 			"coast":
 				# Dock crane and stacked freight, staged behind the gameplay lane.
-				ModelFactory.box(self, Vector3(0.5, 8, 0.5), Vector3(x, 4, -5), Color(0.6, 0.39, 0.16))
-				ModelFactory.box(self, Vector3(8, 0.4, 0.5), Vector3(x + 2, 8, -5), Color(0.6, 0.39, 0.16))
+				ModelFactory.world_box(self, Vector3(0.5, 8, 0.5), Vector3(x, 4, -5), Color(0.6, 0.39, 0.16))
+				ModelFactory.world_box(self, Vector3(8, 0.4, 0.5), Vector3(x + 2, 8, -5), Color(0.6, 0.39, 0.16))
 				ModelFactory.box(self, Vector3(0.06, 4, 0.06), Vector3(x + 5, 6, -5), Color(0.15, 0.18, 0.2))
-				ModelFactory.box(self, Vector3(5, 2, 2.4), Vector3(x + 3, 1, -6), Color(0.25, 0.42, 0.43))
+				ModelFactory.world_box(self, Vector3(5, 2, 2.4), Vector3(x + 3, 1, -6), Color(0.25, 0.42, 0.43))
 			"desert":
 				for offset in [-2.0, 2.0]:
-					ModelFactory.box(self, Vector3(1.3, 5, 1.5), Vector3(x + offset, 2.5, -5), Color(0.63, 0.44, 0.27))
-				ModelFactory.box(self, Vector3(6.5, 0.8, 1.5), Vector3(x, 5.3, -5), Color(0.66, 0.46, 0.28))
+					ModelFactory.world_box(self, Vector3(1.3, 5, 1.5), Vector3(x + offset, 2.5, -5), Color(0.63, 0.44, 0.27))
+				ModelFactory.world_box(self, Vector3(6.5, 0.8, 1.5), Vector3(x, 5.3, -5), Color(0.66, 0.46, 0.28))
 				ModelFactory.sphere(self, 1.8, Vector3(x + 5, 0.3, -4), Color(0.52, 0.34, 0.21))
 			"foundry":
-				ModelFactory.box(self, Vector3(3, 6, 3), Vector3(x, 3, -6), Color(0.19, 0.22, 0.26))
+				ModelFactory.world_box(self, Vector3(3, 6, 3), Vector3(x, 3, -6), Color(0.19, 0.22, 0.26))
 				var furnace := ModelFactory.box(self, Vector3(2, 2.8, 0.1), Vector3(x, 2.4, -4.45), Color(1, 0.25, 0.04))
 				furnace.material_override = ModelFactory.material(Color(1, 0.2, 0.025), 2)
-				ModelFactory.box(self, Vector3(0.8, 6, 0.8), Vector3(x + 1, 8, -6), Color(0.18, 0.2, 0.23))
+				ModelFactory.world_box(self, Vector3(0.8, 6, 0.8), Vector3(x + 1, 8, -6), Color(0.18, 0.2, 0.23))
 
 func build_ladders() -> void:
 	for i in mini(data.ladder_positions.size(), data.ladder_heights.size()):

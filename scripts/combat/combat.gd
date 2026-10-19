@@ -4,6 +4,10 @@ static func effect(pos: Vector3, size: Vector3, color: Color, duration: float, d
 	var fx = PoolManager.acquire("effect")
 	if fx:
 		fx.activate(pos, size, color, duration, drift)
+static func art_effect(pos: Vector3, size: Vector3, index: int, duration: float, angle := 0.0, tint := Color.WHITE) -> void:
+	var fx = PoolManager.acquire("effect")
+	if fx:
+		fx.activate_art(pos, size, index, duration, angle, tint)
 static func damage(target: Object, amount: float, source: Node) -> bool:
 	if target and target.has_method("take_damage"):
 		return target.take_damage(amount, source)
@@ -50,12 +54,12 @@ static func fire(source: Node3D, origin: Vector3, direction: Vector3, weapon: We
 			var center := (origin + end) * 0.5
 			var tracer = PoolManager.acquire("effect")
 			if tracer:
-				tracer.activate(center, Vector3(origin.distance_to(end), 0.045, 0.045), weapon.color, 0.07)
+				tracer.activate_art(center, Vector3(origin.distance_to(end), 0.13 if weapon.model_kind == "laser" else 0.055, 1), 5 if weapon.model_kind == "laser" else 0, 0.10 if weapon.model_kind == "laser" else 0.07)
 				tracer.rotation.z = atan2(aim.y, aim.x)
 		else:
 			var bullet = PoolManager.acquire("projectile")
 			if bullet:
-				bullet.activate(source, origin, aim * weapon.speed, weapon.damage, friendly, weapon.lifetime, weapon.explosion_radius, false)
+				bullet.activate(source, origin, aim * weapon.speed, weapon.damage, friendly, weapon.lifetime, weapon.explosion_radius, false, weapon.model_kind)
 static func grenade(source: Node3D, origin: Vector3, direction: float, friendly: bool, damage_value := -1.0) -> void:
 	var bullet = PoolManager.acquire("projectile")
 	if bullet:
@@ -67,6 +71,7 @@ static func explode(source: Node3D, pos: Vector3, radius: float, power: float, f
 	AudioManager.play_at("boom", pos)
 	EventBus.shake_requested.emit(0.3, 0.3)
 	EventBus.hitstop_requested.emit(0.045)
+	art_effect(pos, Vector3.ONE * minf(radius, 2.2), 7, 0.22)
 	var core = PoolManager.acquire("burst")
 	if core:
 		core.activate(pos, radius * 1.8, false, Vector3.ZERO)
@@ -133,10 +138,13 @@ static func flame(source: Node3D, origin: Vector3, direction: Vector3, weapon: W
 			hit_any = true
 	if hit_any and friendly:
 		GameManager.hits += 1
-	for i in 5:
-		var flame_direction := direction.rotated(Vector3.FORWARD, randf_range(-weapon.cone_half_angle, weapon.cone_half_angle))
-		var distance := randf_range(0.4, weapon.range_meters)
-		effect(origin + flame_direction * distance, Vector3.ONE * (0.16 + distance * 0.14), Color(1, randf_range(0.3, 0.7), 0.05), 0.16, flame_direction * 3)
+	# Imported player weapon owns its plume; keep the fallback for other sources.
+	if not (source.has_method("uses_imported_flame") and source.uses_imported_flame()):
+		for i in 5:
+			var flame_direction := direction.rotated(Vector3.FORWARD, randf_range(-weapon.cone_half_angle, weapon.cone_half_angle))
+			var distance := randf_range(0.4, weapon.range_meters)
+			effect(origin + flame_direction * distance, Vector3.ONE * (0.16 + distance * 0.14), Color(1, randf_range(0.3, 0.7), 0.05), 0.16, flame_direction * 3)
+		art_effect(origin + direction * 1.2, Vector3(2.4, 0.65, 1), 6, 0.12, atan2(direction.y, direction.x))
 	AudioManager.play_at(weapon.sfx_fire, origin)
 
 static func melee(source: Node3D, origin: Vector3, facing: float) -> int:

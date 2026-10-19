@@ -22,9 +22,10 @@ func run() -> void:
 	InputManager.apply_saved_bindings()
 	check(InputMap.event_is_action(switch_key, "switch_weapon"), "Saved switch binding must reload")
 	InputManager.reset_bindings()
-	check(InputManager.rebind("fire", KEY_R).is_empty(), "An unused key must bind")
+	check(not InputManager.rebind("fire", KEY_R).is_empty(), "Reload key must not be assigned to firing")
+	check(InputManager.rebind("fire", KEY_V).is_empty(), "An unused key must bind")
 	var r := InputEventKey.new()
-	r.physical_keycode = KEY_R
+	r.physical_keycode = KEY_V
 	r.pressed = true
 	check(InputMap.event_is_action(r, "fire"), "New key must trigger fire")
 	var controller := InputEventJoypadButton.new()
@@ -35,10 +36,10 @@ func run() -> void:
 	shoulder.button_index = JOY_BUTTON_LEFT_SHOULDER
 	shoulder.pressed = true
 	check(InputMap.event_is_action(shoulder, "switch_weapon"), "Controller must map weapon switching")
-	check(not InputManager.rebind("jump", KEY_R).is_empty(), "Duplicate bindings must be rejected")
+	check(not InputManager.rebind("jump", KEY_V).is_empty(), "Duplicate bindings must be rejected")
 	check(not InputManager.rebind("fire", KEY_F4).is_empty(), "Debug shortcuts must remain reserved")
 	var on_disk = JSON.parse_string(FileAccess.get_file_as_string(SaveManager.save_path))
-	check(int(on_disk.bindings.fire) == KEY_R, "Key binding must persist to disk")
+	check(int(on_disk.bindings.fire) == KEY_V, "Key binding must persist to disk")
 	InputManager.set_keyboard_binding("fire", KEY_J)
 	InputManager.apply_saved_bindings()
 	check(InputMap.event_is_action(r, "fire"), "Saved bindings must restore input mapping")
